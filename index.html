@@ -12,7 +12,7 @@
         tex: {
           inlineMath: [['$', '$'], ['\\(', '\\)']],
           displayMath: [['$$', '$$'], ['\\[', '\\]']],
-          tags: 'ams',  // enables automatic equation numbering
+          tags: 'ams',
         },
       };
     </script>
@@ -21,249 +21,380 @@
       async
     ></script>
     <style>
-      p {
+      body p {
         text-align: justify;
+        margin-bottom: 1.5rem !important;
+      }
+
+      footer p {
+        text-align: justify;
+        margin-bottom: 0 !important;
       }
     </style>
   </head>
 
+
+
+
+
   <body class="bg-gray-900 text-gray-100 font-sans">
     <main class="max-w-3xl mx-auto p-8 space-y-8">
 
+
+
+      <!-- Title -->
       <header>
         <h1 class="text-3xl font-bold">Brownian Motion</h1>
       </header>
 
+
+
+      <!-- Quote -->
       <p class="italic">
         "If, in some cataclysm, all of scientific knowledge were to be destroyed, and only one sentence passed on to the next generation of creatures, what statement would contain the most information in the fewest words? I believe it is the <strong>atomic hypothesis</strong> [...] that all things are made of atoms — little particles that move around in perpetual motion, attracting each other when they are a little distance apart, but repelling upon being squeezed into one another."<sup><a href="#feynman-1963" class="text-blue-300 hover:underline">[1]</a></sup>
       </p>
       <p class="text-right text-gray-400">— Richard Feynman</p>
 
+
+
+      <!-- Navigation Menu -->
       <nav class="mb-8 p-4 bg-gray-800 rounded shadow-md">
         <h2 class="text-lg font-semibold mb-2">Jump to Section:</h2>
         <ul class="space-y-1 text-sm text-blue-300 list-disc list-inside">
           <li><a href="#background" class="hover:underline">Historical Background</a></li>
           <li><a href="#theory" class="hover:underline">Theory</a></li>
+          <li><a href="#pre-lab-questions" class="hover:underline">Pre-Lab Questions</a></li>
         </ul>
       </nav>
 
-      <header>
-        <h3 id="background" class="text-xl font-bold">Historical Background</h3>
-      </header>
 
-      <p>
-        In 1827, Scottish botanist Robert Brown was analyzing pollen grains suspended in water under a microscope when he noticed that the grains were shedding even smaller particles that underwent random, erratic motion. Since he was studying the fertilization process of a newly-discovered flowering plant, he initially assumed that this behavior was biological in nature, akin to that seen in some motile gametes like sperm<sup><a href="#brown-1828" class="text-blue-300 hover:underline">[2]</a></sup>. However, after recreating the effect using pollen from long-dead plants, and even entirely inorganic particles<sup><a href="#brown-1829" class="text-blue-300 hover:underline">[3]</a></sup>, Brown concluded that something else must be causing the phenomenon. The jittery movements of these ‘Active Molecules’ as Brown termed them would later be referred to as ‘Brownian Motion’ in his honor, and the search for an associated causal mechanism ultimately shifted to the realm of physics many decades later.
-      </p>
-      <p>
-        While mathematicians Thorvald Thiele and Louis Bachelier independently characterized this motion by providing mathematical descriptions in 1880 and 1900, respectively, the physical processes behind it remained unknown until Albert Einstein published his 1905 paper, “On the Movement of Small Particles Suspended in a Stationary Liquid Demanded by the Molecular-Kinetic Theory of Heat”<sup><a href="#einstein-1956" class="text-blue-300 hover:underline">[4]</a></sup>. In this journal article, Einstein explained the mechanisms behind Brownian motion using newly developed principles of thermodynamics and statistical mechanics, proving the existence of atoms in the process. He demonstrated that particles like Brown’s pollen grains were continually colliding with the molecules comprising the fluid in the surrounding suspension, giving rise to the observed motion. While other physicists’ reception to these ideas was at first tentative, further tests conducted by French physicist Jean-Baptiste Perrin a few years later provided convincing experimental verification<sup><a href="#perrin-1910" class="text-blue-300 hover:underline">[5]</a></sup>. For these results, Perrin was awarded the Nobel Prize for Physics in 1926, and Einstein’s 1905 analysis of Brownian motion has been held in high esteem ever since, alongside his seminal work on special relativity and the photoelectric effect that same year.
-      </p>
 
-      <header>
-        <h3 id="theory" class="text-xl font-bold">Theory</h3>
-      </header>
+      <!-- Section: Historical Background -->
+      <details id="background" open class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Historical Background
+        </summary>
+        <div class="mt-4 space-y-6">
 
-      <p>
-        Before exploring the physics behind Brownian motion, it is instructive to learn first about the mathematics that govern it. In most motion problems, the ultimate goal is to obtain an equation that describes an object’s trajectory in space as a function of time. You explored this in your introductory physics courses when you solved constant-acceleration kinematics problems. All objects in these problems obeyed the following familiar equation:
-      </p>
-      <div id="eq-kinematics">
-        <p>
-          $$\begin{equation}
-            \vec{x} = \vec{x}_0 + \vec{v}t + \frac{1}{2}\vec{a}t^2 \label{eq:kinematics}
-          \end{equation}$$
-        </p>
-      </div>
-      <p>
-        We would like to develop a similar equation for a particle undergoing Brownian motion, but there’s a catch. The motions of an apple falling from a tree, a projectile being launched from a cannon, a car accelerating from rest at a constant rate - all of these processes are deterministic in nature. If you were to repeat them all with the same initial conditions, each of these objects would trace out the exact same trajectory every single time. Brownian motion, however, is entirely random, lacking the determinism that makes pinpointing precise spatial trajectories possible for macroscopic objects. At any given instant in time, a particle undergoing Brownian motion is equally likely to move in any direction, making it impossible to describe its path with an equation like <a href="#eq-kinematics" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:kinematics}$</a>. This path, formed by successive steps in random directions, is known as a <strong>random walk</strong>, and it is almost always different with each repetition.
-      </p>
+          <p>
+            In 1827, Scottish botanist Robert Brown was analyzing pollen grains suspended in water under a microscope when he noticed that the grains were shedding even smaller particles that underwent random, erratic motion.
+            Since he was studying the fertilization process of a newly-discovered flowering plant, he initially assumed that this behavior was biological in nature, akin to that seen in some motile gametes like sperm<sup><a href="#brown-1828" class="text-blue-300 hover:underline">[2]</a></sup>.
+            However, after recreating the effect using pollen from long-dead plants, and even entirely inorganic particles<sup><a href="#brown-1829" class="text-blue-300 hover:underline">[3]</a></sup>, Brown concluded that something else must be causing the phenomenon.
+            The jittery movements of these ‘Active Molecules’ as Brown termed them would later be referred to as ‘Brownian Motion’ in his honor, and the search for an associated causal mechanism ultimately shifted to the realm of physics many decades later.
+          </p>
 
-      <figure id="fig-1" class="my-8 text-center">
-        <img
-          src="figures/lab1/figure1.png"
-          alt="Examples of random walks"
-          class="mx-auto rounded"
-        />
-        <figcaption class="mt-2 text-sm text-gray-400">
-          <strong>Figure 1:</strong> Examples of 2D random walks. These three particles were all subject to the exact same motion constraints, yet follow entirely different paths.
-        </figcaption>
-      </figure>
+          <p>
+            While mathematicians Thorvald Thiele and Louis Bachelier independently characterized this motion by providing mathematical descriptions in 1880 and 1900, respectively, the physical processes behind it remained unknown until Albert Einstein published his 1905 paper, “On the Movement of Small Particles Suspended in a Stationary Liquid Demanded by the Molecular-Kinetic Theory of Heat”<sup><a href="#einstein-1956" class="text-blue-300 hover:underline">[4]</a></sup>. 
+            In this journal article, Einstein explained the mechanisms behind Brownian motion using newly developed principles of thermodynamics and statistical mechanics, proving the existence of atoms in the process.
+            He demonstrated that particles like Brown’s pollen grains were continually colliding with the molecules comprising the fluid in the surrounding suspension, giving rise to the observed motion.
+            While other physicists’ reception to these ideas was at first tentative, further tests conducted by French physicist Jean-Baptiste Perrin a few years later provided convincing experimental verification<sup><a href="#perrin-1910" class="text-blue-300 hover:underline">[5]</a></sup>.
+            For these results, Perrin was awarded the Nobel Prize for Physics in 1926, and Einstein’s 1905 analysis of Brownian motion has been held in high esteem ever since, alongside his seminal work on special relativity and the photoelectric effect that same year.
+          </p>
 
-      <p>
-        Looking at the paths shown in <a href="#fig-1" class="text-blue-300 hover:underline"><strong>Figure 1</strong></a>, it may seem as though there’s no way forward here in terms of characterizing this motion. However, while it is impossible to exactly predict the future position of a particle undergoing Brownian motion, statistical trends begin to emerge upon running multiple trials. This is easiest to understand in the context of a 1D example, so let’s conduct a simple numerical experiment.
-      </p>
+        </div>
+      </details>
 
-      <p>
-        Consider a particle sitting at the position $x = 0$. With every second that passes, the particle will move 1 unit in the negative direction, 1 unit in the positive direction, or stay where it’s at. We allow this motion to carry out for an entire minute, so the particle moves 60 times in total.
-      </p>
-      <figure id="fig-2" class="my-8 text-center">
-        <img
-          src="figures/lab1/figure2.png"
-          alt="Particle path"
-          class="mx-auto rounded w-2/3"
-        />
-        <figcaption class="mt-2 text-sm text-gray-400">
-          <strong>Figure 2:</strong> The path of our 1D particle on a position vs. time graph. Note that it retraces its steps several times.
-        </figcaption>
-      </figure>
 
-      <p>
-        Next, we record the final position of our particle at $t = 60$, which in this case, turns out to be $x = -9$. We then repeat this process with the same initial position of $x = 0$, again allowing the particle to move for 60 seconds. This time, we record a final position of $x = 2$. Then we run it again and record a final position of $x = -5$. Then 3, then 15, then 1, then -8, etc. Simply reading these numbers off in sequence seems utterly meaningless, and there does not appear to be a trend in these results. However, if we construct a histogram with these final position values, they begin to take on a familiar shape as we conduct more trials.
-      </p>
 
-      </p>
-      <figure id="fig-3" class="my-8 text-center">
-        <img
-          src="figures/lab1/figure3.png"
-          alt="Particle path"
-          class="mx-auto rounded w-2/3"
-        />
-        <figcaption class="mt-2 text-sm text-gray-400">
-          <strong>Figure 3:</strong> Histograms of the final positions of the particle from each random walk trial, centered about $x=0$. The number of trials run for each graph from left to right are: 50, 500, 5000, 50000, and 500000.
-        </figcaption>
-      </figure>
+      <!-- Section: Theory -->
+      <details id="theory" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Theory
+        </summary>
+        <div class="mt-4 space-y-6">
 
-      <p>
-        As can be seen in <a href="#fig-3" class="text-blue-300 hover:underline"><strong>Figure 3</strong></a>, the particle displacements follow a <strong>Gaussian distribution</strong> (or <strong>Normal distribution</strong>). Of course, this doesn’t allow us to deterministically predict particle displacements. However, it does allow us to assign a likelihood, or probability, to them. We can tell just by looking at these histograms that any one particle is likely to have a final position close to 0, with the more distant values being far less probable. Clearly, we can only glean so much information from these rudimentary graphs; fortunately, the Gaussian distribution has a well-defined analytic function that we can make use of for more detailed analysis:
-      </p>
-      <div id="eq-gaussian">
-        <p>
-          $$\begin{equation}
-            f(x) = \frac{1}{\sigma\sqrt{2\pi}}\exp{\left[{-\frac{1}{2}\left( \frac{x-\mu}{\sigma} \right)^2}\right]}\,. \label{eq:gaussian}
-          \end{equation}$$
-        </p>
-      </div>
-      <p>
-        Here, $\mu$ is the <strong>mean</strong> (or <strong>average</strong>) of the distribution, and $\sigma$ is the <strong>standard deviation</strong> (SD), a measure of the variation from the mean. Clearly, the mean of this particular distribution from our random walk trials is 0, so we can slightly simplify <a href="#eq-gaussian" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:gaussian}$</a> to construct a probability density function for our particle displacements ($\Delta x$),
-      </p>
-      <div id="eq-pdf">
-        <p>
-          $$\begin{equation}
-            P(\Delta x) = \frac{1}{\sigma\sqrt{2\pi}}\exp{\left[ -\frac{\left( \Delta x \right)^2}{2\sigma^2} \right]}\,. \label{eq:pdf}
-          \end{equation}$$
-        </p>
-      </div>
-      <p>
-        This function takes a particle displacement as an input and returns its probability of occurence. Probability density functions are everywhere in quantum mechanics, so you will see many more of them throughout the rest of your physics education.
-      </p>
-      <p>
-        The standard deviation of a dataset with a mean of 0 is obtained by squaring all entries, taking the mean of the squares, then taking the square root of this mean. You may be familiar with the <strong>root-mean-square</strong> (RMS) from the surface-level discussions of the kinetic molecular theory of gases in your introductory physics courses. In datasets with means of 0, the RMS and SD are identical. So, for our set of particle displacements,
-      </p>
-      <div id="eq-sd-long">
-        <p>
-          $$\begin{equation}
-            \sigma = \sqrt{\frac{1}{N}\displaystyle\sum_{i=1}^N\left( \Delta x_i \right)^2}\,. \label{eq:sd-long}
-          \end{equation}$$
-        </p>
-      </div>
-      <p>
-        A common shorthand notation for the above equation is
-      </p>
-      <div id="eq-sd-short">
-        <p>
-          $$\begin{equation}
-            \sigma = \sqrt{\langle \Delta x^2 \rangle}\,. \label{eq:sd-short}
-          \end{equation}$$
-        </p>
-      </div>
-      <p>
-        It is important to note that this $\Delta x^2$ quantity inside the angled brackets in <a href="#eq-sd-short" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-short}$</a> is not the same as the $\Delta x^2$ quantity shown explicitly in the exponential in <a href="#eq-pdf" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:pdf}$</a>. The angled brackets in <a href="#eq-sd-short" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-short}$</a> indicate that a mean is being taken over the entire dataset, while the $\Delta x^2$ in <a href="#eq-pdf" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:pdf}$</a> is simply the square of a single particle displacement.
-      </p>
-      <p>
-        Equipped with this knowledge, we could use <a href="#eq-sd-long" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-long}$</a> on our set of 500,000 random walks to determine the standard deviation that appears in <a href="#eq-pdf" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:pdf}$</a>, and we would then have a complete probability density function. This is useful for predicting statistical behavior of these particles undergoing Brownian motion, but it is ultimately nothing but mathematics. The Gaussian distribution tells us nothing about why the particles are moving the way they are moving - it only tells us how they are moving. To understand why, we must turn our attention back to physics as Einstein did over 100 years ago.
-      </p>
-      <p>
-        If you’ve ever placed a drop of dye into a clear glass of water, you’ve witnessed the slow and steady spread of color, gradually billowing outwards until it is eventually uniformly distributed throughout. This is a perfect example of <strong>diffusion</strong> - the net movement of particles from regions of higher concentration to lower concentration. This process is driven by Brownian motion as molecules are continually colliding with each other, bouncing off in random directions and traveling ever greater distances in the absence of frequent collisions. Einstein was able to demonstrate this connection by showing that the 1D number density $\rho(x, t)$ of Brownian particles satisfies the diffusion equation,
-      </p>
-      <div id="eq-diffusion">
-        <p>
-          $$\begin{equation}
-            \frac{\partial \rho}{\partial t} = D \cdot \frac{\partial^2\rho}{\partial x^2}\,. \label{eq:diffusion}
-          \end{equation}$$
-        </p>
-      </div>
-      <p>
-        Here, $D$ is called the <strong>diffusion coefficient</strong>. Solving this differential equation for $\rho(x, t)$ for a system of $N$ particles yields the somewhat familiar-looking result
-      </p>
-      <div id="eq-concentration">
-        <p>
-          $$\begin{equation}
-            \rho(x, t) = \frac{N}{\sqrt{4\pi D t}}\exp{\left[ -\frac{x^2}{4Dt} \right]}\,. \label{eq:concentration}
-          \end{equation}$$
-        </p>
-      </div>
-      <p>
-        This is a Gaussian distribution, very much like the one we saw earlier in our mathematical description of Brownian motion. In fact, if we compare <a href="#eq-concentration" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:concentration}$</a> to <a href="#eq-pdf" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:pdf}$</a>, and use what we know from <a href="#eq-sd-short" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-short}$</a>, we obtain the following relation:
-      </p>
-      <div id="eq-position-time">
-        <p>
-          $$\begin{equation}
-            \boxed{\langle \Delta x^2 \rangle = 2Dt}\,. \label{eq:position-time}
-          \end{equation}$$
-        </p>
-      </div>
-      <p>
-        This shows that the mean displacement of particles undergoing Brownian motion is not proportional to the elapsed time, but rather to the <em>square root</em> of the elapsed time, contrary to what was then conventional wisdom.
-      </p>
-      <p>
-        Einstein also noticed that there was a fundamental connection between the Brownian motion of particles and the drag forces that act on them. As stated earlier, Brownian motion arises when particles submersed in a fluid are knocked around by the molecules comprising the fluid itself. This process converts thermal energy (the fluctuations of the fluid molecules) into kinetic energy (the motion of the particles submersed in the fluid).
-      </p>
-      <p>
-        Drag forces do the opposite of this. As an object moves through a fluid, it loses its kinetic energy in the form of heat as it collides with the fluid molecules. Such drag forces act on particles undergoing Brownian motion as well, resulting in a perpetual exchange of kinetic and thermal energy between these particles and the surrounding fluid. Einstein showed that these energy exchanges are concisely captured by the relation
-      </p>
-      <div id="eq-einstein-relation">
-        <p>
-          $$\begin{equation}
-            Df = k_BT\,. \label{eq:einstein-relation}
-          \end{equation}$$
-        </p>
-      </div>
-      <p>
-        Here, $f$ is the <strong>drag coefficient</strong>, $T$ is the temperature of the fluid, and $k_B$ is <strong>Boltzmann's constant</strong>. According to Stokes' Law, the drag coefficient for a sphere of radius $r$ moving through a fluid of viscosity $\eta$ is given by
-      </p>
-      <div id="eq-stokes">
-        <p>
-          $$\begin{equation}
-            f = 6\pi\eta r\,. \label{eq:stokes}
-          \end{equation}$$
-        </p>
-      </div>
-      <p>
-        Thus, <a href="#eq-einstein-relation" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:einstein-relation}$</a> becomes
-      </p>
-      <div id="eq-diffusion-coefficient">
-        <p>
-          $$\begin{equation}
-            D = \frac{k_BT}{6\pi\eta r}\,. \label{eq:diffusion-coefficient}
-          \end{equation}$$
-        </p>
-      </div>
-      <p>
-        Since Boltzmann's constant is equal to the gas constant $R$ divided by Avogadro's number $N_A$, <a href="#eq-diffusion-coefficient" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:diffusion-coefficient}$</a> can be rewritten as
-      </p>
-      <div id="eq-avogadro">
-        <p>
-          $$\begin{equation}
-            \boxed{N_A = \frac{RT}{6\pi\eta r D}}\,. \label{eq:avogadro}
-          \end{equation}$$
-        </p>
-      </div>
+          <p>
+            Before exploring the physics behind Brownian motion, it is instructive to learn first about the mathematics that govern it. In most motion problems, the ultimate goal is to obtain an equation that describes an object’s trajectory in space as a function of time. You explored this in your introductory physics courses when you solved constant-acceleration kinematics problems. All objects in these problems obeyed the following familiar equation:
+          </p>
 
+          <div id="eq-kinematics">
+            <p>
+              $$\begin{equation}
+                \vec{x} = \vec{x}_0 + \vec{v}t + \frac{1}{2}\vec{a}t^2 \label{eq:kinematics}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            We would like to develop a similar equation for a particle undergoing Brownian motion, but there’s a catch. The motions of an apple falling from a tree, a projectile being launched from a cannon, a car accelerating from rest at a constant rate - all of these processes are deterministic in nature. If you were to repeat them all with the same initial conditions, each of these objects would trace out the exact same trajectory every single time. Brownian motion, however, is entirely random, lacking the determinism that makes pinpointing precise spatial trajectories possible for macroscopic objects. At any given instant in time, a particle undergoing Brownian motion is equally likely to move in any direction, making it impossible to describe its path with an equation like <a href="#eq-kinematics" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:kinematics}$</a>. This path, formed by successive steps in random directions, is known as a <strong>random walk</strong>, and it is almost always different with each repetition.
+          </p>
+
+          <figure id="fig-1" class="my-8 text-center">
+            <img
+              src="figures/lab1/figure1.png"
+              alt="Examples of random walks"
+              class="mx-auto rounded"
+            />
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 1:</strong> Examples of 2D random walks. These three particles were all subject to the exact same motion constraints, yet follow entirely different paths.
+            </figcaption>
+          </figure>
+
+          <p>
+            Looking at the paths shown in <a href="#fig-1" class="text-blue-300 hover:underline"><strong>Figure 1</strong></a>, it may seem as though there’s no way forward here in terms of characterizing this motion. However, while it is impossible to exactly predict the future position of a particle undergoing Brownian motion, statistical trends begin to emerge upon running multiple trials. This is easiest to understand in the context of a 1D example, so let’s conduct a simple numerical experiment.
+          </p>
+
+          <p>
+            Consider a particle sitting at the position $x = 0$. With every second that passes, the particle will move 1 unit in the negative direction, 1 unit in the positive direction, or stay where it’s at. We allow this motion to carry out for an entire minute, so the particle moves 60 times in total.
+          </p>
+
+          <figure id="fig-2" class="my-8 text-center">
+            <img
+              src="figures/lab1/figure2.png"
+              alt="Particle path"
+              class="mx-auto rounded w-2/3"
+            />
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 2:</strong> The path of our 1D particle on a position vs. time graph. Note that it retraces its steps several times.
+            </figcaption>
+          </figure>
+
+          <p>
+            Next, we record the final position of our particle at $t = 60$, which in this case, turns out to be $x = -9$. We then repeat this process with the same initial position of $x = 0$, again allowing the particle to move for 60 seconds. This time, we record a final position of $x = 2$. Then we run it again and record a final position of $x = -5$. Then 3, then 15, then 1, then -8, etc. Simply reading these numbers off in sequence seems utterly meaningless, and there does not appear to be a trend in these results. However, if we construct a histogram with these final position values, they begin to take on a familiar shape as we conduct more trials.
+          </p>
+
+          <figure id="fig-3" class="my-8 text-center">
+            <img
+              src="figures/lab1/figure3.png"
+              alt="Particle path"
+              class="mx-auto rounded w-2/3"
+            />
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 3:</strong> Histograms of the final positions of the particle from each random walk trial, centered about $x=0$. The number of trials run for each graph from left to right are: 50, 500, 5000, 50000, and 500000.
+            </figcaption>
+          </figure>
+
+          <p>
+            As can be seen in <a href="#fig-3" class="text-blue-300 hover:underline"><strong>Figure 3</strong></a>, the particle displacements follow a <strong>Gaussian distribution</strong> (or <strong>Normal distribution</strong>). Of course, this doesn’t allow us to deterministically predict particle displacements. However, it does allow us to assign a likelihood, or probability, to them. We can tell just by looking at these histograms that any one particle is likely to have a final position close to 0, with the more distant values being far less probable. Clearly, we can only glean so much information from these rudimentary graphs; fortunately, the Gaussian distribution has a well-defined analytic function that we can make use of for more detailed analysis:
+          </p>
+
+          <div id="eq-gaussian">
+            <p>
+              $$\begin{equation}
+                f(x) = \frac{1}{\sigma\sqrt{2\pi}}\exp{\left[{-\frac{1}{2}\left( \frac{x-\mu}{\sigma} \right)^2}\right]}\,. \label{eq:gaussian}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Here, $\mu$ is the <strong>mean</strong> (or <strong>average</strong>) of the distribution, and $\sigma$ is the <strong>standard deviation</strong> (SD), a measure of the variation from the mean. Clearly, the mean of this particular distribution from our random walk trials is 0, so we can slightly simplify <a href="#eq-gaussian" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:gaussian}$</a> to construct a probability density function for our particle displacements ($\Delta x$),
+          </p>
+
+          <div id="eq-pdf">
+            <p>
+              $$\begin{equation}
+                P(\Delta x) = \frac{1}{\sigma\sqrt{2\pi}}\exp{\left[ -\frac{\left( \Delta x \right)^2}{2\sigma^2} \right]}\,. \label{eq:pdf}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This function takes a particle displacement as an input and returns its probability of occurence. Probability density functions are everywhere in quantum mechanics, so you will see many more of them throughout the rest of your physics education.
+          </p>
+
+          <p>
+            The standard deviation of a dataset with a mean of 0 is obtained by squaring all entries, taking the mean of the squares, then taking the square root of this mean. You may be familiar with the <strong>root-mean-square</strong> (RMS) from the surface-level discussions of the kinetic molecular theory of gases in your introductory physics courses. In datasets with means of 0, the RMS and SD are identical. So, for our set of particle displacements,
+          </p>
+
+          <div id="eq-sd-long">
+            <p>
+              $$\begin{equation}
+                \sigma = \sqrt{\frac{1}{N}\displaystyle\sum_{i=1}^N\left( \Delta x_i \right)^2}\,. \label{eq:sd-long}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            A common shorthand notation for the above equation is
+          </p>
+
+          <div id="eq-sd-short">
+            <p>
+              $$\begin{equation}
+                \sigma = \sqrt{\langle \Delta x^2 \rangle}\,. \label{eq:sd-short}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            It is important to note that this $\Delta x^2$ quantity inside the angled brackets in <a href="#eq-sd-short" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-short}$</a> is not the same as the $\Delta x^2$ quantity shown explicitly in the exponential in <a href="#eq-pdf" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:pdf}$</a>. The angled brackets in <a href="#eq-sd-short" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-short}$</a> indicate that a mean is being taken over the entire dataset, while the $\Delta x^2$ in <a href="#eq-pdf" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:pdf}$</a> is simply the square of a single particle displacement.
+          </p>
+
+          <p>
+            Equipped with this knowledge, we could use <a href="#eq-sd-long" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-long}$</a> on our set of 500,000 random walks to determine the standard deviation that appears in <a href="#eq-pdf" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:pdf}$</a>, and we would then have a complete probability density function. This is useful for predicting statistical behavior of these particles undergoing Brownian motion, but it is ultimately nothing but mathematics. The Gaussian distribution tells us nothing about why the particles are moving the way they are moving - it only tells us how they are moving. To understand why, we must turn our attention back to physics as Einstein did over 100 years ago.
+          </p>
+
+          <p>
+            If you’ve ever placed a drop of dye into a clear glass of water, you’ve witnessed the slow and steady spread of color, gradually billowing outwards until it is eventually uniformly distributed throughout. This is a perfect example of <strong>diffusion</strong> - the net movement of particles from regions of higher concentration to lower concentration. This process is driven by Brownian motion as molecules are continually colliding with each other, bouncing off in random directions and traveling ever greater distances in the absence of frequent collisions. Einstein was able to demonstrate this connection by showing that the 1D number density $\rho(x, t)$ of Brownian particles satisfies the diffusion equation,
+          </p>
+
+          <div id="eq-diffusion">
+            <p>
+              $$\begin{equation}
+                \frac{\partial \rho}{\partial t} = D \cdot \frac{\partial^2\rho}{\partial x^2}\,. \label{eq:diffusion}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Here, $D$ is called the <strong>diffusion coefficient</strong>. Solving this differential equation for $\rho(x, t)$ for a system of $N$ particles yields the somewhat familiar-looking result
+          </p>
+
+          <div id="eq-concentration">
+            <p>
+              $$\begin{equation}
+                \rho(x, t) = \frac{N}{\sqrt{4\pi D t}}\exp{\left[ -\frac{x^2}{4Dt} \right]}\,. \label{eq:concentration}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This is a Gaussian distribution, very much like the one we saw earlier in our mathematical description of Brownian motion. In fact, if we compare <a href="#eq-concentration" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:concentration}$</a> to <a href="#eq-pdf" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:pdf}$</a>, and use what we know from <a href="#eq-sd-short" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-short}$</a>, we obtain the following relation:
+          </p>
+
+          <div id="eq-position-time">
+            <p>
+              $$\begin{equation}
+                \boxed{\langle \Delta x^2 \rangle = 2Dt}\,. \label{eq:position-time}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This shows that the mean displacement of particles undergoing Brownian motion is not proportional to the elapsed time, but rather to the <em>square root</em> of the elapsed time, contrary to what was then conventional wisdom.
+          </p>
+
+          <p>
+            Einstein also noticed that there was a fundamental connection between the Brownian motion of particles and the drag forces that act on them. As stated earlier, Brownian motion arises when particles submersed in a fluid are knocked around by the molecules comprising the fluid itself. This process converts thermal energy (the fluctuations of the fluid molecules) into kinetic energy (the motion of the particles submersed in the fluid).
+          </p>
+
+          <p>
+            Drag forces do the opposite of this. As an object moves through a fluid, it loses its kinetic energy in the form of heat as it collides with the fluid molecules. Such drag forces act on particles undergoing Brownian motion as well, resulting in a perpetual exchange of kinetic and thermal energy between these particles and the surrounding fluid. Einstein showed that these energy exchanges are concisely captured by the relation
+          </p>
+
+          <div id="eq-einstein-relation">
+            <p>
+              $$\begin{equation}
+                Df = k_BT\,. \label{eq:einstein-relation}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Here, $f$ is the <strong>drag coefficient</strong>, $T$ is the temperature of the fluid, and $k_B$ is <strong>Boltzmann's constant</strong>. According to Stokes' Law, the drag coefficient for a sphere of radius $r$ moving through a fluid of viscosity $\eta$ is given by
+          </p>
+
+          <div id="eq-stokes">
+            <p>
+              $$\begin{equation}
+                f = 6\pi\eta r\,. \label{eq:stokes}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Thus, <a href="#eq-einstein-relation" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:einstein-relation}$</a> becomes
+          </p>
+
+          <div id="eq-diffusion-coefficient">
+            <p>
+              $$\begin{equation}
+                D = \frac{k_BT}{6\pi\eta r}\,. \label{eq:diffusion-coefficient}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Since Boltzmann's constant is equal to the gas constant $R$ divided by Avogadro's number $N_A$, <a href="#eq-diffusion-coefficient" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:diffusion-coefficient}$</a> can be rewritten as
+          </p>
+
+          <div id="eq-avogadro">
+            <p>
+              $$\begin{equation}
+                \boxed{N_A = \frac{RT}{6\pi\eta r D}}\,. \label{eq:avogadro}
+              \end{equation}$$
+            </p>
+          </div>
+
+        </div>
+      </details>
+
+
+
+      <!-- Section: Pre-Lab Questions -->
+      <details id="pre-lab-questions" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Pre-Lab Questions
+        </summary>
+        <div class="mt-4 space-y-6">
+
+        <ol class="list-decimal space-y-4 pl-6">
+          <li>
+            <p>
+              Prove by direct substitution that $\rho(x, t)$ from
+              <a href="#eq-concentration" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:concentration}$</a>
+              is a solution to
+              <a href="#eq-diffusion" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:diffusion}$</a>.
+            </p>
+          </li>
+        </ol>
+        <p class="mt-6">
+          The next questions relate to <a href="data/lab1/brownian_motion_prelab_data.csv" download class="text-blue-300 font-bold hover:underline">this CSV file</a> - download it before proceeding.
+        </p>
+        <ol class="list-decimal space-y-4 pl-6" start="2">
+          <li>
+            <p>
+              Plot a histogram of the data. What type of distribution do you think best models this data?
+            </p>
+          </li>
+          <li>
+            <p>
+              What is the standard deviation of the data?
+            </p>
+          </li>
+          <li>
+            <p>
+              What is the root-mean-square of the data?
+            </p>
+          </li>
+          <li>
+            <p>
+              The standard deviation and root-mean-square of the data should be very similar, but slightly different. What is the reason for this slight difference?
+            </p>
+          </li>
+        </ol>
+
+      </div>
+    </details>
+
+
+
+      <!-- Section: Footnotes -->
       <footer class="mt-8 text-sm text-gray-400 space-y-1">
+
         <p id="feynman-1963">
           [1] Richard P. Feynman, <em>The Feynman Lectures on Physics</em>, Vol. I, Chapter 1: "Atoms in Motion", Addison-Wesley (1963).
         </p>
+
         <p id="brown-1828">
           [2] R. Brown, "A brief Account of Microscopical Observations...", <em>Philos. Mag.</em> 4(21), 161–173 (1828).
         </p>
+
         <p id="brown-1829">
           [3] R. Brown, "Additional Remarks on Active Molecules", <em>Philos. Mag.</em> 6(33), 161–166 (1828).
         </p>
+
         <p id="einstein-1956">
           [4] A. Einstein, <em>Investigations on the Theory of Brownian Movement</em>, translated by A. D. Cowper (Dover, New York, 1956).
         </p>
+
         <p id="perrin-1910">
           [5] J. Perrin, "Brownian movement and molecular reality", translated by F. Soddy (Taylor and Francis, London, 1910).
         </p>
+
       </footer>
+
+
 
     </main>
   </body>
