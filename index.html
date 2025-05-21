@@ -116,36 +116,134 @@
           </div>
 
           <p>
-            We would like to develop a similar equation for a particle undergoing Brownian motion, but there’s a catch. The motions of an apple falling from a tree, a projectile being launched from a cannon, a car accelerating from rest at a constant rate - all of these processes are deterministic in nature. If you were to repeat them all with the same initial conditions, each of these objects would trace out the exact same trajectory every single time. Brownian motion, however, is entirely random, lacking the determinism that makes pinpointing precise spatial trajectories possible for macroscopic objects. At any given instant in time, a particle undergoing Brownian motion is equally likely to move in any direction, making it impossible to describe its path with an equation like <a href="#eq-kinematics" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:kinematics}$</a>. This path, formed by successive steps in random directions, is known as a <strong>random walk</strong>, and it is almost always different with each repetition.
+            We would like to develop a similar equation for a particle undergoing Brownian motion, but there’s a catch. The motions of an apple falling from a tree, a projectile being launched from a cannon, a car accelerating from rest at a constant rate - all of these processes are deterministic in nature. If you were to repeat them all with the same initial conditions, each of these objects would trace out the exact same trajectory every single time. Brownian motion, however, is entirely random, lacking the determinism that makes pinpointing precise spatial trajectories possible for macroscopic objects. At any given instant in time, a particle undergoing Brownian motion is equally likely to move in any direction, making it impossible to describe its path with an equation like <a href="#eq-kinematics" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:kinematics}$</a>. This path, formed by successive steps in random directions, is known as a <strong>random walk</strong>, and it is almost always different with each repetition. Experiment with the interactive widget below to see examples of a 2D random walk.
           </p>
 
-          <figure id="fig-1" class="my-8 text-center">
-            <img
-              src="figures/lab1/figure1.png"
-              alt="Examples of random walks"
-              class="mx-auto rounded"
-            />
-            <figcaption class="mt-2 text-sm text-gray-400">
-              <strong>Figure 1:</strong> Examples of 2D random walks. These three particles were all subject to the exact same motion constraints, yet follow entirely different paths.
-            </figcaption>
-          </figure>
+          <!-- Embedded Random Walk Simulation -->
+          <div class="my-8">
+
+            <label for="stepCount" class="block text-sm mb-2 text-center">
+              Number of steps: 
+              <input
+                type="number"
+                id="stepCount"
+                value="1000"
+                min="100"
+                max="20000"
+                step="100"
+                class="w-24 text-center px-2 py-1 rounded bg-gray-800 text-white border border-gray-600"
+              />
+            </label>
+
+            <canvas
+              id="randomWalkCanvas"
+              width="400"
+              height="400"
+              class="bg-gray-800 border border-gray-600 rounded mx-auto block"
+            ></canvas>
+
+            <div class="text-center mt-3">
+              <button
+                id="startWalk"
+                class="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 transition"
+              >
+                Start Random Walk
+              </button>
+
+              <button
+                id="resetWalk"
+                class="px-4 py-2 bg-gray-600 text-white font-semibold rounded hover:bg-gray-500 transition"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+
+          <script>
+            const canvas = document.getElementById("randomWalkCanvas");
+            const ctx = canvas.getContext("2d");
+            const startButton = document.getElementById("startWalk");
+            const stepInput = document.getElementById("stepCount");
+
+            const canvasSize = 400;
+            let currentInterval = null;
+
+            startButton.addEventListener("click", () => {
+              // Parse number of steps from input
+              const steps = Math.max(100, parseInt(stepInput.value));
+              if (currentInterval !== null) {
+                clearInterval(currentInterval);
+                currentInterval = null;
+              }
+
+              ctx.clearRect(0, 0, canvasSize, canvasSize);
+
+              const resetButton = document.getElementById("resetWalk");
+                resetButton.addEventListener("click", () => {
+                  if (currentInterval !== null) {
+                    clearInterval(currentInterval);
+                    currentInterval = null;
+                  }
+
+                  ctx.clearRect(0, 0, canvas.width, canvas.height);
+                });
+
+              // Logical center coordinates
+              let x = 0;
+              let y = 0;
+              let path = [{ x, y }];
+
+              // Determine how far the walk might go to scale canvas
+              const maxDistance = Math.sqrt(steps); // heuristic upper bound
+              const padding = 10;
+              const scale = (canvasSize / 2 - padding) / maxDistance;
+
+              let step = 0;
+              currentInterval = setInterval(() => {
+                const direction = Math.floor(Math.random() * 4);
+                switch (direction) {
+                  case 0: x += 1; break;
+                  case 1: x -= 1; break;
+                  case 2: y += 1; break;
+                  case 3: y -= 1; break;
+                }
+
+                const prev = path[path.length - 1];
+                const hue = (step / steps) * 360;
+
+                ctx.beginPath();
+                ctx.moveTo(canvasSize / 2 + prev.x * scale, canvasSize / 2 + prev.y * scale);
+                ctx.lineTo(canvasSize / 2 + x * scale, canvasSize / 2 + y * scale);
+                ctx.strokeStyle = `hsl(${hue}, 100%, 65%)`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                path.push({ x, y });
+                step++;
+                if (step >= steps) {
+                  clearInterval(currentInterval);
+                  currentInterval = null;
+                }
+              }, 1); // speed up draw time for responsiveness
+            });
+          </script>
 
           <p>
-            Looking at the paths shown in <a href="#fig-1" class="text-blue-300 hover:underline"><strong>Figure 1</strong></a>, it may seem as though there’s no way forward here in terms of characterizing this motion. However, while it is impossible to exactly predict the future position of a particle undergoing Brownian motion, statistical trends begin to emerge upon running multiple trials. This is easiest to understand in the context of a 1D example, so let’s conduct a simple numerical experiment.
+            Looking at these paths, it may seem as though there’s no way forward here in terms of characterizing this motion. However, while it is impossible to exactly predict the future position of a particle undergoing Brownian motion, statistical trends begin to emerge upon running multiple trials. This is easiest to understand in the context of a 1D example, so let’s conduct a simple numerical experiment.
           </p>
 
           <p>
             Consider a particle sitting at the position $x = 0$. With every second that passes, the particle will move 1 unit in the negative direction, 1 unit in the positive direction, or stay where it’s at. We allow this motion to carry out for an entire minute, so the particle moves 60 times in total.
           </p>
 
-          <figure id="fig-2" class="my-8 text-center">
+          <figure id="fig-1" class="my-8 text-center">
             <img
               src="figures/lab1/figure2.png"
               alt="Particle path"
               class="mx-auto rounded w-2/3"
             />
             <figcaption class="mt-2 text-sm text-gray-400">
-              <strong>Figure 2:</strong> The path of our 1D particle on a position vs. time graph. Note that it retraces its steps several times.
+              <strong>Figure 1:</strong> The path of our 1D particle on a position vs. time graph. Note that it retraces its steps several times.
             </figcaption>
           </figure>
 
@@ -153,19 +251,19 @@
             Next, we record the final position of our particle at $t = 60$, which in this case, turns out to be $x = -9$. We then repeat this process with the same initial position of $x = 0$, again allowing the particle to move for 60 seconds. This time, we record a final position of $x = 2$. Then we run it again and record a final position of $x = -5$. Then 3, then 15, then 1, then -8, etc. Simply reading these numbers off in sequence seems utterly meaningless, and there does not appear to be a trend in these results. However, if we construct a histogram with these final position values, they begin to take on a familiar shape as we conduct more trials.
           </p>
 
-          <figure id="fig-3" class="my-8 text-center">
+          <figure id="fig-2" class="my-8 text-center">
             <img
               src="figures/lab1/figure3.png"
               alt="Particle path"
               class="mx-auto rounded w-2/3"
             />
             <figcaption class="mt-2 text-sm text-gray-400">
-              <strong>Figure 3:</strong> Histograms of the final positions of the particle from each random walk trial, centered about $x=0$. The number of trials run for each graph from left to right are: 50, 500, 5000, 50000, and 500000.
+              <strong>Figure 2:</strong> Histograms of the final positions of the particle from each random walk trial, centered about $x=0$. The number of trials run for each graph from left to right are: 50, 500, 5000, 50000, and 500000.
             </figcaption>
           </figure>
 
           <p>
-            As can be seen in <a href="#fig-3" class="text-blue-300 hover:underline"><strong>Figure 3</strong></a>, the particle displacements follow a <strong>Gaussian distribution</strong> (or <strong>Normal distribution</strong>). Of course, this doesn’t allow us to deterministically predict particle displacements. However, it does allow us to assign a likelihood, or probability, to them. We can tell just by looking at these histograms that any one particle is likely to have a final position close to 0, with the more distant values being far less probable. Clearly, we can only glean so much information from these rudimentary graphs; fortunately, the Gaussian distribution has a well-defined analytic function that we can make use of for more detailed analysis:
+            As can be seen in <a href="#fig-2" class="text-blue-300 hover:underline"><strong>Figure 2</strong></a>, the particle displacements follow a <strong>Gaussian distribution</strong> (or <strong>Normal distribution</strong>). Of course, this doesn’t allow us to deterministically predict particle displacements. However, it does allow us to assign a likelihood, or probability, to them. We can tell just by looking at these histograms that any one particle is likely to have a final position close to 0, with the more distant values being far less probable. Clearly, we can only glean so much information from these rudimentary graphs; fortunately, the Gaussian distribution has a well-defined analytic function that we can make use of for more detailed analysis:
           </p>
 
           <div id="eq-gaussian">
