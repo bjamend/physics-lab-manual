@@ -81,15 +81,15 @@
             In 1827, Scottish botanist Robert Brown, while investigating the structure and fertilization role of pollen grains, observed that wildflower pollen contained tiny spherical particles that moved erratically when suspended in water.
             He determined that this motion was not caused by external factors such as evaporation or fluid currents, as the motion persisted under conditions where such influences were absent.
             Extending his observations beyond pollen, Brown discovered the same erratic motion in a wide variety of substances, including plant and animal tissues, fossilized wood, volcanic ash, and even powdered minerals like glass and obsidian<sup><a href="#brown-1828" class="text-blue-300 hover:underline">[2]</a></sup>.
-            This seemingly spontaneous and universal motion of microscopic particles became known as <strong>Brownian motion</strong> in his honor, and the search for an associated causal mechanism ultimately shifted to the realm of physics many decades later.
+            This seemingly spontaneous and universal motion of microscopic particles became known as <strong>Brownian motion</strong> in his honor.
           </p>
 
           <p>
-            While mathematicians Thorvald Thiele and Louis Bachelier independently characterized this motion by providing mathematical descriptions in 1880 and 1900, respectively, the physical processes behind it remained unknown until Albert Einstein published his 1905 paper, “On the Movement of Small Particles Suspended in a Stationary Liquid Demanded by the Molecular-Kinetic Theory of Heat”<sup><a href="#einstein-1956" class="text-blue-300 hover:underline">[3]</a></sup>. 
-            In this journal article, Einstein explained the mechanisms behind Brownian motion using newly developed principles of thermodynamics and statistical mechanics, proving the existence of atoms in the process.
-            He demonstrated that particles like Brown’s pollen grains were continually colliding with the molecules comprising the fluid in the surrounding suspension, giving rise to the observed motion.
-            While other physicists’ reception to these ideas was at first tentative, further tests conducted by French physicist Jean-Baptiste Perrin a few years later provided convincing experimental verification<sup><a href="#perrin-1910" class="text-blue-300 hover:underline">[4]</a></sup>.
-            For these results, Perrin was awarded the Nobel Prize for Physics in 1926, and Einstein’s 1905 analysis of Brownian motion has been held in high esteem ever since, alongside his seminal work on special relativity and the photoelectric effect that same year.
+            Although the physical origin of Brownian motion remained uncertain throughout the 19th century, early developments in kinetic theory and probability—alongside mathematical formulations of random processes—laid the groundwork for Einstein’s landmark 1905 paper, “On the Movement of Small Particles Suspended in a Stationary Liquid Demanded by the Molecular-Kinetic Theory of Heat”<sup><a href="#einstein-1956" class="text-blue-300 hover:underline">[3]</a></sup>.
+            In this work, Einstein provided a quantitative framework linking the erratic motion of suspended particles to molecular collisions, deriving a relation between the diffusion coefficient and measurable physical quantities such as temperature, viscosity, and particle size.
+            His theory not only explained the mechanism behind Brownian motion but also offered a method to estimate Avogadro’s number, lending strong support to the atomic theory of matter.
+            This theoretical advance was experimentally confirmed by Jean Perrin in the years that followed, through meticulous observations of suspended particles that matched Einstein’s predictions<sup><a href="#perrin-1910" class="text-blue-300 hover:underline">[4]</a></sup>.
+            Perrin’s work provided decisive empirical validation of molecular reality and earned him the Nobel Prize in Physics in 1926.
           </p>
 
         </div>
@@ -105,10 +105,9 @@
         <div class="mt-4 space-y-6">
 
           <p>
-            Before exploring the physics behind Brownian motion, it is instructive to learn first about the mathematics that govern it.
-            In most motion problems, the ultimate goal is to obtain an equation that describes an object’s trajectory in space as a function of time.
-            You explored this in your introductory physics courses when you solved constant-acceleration kinematics problems.
-            All objects in these problems obeyed the following familiar equation:
+            Before diving into the physics behind Brownian motion, it’s helpful to first consider the mathematical framework used to describe it.
+            In most of your previous motion problems—such as those involving constant acceleration—you learned how to determine an object’s trajectory using deterministic equations.
+            These equations, like the one below, describe an object’s position as a function of time:
           </p>
 
           <div id="eq-kinematics">
@@ -120,93 +119,190 @@
           </div>
 
           <p>
-            We would like to develop a similar equation for a particle undergoing Brownian motion, but there’s a catch.
-            The motions of an apple falling from a tree, a projectile being launched from a cannon, a car accelerating from rest at a constant rate - all of these processes are deterministic in nature.
-            If you were to repeat them all with the same initial conditions, each of these objects would trace out the exact same trajectory every single time.
-            Brownian motion, however, is entirely random, lacking the determinism that makes pinpointing precise spatial trajectories possible for macroscopic objects.
-            At any given instant in time, a particle undergoing Brownian motion is equally likely to move in any direction, making it impossible to describe its path with an equation like <a href="#eq-kinematics" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:kinematics}$</a>.
-            This path, formed by successive steps in random directions, is known as a <strong>random walk</strong>, and it is almost always different with each repetition.
-            Experiment with the interactive widget below to see examples of a 2D random walk.
+            This kind of motion is deterministic: if you repeat the experiment with the same starting conditions, the object will follow the same path every time.
+            Whether it’s an apple falling from a tree, a cannonball arcing through the air, or a car accelerating at a constant rate, the outcome is predictable.
           </p>
 
-          <!-- Embedded Random Walk Simulation -->
-          <div class="my-8">
+          <p>
+            Brownian motion, however, is fundamentally different. It is not deterministic—instead, it is random.
+            A particle undergoing Brownian motion doesn’t follow a predictable path.
+            At any given instant, it is equally likely to move in any direction.
+            As a result, there’s no single equation, like <a href="#eq-kinematics" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:kinematics}$</a>, that can describe its position over time.
+          </p>
 
-            <label for="stepCount" class="block text-sm mb-2 text-center">
-              Number of steps: 
-              <input
-                type="number"
-                id="stepCount"
-                value="1000"
-                min="100"
-                max="20000"
-                step="100"
-                class="w-24 text-center px-2 py-1 rounded bg-gray-800 text-white border border-gray-600"
-              />
-            </label>
+          <p>
+            Instead of a smooth, repeatable trajectory, a Brownian particle follows a random walk—a path built from a series of unpredictable, jittery steps in different directions.
+            Each time the experiment is run, the particle traces a different path (see  <a href="#fig-1" class="text-blue-300 hover:underline"><strong>Figure 1</strong></a>), even if the starting conditions are identical.
+          </p>
 
-            <canvas
-              id="randomWalkCanvas"
-              width="400"
-              height="400"
-              class="bg-gray-800 border border-gray-600 rounded mx-auto block"
-            ></canvas>
+          <figure id="fig-1" class="my-8 text-center">
+            <img
+              src="figures/lab1/figure1.png"
+              alt="Examples of random walks"
+              class="mx-auto rounded"
+            />
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 1:</strong> Examples of 2D random walks. These three particles were all subject to the exact same motion constraints, yet follow entirely different paths.
+            </figcaption>
+          </figure>
 
-            <div class="text-center mt-3">
-              <button
-                id="startWalk"
-                class="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 transition"
-              >
-                Start Random Walk
-              </button>
+          <p>
+            Although the motion of a particle undergoing Brownian motion is entirely unpredictable, this does not mean it is beyond description — it simply requires a shift in perspective.
+            Rather than attempting to write an equation that deterministically describes the path of a single particle (which is not possible due to the inherently random nature of its motion), we focus instead on the statistical behavior that emerges across many particles or repeated trials.
+          </p>
 
-              <button
-                id="resetWalk"
-                class="px-4 py-2 bg-gray-600 text-white font-semibold rounded hover:bg-gray-500 transition"
-              >
-                Reset
-              </button>
+          <p>
+            In the interactive panel below, you can simulate individual particles undergoing a two-dimensional random walk.
+            Each time you click the 'Start Random Walk' button, a new trajectory is generated.
+            The particle begins at the center and moves randomly for 100 steps.
+            The resulting path is displayed on the left, and will differ each time due to the randomness of the motion.
+          </p>
+
+          <p>
+            As you generate more walks, observe the two histograms on the right. These track the final $x$ and $y$ positions of the particles.
+            Although no single outcome can be predicted in advance, a statistical pattern gradually emerges: the positions begin to cluster in a familiar bell-shaped curve, known as the <strong>Gaussian</strong> (or <strong>normal</strong>) distribution.
+          </p>
+
+          <div class="flex justify-center items-start" style="gap: 10px;">
+            <!-- Left: Trajectory Panel -->
+            <div>
+              <canvas
+                id="histogramWalkCanvas"
+                width="300"
+                height="300"
+                class="bg-gray-800 border border-gray-600 rounded"
+              ></canvas>
+            </div>
+
+            <!-- Right: Stacked Histograms with exact spacing -->
+            <div class="flex flex-col justify-between" style="height: 300px; gap: 10px;">
+              <canvas
+                id="xFinalHistogram"
+                width="300"
+                height="144"
+                class="bg-gray-800 border border-gray-600 rounded"
+              ></canvas>
+              <canvas
+                id="yFinalHistogram"
+                width="300"
+                height="144"
+                class="bg-gray-800 border border-gray-600 rounded"
+              ></canvas>
             </div>
           </div>
 
+          <!-- Buttons -->
+          <div class="flex justify-center items-start" style="margin-top: 10px; gap: 4px;">
+            <button
+              id="startHistogramWalk"
+              class="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 transition"
+              style="margin: 0;"
+            >
+              Start Random Walk
+            </button>
+            <button
+              id="resetHistogramWalk"
+              class="px-4 py-2 bg-gray-600 text-white font-semibold rounded hover:bg-gray-500 transition"
+              style="margin: 0;"
+            >
+              Reset
+            </button>
+          </div>
+          </div>
+
           <script>
-            const canvas = document.getElementById("randomWalkCanvas");
-            const ctx = canvas.getContext("2d");
-            const startButton = document.getElementById("startWalk");
-            const stepInput = document.getElementById("stepCount");
+            const histCanvas = document.getElementById("histogramWalkCanvas");
+            const histCtx = histCanvas.getContext("2d");
+            const startHistogramWalk = document.getElementById("startHistogramWalk");
+            const resetHistogramWalk = document.getElementById("resetHistogramWalk");
 
-            const canvasSize = 400;
-            let currentInterval = null;
+            const xFinalCanvas = document.getElementById("xFinalHistogram");
+            const yFinalCanvas = document.getElementById("yFinalHistogram");
+            const xFinalCtx = xFinalCanvas.getContext("2d");
+            const yFinalCtx = yFinalCanvas.getContext("2d");
 
-            startButton.addEventListener("click", () => {
-              const steps = Math.max(100, parseInt(stepInput.value));
-              if (currentInterval !== null) {
-                clearInterval(currentInterval);
-                currentInterval = null;
+            const histCanvasSize = 300;
+            const histSteps = 100;
+            const histScale = (histCanvasSize / 2 - 20) / (2 * Math.sqrt(histSteps));
+
+            let finalXValues = [];
+            let finalYValues = [];
+
+            let walkCount = 0;
+
+            // Create an offscreen buffer to store faded trails
+            let trailBuffer = document.createElement('canvas');
+            trailBuffer.width = histCanvas.width;
+            trailBuffer.height = histCanvas.height;
+            let trailCtx = trailBuffer.getContext('2d');
+
+            const binMin = -25;
+            const binMax = 25;
+            const binWidth = 2;
+            const binCount = (binMax - binMin) / binWidth;
+
+            function drawHistogram(data, ctx, color, labelText) {
+              ctx.clearRect(0, 0, 300, 145);
+
+              // Label at top-left
+              ctx.fillStyle = 'white';
+              ctx.font = '12px sans-serif';
+              ctx.textAlign = 'left';
+              ctx.fillText(labelText, 5, 15);
+
+              const bins = new Array(binCount).fill(0);
+              data.forEach(value => {
+                const index = Math.floor((value - binMin) / binWidth);
+                if (index >= 0 && index < binCount) bins[index]++;
+              });
+
+              const barWidth = 300 / binCount;
+              const maxCount = Math.max(...bins);
+
+              // Draw bars
+              for (let i = 0; i < binCount; i++) {
+                const height = (bins[i] / maxCount) * 100;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(i * barWidth, 120 - height, barWidth - 1, height);
               }
 
-              ctx.clearRect(0, 0, canvasSize, canvasSize);
+              // Axis line
+              ctx.strokeStyle = 'white';
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(0, 120);
+              ctx.lineTo(300, 120);
+              ctx.stroke();
 
-              const resetButton = document.getElementById("resetWalk");
-                resetButton.addEventListener("click", () => {
-                  if (currentInterval !== null) {
-                    clearInterval(currentInterval);
-                    currentInterval = null;
-                  }
+              // Tick labels at defined values (excluding ±25)
+              const tickValues = [-20, -15, -10, -5, 0, 5, 10, 15, 20];
+              ctx.fillStyle = 'white';
+              ctx.font = '10px sans-serif';
+              ctx.textAlign = 'center';
+              tickValues.forEach(val => {
+                const idx = (val - binMin) / binWidth;
+                const xPos = idx * barWidth + barWidth / 2;
+                ctx.fillText(val.toString(), xPos, 135);
+              });
+            }
 
-                  ctx.clearRect(0, 0, canvas.width, canvas.height);
-                });
-
+            startHistogramWalk.addEventListener("click", () => {
               let x = 0;
               let y = 0;
               let path = [{ x, y }];
-
-              const maxDistance = Math.sqrt(steps);
-              const padding = 10;
-              const scale = (canvasSize / 2 - padding) / maxDistance;
-
               let step = 0;
-              currentInterval = setInterval(() => {
+
+              trailCtx.clearRect(0, 0, trailBuffer.width, trailBuffer.height);
+              trailCtx.drawImage(histCanvas, 0, 0);
+
+              histCtx.clearRect(0, 0, histCanvas.width, histCanvas.height);
+              histCtx.globalAlpha = 0.95;
+              histCtx.drawImage(trailBuffer, 0, 0);
+              histCtx.globalAlpha = 1.0;
+
+              walkCount++;
+
+              const interval = setInterval(() => {
                 const direction = Math.floor(Math.random() * 4);
                 switch (direction) {
                   case 0: x += 1; break;
@@ -216,77 +312,42 @@
                 }
 
                 const prev = path[path.length - 1];
-                const hue = (step / steps) * 360;
+                const hue = (step / histSteps) * 360;
 
-                ctx.beginPath();
-                ctx.moveTo(canvasSize / 2 + prev.x * scale, canvasSize / 2 + prev.y * scale);
-                ctx.lineTo(canvasSize / 2 + x * scale, canvasSize / 2 + y * scale);
-                ctx.strokeStyle = `hsl(${hue}, 100%, 65%)`;
-                ctx.lineWidth = 2;
-                ctx.stroke();
+                histCtx.beginPath();
+                histCtx.moveTo(histCanvasSize / 2 + prev.x * histScale, histCanvasSize / 2 + prev.y * histScale);
+                histCtx.lineTo(histCanvasSize / 2 + x * histScale, histCanvasSize / 2 + y * histScale);
+                histCtx.strokeStyle = `hsl(${hue}, 100%, 65%)`;
+                histCtx.lineWidth = 2;
+                histCtx.stroke();
 
                 path.push({ x, y });
                 step++;
-                if (step >= steps) {
-                  clearInterval(currentInterval);
-                  currentInterval = null;
+
+                if (step >= histSteps) {
+                  clearInterval(interval);
+                  finalXValues.push(x);
+                  finalYValues.push(y);
+                  drawHistogram(finalXValues, xFinalCtx, 'cyan', 'Final X');
+                  drawHistogram(finalYValues, yFinalCtx, 'magenta', 'Final Y');
                 }
               }, 1);
+            });
+
+            resetHistogramWalk.addEventListener("click", () => {
+              histCtx.clearRect(0, 0, histCanvas.width, histCanvas.height);
+              xFinalCtx.clearRect(0, 0, xFinalCanvas.width, xFinalCanvas.height);
+              yFinalCtx.clearRect(0, 0, yFinalCanvas.width, yFinalCanvas.height);
+              finalXValues = [];
+              finalYValues = [];
             });
           </script>
 
           <p>
-            Looking at these paths, it may seem as though there’s no way forward here in terms of characterizing this motion.
-            However, while it is impossible to exactly predict the future position of a particle undergoing Brownian motion, statistical trends begin to emerge upon running multiple trials.
-            This is easiest to understand in the context of a 1D example, so let’s conduct a simple numerical experiment.
           </p>
 
           <p>
-            Consider a particle sitting at the position $x = 0$.
-            With every second that passes, the particle will move 1 unit in the negative direction, 1 unit in the positive direction, or stay where it’s at.
-            We allow this motion to carry out for an entire minute, so the particle moves 60 times in total.
-          </p>
-
-          <figure id="fig-1" class="my-8 text-center">
-            <img
-              src="figures/lab1/figure2.png"
-              alt="Particle path"
-              class="mx-auto rounded w-2/3"
-            />
-            <figcaption class="mt-2 text-sm text-gray-400">
-              <strong>Figure 1:</strong> The path of our 1D particle on a position vs. time graph.
-              Note that it retraces its steps several times.
-            </figcaption>
-          </figure>
-
-          <p>
-            Next, we record the final position of our particle at $t = 60$, which in this case, turns out to be $x = -9$.
-            We then repeat this process with the same initial position of $x = 0$, again allowing the particle to move for 60 seconds.
-            This time, we record a final position of $x = 2$.
-            Then we run it again and record a final position of $x = -5$.
-            Then 3, then 15, then 1, then -8, etc.
-            Simply reading these numbers off in sequence seems utterly meaningless, and there does not appear to be a trend in these results.
-            However, if we construct a histogram with these final position values, they begin to take on a familiar shape as we conduct more trials.
-          </p>
-
-          <figure id="fig-2" class="my-8 text-center">
-            <img
-              src="figures/lab1/figure3.png"
-              alt="Particle path"
-              class="mx-auto rounded w-2/3"
-            />
-            <figcaption class="mt-2 text-sm text-gray-400">
-              <strong>Figure 2:</strong> Histograms of the final positions of the particle from each random walk trial, centered about $x=0$.
-              The number of trials run for each graph from left to right are: 50, 500, 5000, 50000, and 500000.
-            </figcaption>
-          </figure>
-
-          <p>
-            As can be seen in <a href="#fig-2" class="text-blue-300 hover:underline"><strong>Figure 2</strong></a>, the particle displacements follow a <strong>Gaussian distribution</strong> (or <strong>Normal distribution</strong>).
-            Of course, this doesn’t allow us to deterministically predict particle displacements.
-            However, it does allow us to assign a likelihood, or probability, to them.
-            We can tell just by looking at these histograms that any one particle is likely to have a final position close to 0, with the more distant values being far less probable.
-            Clearly, we can only glean so much information from these rudimentary graphs; fortunately, the Gaussian distribution has a well-defined analytic function that we can make use of for more detailed analysis:
+            The general form of the Gaussian distribution is
           </p>
 
           <div id="eq-gaussian">
@@ -299,13 +360,13 @@
 
           <p>
             Here, $\mu$ is the <strong>mean</strong> (or <strong>average</strong>) of the distribution, and $\sigma$ is the <strong>standard deviation</strong> (SD), a measure of the variation from the mean.
-            Clearly, the mean of this particular distribution from our random walk trials is 0, so we can slightly simplify <a href="#eq-gaussian" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:gaussian}$</a> to construct a probability density function for our particle displacements ($\Delta x$),
+            The mean of this particular distribution from our random walk trials is 0, so we can slightly simplify <a href="#eq-gaussian" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:gaussian}$</a> to construct a probability density function for our particle displacements ($\Delta x$),
           </p>
 
           <div id="eq-pdf">
             <p>
               $$\begin{equation}
-                P(\Delta x) = \frac{1}{\sigma\sqrt{2\pi}}\exp{\left[ -\frac{\left( \Delta x \right)^2}{2\sigma^2} \right]}\,. \label{eq:pdf}
+                f(x) = \frac{1}{\sigma\sqrt{2\pi}}\exp{\left( -\frac{x^2}{2\sigma^2} \right)}\,. \label{eq:pdf}
               \end{equation}$$
             </p>
           </div>
