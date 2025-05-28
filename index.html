@@ -409,142 +409,11 @@
             Individual molecules of dye are bombarded by surrounding water molecules, receiving tiny, random impulses in every direction.
             As a result, the particles wander erratically, with each step uncorrelated with the last.
             Over time, this random motion leads to an observable macroscopic trend: spreading.
-          </p>
-
-          <p>
-            Einstein formalized this connection by showing that the number density $n(x,t)$ of Brownian particles—i.e., the number of particles per unit length at position $x$ and time $t$—satisfies the diffusion equation,
-
-          <div id="eq-diffusion">
-            <p>
-              $$\begin{equation}
-                \frac{\partial \rho}{\partial t} = D \cdot \frac{\partial^2\rho}{\partial x^2}\,. \label{eq:diffusion}
-              \end{equation}$$
-            </p>
-          </div>
-
-          <p>
-            Here, $D$ is the <strong>diffusion coefficient</strong>, which quantifies how rapidly particles spread through the medium.
-            Solving this differential equation for a system of $N$ particles initially concentrated at a single point gives
-          </p>
-
-          <div id="eq-concentration">
-            <p>
-              $$\begin{equation}
-                \rho(x, t) = \frac{N}{\sqrt{4\pi D t}}\exp{\left[ -\frac{x^2}{4Dt} \right]}\,. \label{eq:concentration}
-              \end{equation}$$
-            </p>
-          </div>
-
-          <p>
-            This is a Gaussian distribution in $x$ that grows broader with time—just like the empirical distribution of displacements $\Delta x$ observed in the random walks from the interactive widget above.
-            Comparing this result to <a href="#eq-gaussian" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:gaussian}$</a> and using the definition of standard deviation from <a href="#eq-sd-short" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-short}$</a>, we find
-          </p>
-
-          <div id="eq-position-time">
-            <p>
-              $$\begin{equation}
-                \boxed{\langle \Delta x^2 \rangle = 2Dt}\,. \label{eq:position-time}
-              \end{equation}$$
-            </p>
-          </div>
-
-          <p>
-            This relationship reveals that the mean-square displacement of Brownian particles grows linearly with time.
-            That is, although the average displacement $\langle \Delta x \rangle$ remains zero (since motion is equally likely in all directions), the average of $\Delta x^2$ increases—reflecting the overall spread of the particle ensemble.
-            Notably, this scaling with time differed from the expectations of classical mechanics at the time, in which <em>displacement</em> (not the mean-square displacement) was often assumed to grow linearly with time under uniform motion.
-          </p>
-
-          <p>
-            Not stopping at this statistical connection, Einstein recognized that Brownian motion is also governed by physical forces.
-            The erratic particle motion results from the random impacts of fast-moving fluid molecules.
-            These impacts impart kinetic energy to the suspended particle, converting the thermal energy of the fluid into directed motion.
-            However, as the particle moves through the fluid, it encounters resistance—drag forces from the surrounding molecules—which act to slow it down and return that kinetic energy to the fluid as heat.
-            This continual two-way exchange of energy—thermal to kinetic via molecular kicks, and kinetic to thermal via drag—is what sustains Brownian motion.
-          </p>
-
-          <p>
-            Consider a particle that moves some displacement $\Delta x$ over a time interval $\Delta t$.
-            The balance between the thermal energy of the fluid molecules and the work done by the drag force is roughly
-          </p>
-
-          <div id="eq-energy-balance">
-            <p>
-              $$\begin{equation}
-                k_B T \sim F_{\mathrm{drag}}\cdot \Delta x\,. \label{eq:energy-balance}
-              \end{equation}$$
-            </p>
-          </div>
-
-          <p>
-            The drag force is proportional to the velocity of the particle,
-          </p>
-
-          <div id="eq-drag">
-            <p>
-              $$\begin{equation}
-                F_{\mathrm{drag}} = f \cdot v \sim f \cdot \frac{\Delta x}{\Delta t}\,. \label{eq:drag}
-              \end{equation}$$
-            </p>
-          </div>
-
-          <p>
-            Substituting this back into <a href="#eq-energy-balance" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:energy-balance}$</a>,
-          </p>
-
-          <div id="eq-energy-drag">
-            <p>
-              $$\begin{equation}
-                k_B T \sim f \cdot \left( \frac{\Delta x^2}{\Delta t} \right)\,. \label{eq:energy-drag}
-              \end{equation}$$
-            </p>
-          </div>
-
-          <p>
-            Note that the quantity in parentheses in <a href="#eq-energy-drag" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:energy-drag}$</a> is essentially the diffusion coefficient $D$ in <a href="#eq-position-time" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:position-time}$</a>.
-            Making this substitution leads to the Einstein relation
-          </p>
-
-          <div id="eq-einstein-relation">
-            <p>
-              $$\begin{equation}
-                Df = k_BT\,. \label{eq:einstein-relation}
-              \end{equation}$$
-            </p>
-          </div>
-
-          <p>
-            According to Stokes' Law, the drag coefficient for a spherical particle of radius $r$ moving through a fluid with dynamic viscosity $\eta$ is
-          </p>
-
-          <div id="eq-stokes">
-            <p>
-              $$\begin{equation}
-                f = 6\pi\eta r\,. \label{eq:stokes}
-              \end{equation}$$
-            </p>
-          </div>
-
-          <p>
-            Substituting this into <a href="#eq-einstein-relation" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:einstein-relation}$</a> gives the Stokes–Einstein equation for the diffusion coefficient of a spherical particle:
-          </p>
-
-          <div id="eq-diffusion-coefficient">
-            <p>
-              $$\begin{equation}
-                D = \frac{k_BT}{6\pi\eta r}\,. \label{eq:diffusion-coefficient}
-              \end{equation}$$
-            </p>
-          </div>
-
-          <p>
-            This equation links the microscopic dynamics of Brownian motion—random collisions between fluid molecules and suspended particles—to macroscopic, measurable quantities: temperature, fluid viscosity, and particle size.
-            The diffusion coefficient is then effectively a ratio of the thermal energy of the surrounding fluid to the drag coefficient of particles moving through the fluid.
-            Higher thermal energy (i.e., higher temperature $T$) increases the strength of molecular agitation, leading to a larger $D$ and faster spreading of particles.
-            In contrast, more viscous fluids exert greater drag on the particles, hindering their motion and reducing $D$, resulting in slower diffusion.
+            The rate of spreading is characterized by the <strong>diffusion coefficient</strong> $D$, which can be varied in the interactive widget below.
           </p>
 
           <div class="mt-4 space-y-6">
-            <!-- Simulation canvas (turbulent diffusion) -->
+            <!-- Simulation canvas -->
             <div class="flex justify-center items-start" style="gap: 10px;">
               <canvas
                 id="turbulentCanvas"
@@ -554,95 +423,65 @@
               ></canvas>
             </div>
 
-            <!-- Buttons with 10px margin-top and 10px gap, exactly like above widget -->
+            <!-- Control buttons -->
             <div class="flex justify-center items-start" style="margin-top: 10px; gap: 10px;">
               <button
                 id="startTurbulence"
                 class="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 transition"
-                style="margin: 0;"
               >
                 Start
               </button>
               <button
                 id="pauseTurbulence"
                 class="px-4 py-2 bg-yellow-600 text-white font-semibold rounded hover:bg-yellow-500 transition"
-                style="margin: 0;"
               >
                 Pause
               </button>
               <button
                 id="resetTurbulence"
                 class="px-4 py-2 bg-gray-600 text-white font-semibold rounded hover:bg-gray-500 transition"
-                style="margin: 0;"
               >
                 Reset
               </button>
             </div>
 
-            <!-- Sliders with styled container -->
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-6 mt-6 text-white">
-              <div class="flex items-center gap-2 bg-gray-800 p-2 rounded shadow">
-                <label for="tempSlider" class="text-sm font-medium">Temperature (T):</label>
+            <!-- Single slider for diffusion coefficient -->
+            <div class="flex justify-center items-center mt-6">
+              <div class="flex items-center gap-2 bg-gray-800 p-2 rounded shadow text-white">
+                <label for="diffSlider" class="text-sm font-medium">Diffusion Coefficient (D):</label>
                 <input
                   type="range"
-                  min="1"
+                  min="0.1"
                   max="10"
                   step="0.1"
-                  value="5"
-                  id="tempSlider"
+                  value="1.0"
+                  id="diffSlider"
                   class="w-40 accent-blue-500"
                 />
-                <span id="tempValue" class="text-blue-300 font-mono">5.0</span>
-              </div>
-
-              <div class="flex items-center gap-2 bg-gray-800 p-2 rounded shadow">
-                <label for="viscSlider" class="text-sm font-medium">Viscosity (η):</label>
-                <input
-                  type="range"
-                  min="1"
-                  max="10"
-                  step="0.1"
-                  value="2"
-                  id="viscSlider"
-                  class="w-40 accent-blue-500"
-                />
-                <span id="viscValue" class="text-blue-300 font-mono">2.0</span>
+                <span id="diffValue" class="text-blue-300 font-mono">1.0</span>
               </div>
             </div>
 
+            <!-- Script -->
             <script>
               const turbulentCanvas = document.getElementById("turbulentCanvas");
               const turbulentCtx = turbulentCanvas.getContext("2d");
               const startTurbulence = document.getElementById("startTurbulence");
-              const resetTurbulence = document.getElementById("resetTurbulence");
               const pauseTurbulence = document.getElementById("pauseTurbulence");
-              let paused = false;
+              const resetTurbulence = document.getElementById("resetTurbulence");
 
-              const tempSlider = document.getElementById("tempSlider");
-              const viscSlider = document.getElementById("viscSlider");
-              const tempValue = document.getElementById("tempValue");
-              const viscValue = document.getElementById("viscValue");
+              const diffSlider = document.getElementById("diffSlider");
+              const diffValue = document.getElementById("diffValue");
 
               let particles = [];
               const nParticles = 800;
-              const dt = 0.1;
-              let brownianStrength = computeDiffusion();
+              let brownianStrength = parseFloat(diffSlider.value);
+              let paused = false;
               let animId = null;
 
-              function computeDiffusion() {
-                const T = parseFloat(tempSlider.value);
-                const eta = parseFloat(viscSlider.value);
-                return Math.sqrt(5 * (T / eta)); // scaling factor of 5 for visualization clarity
-              }
-
-              tempSlider.addEventListener("input", () => {
-                tempValue.textContent = parseFloat(tempSlider.value).toFixed(1);
-                brownianStrength = computeDiffusion();
-              });
-
-              viscSlider.addEventListener("input", () => {
-                viscValue.textContent = parseFloat(viscSlider.value).toFixed(1);
-                brownianStrength = computeDiffusion();
+              diffSlider.addEventListener("input", () => {
+                brownianStrength = parseFloat(diffSlider.value);
+                diffValue.textContent = brownianStrength.toFixed(1);
               });
 
               function initParticles() {
@@ -688,6 +527,11 @@
                 animateTurbulence();
               });
 
+              pauseTurbulence.addEventListener("click", () => {
+                paused = !paused;
+                pauseTurbulence.textContent = paused ? "Resume" : "Pause";
+              });
+
               resetTurbulence.addEventListener("click", () => {
                 cancelAnimationFrame(animId);
                 turbulentCtx.clearRect(0, 0, 500, 500);
@@ -695,15 +539,163 @@
                 paused = false;
                 pauseTurbulence.textContent = "Pause";
               });
-
-              pauseTurbulence.addEventListener("click", () => {
-                paused = !paused;
-                pauseTurbulence.textContent = paused ? "Resume" : "Pause";
-              });
             </script>
           </div>
 
           <p>
+          </p>
+
+          <p>
+            Einstein formalized the connection between Brownian motion and diffusion by showing that the number density $n(x,t)$ of Brownian particles—i.e., the number of particles per unit length at position $x$ and time $t$—satisfies the diffusion equation,
+
+          <div id="eq-diffusion">
+            <p>
+              $$\begin{equation}
+                \frac{\partial \rho}{\partial t} = D \cdot \frac{\partial^2\rho}{\partial x^2}\,. \label{eq:diffusion}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Solving this differential equation for a system of $N$ particles initially concentrated at a single point gives
+          </p>
+
+          <div id="eq-concentration">
+            <p>
+              $$\begin{equation}
+                \rho(x, t) = \frac{N}{\sqrt{4\pi D t}}\exp{\left[ -\frac{x^2}{4Dt} \right]}\,. \label{eq:concentration}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This is a Gaussian distribution in $x$ that grows broader with time—just like the empirical distribution of displacements $\Delta x$ observed in the random walks from the interactive widget above.
+            Comparing this result to <a href="#eq-gaussian" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:gaussian}$</a> and using the definition of standard deviation from <a href="#eq-sd-short" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-short}$</a>, we find
+          </p>
+
+          <div id="eq-position-time">
+            <p>
+              $$\begin{equation}
+                \boxed{\langle \Delta x^2 \rangle = 2Dt}\,. \label{eq:position-time}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This relationship reveals that the mean-square displacement of Brownian particles grows linearly with time.
+            That is, although the average displacement $\langle \Delta x \rangle$ remains zero (since motion is equally likely in all directions), the average of $\Delta x^2$ increases—reflecting the overall spread of the particle ensemble.
+            Notably, this scaling with time differed from the expectations of classical mechanics at the time, in which <em>displacement</em> (not the mean-square displacement) was often assumed to grow linearly with time under uniform motion.
+          </p>
+
+          <p>
+            Not stopping at this statistical connection, Einstein attributed the erratic particle motions of Brownian motion to the random impacts of fast-moving fluid molecules.
+            These impacts impart kinetic energy to the suspended particle, converting the thermal energy of the fluid into directed motion.
+            However, as the particle moves through the fluid, it encounters resistance—drag forces from the surrounding molecules—which act to slow it down and return that kinetic energy to the fluid as heat.
+            This continual two-way exchange of energy—thermal to kinetic via molecular kicks, and kinetic to thermal via drag—is encapsulated in the Einstein relation
+          </p>
+
+          <div id="eq-einstein-relation">
+            <p>
+              $$\begin{equation}
+                Df = k_BT\,. \label{eq:einstein-relation}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Here, $f$ is the <strong>drag coefficient</strong>, $k_B$ is the <strong>Boltzmann constant</strong>, and $T$ is the absolute temperature.
+          </p>
+
+          <!-- Collapsible Derivation Frame -->
+          <details class="border border-blue-300 rounded-lg shadow-md bg-white/5">
+            <summary class="px-4 py-2 cursor-pointer text-sm font-semibold text-blue-300 uppercase tracking-wide">
+              Derivation 1
+            </summary>
+
+            <div class="p-4 space-y-4">
+              <p>
+                The proper derivation of the Einstein relation is quite complicated, and involves application of the <strong>fluctuation-dissipation theorem</strong>—a relation that connects a system's equilibrium fluctuations to how it dissipates energy assuming detailed balance.
+                To build intuition, we will instead present an approximate derivation that, while not fully rigorous, captures the essential physics and leads to the correct final result.
+              </p>
+
+              <p>
+                Consider a particle that undergoes a displacement $\Delta x$ over a time interval $\Delta t$ as a result of a single random collision with a fluid molecule.
+                The fluid molecule has thermal energy $\epsilon$, which it transfers to the particle as kinetic energy during the collision.
+                As the particle moves, its kinetic energy is gradually lost due to the work done against the drag force $F_{\mathrm{drag}}$ over the distance $\Delta x$.
+                This is all encapsulated by
+              </p>
+
+              <div id="eq-balance">
+                <p>
+                  $$\epsilon \sim F_{\mathrm{drag}}\cdot \Delta x \tag{D1.1}$$
+                </p>
+              </div>
+
+              <p>
+                The thermal energy $\epsilon$ is $\sim k_B T$, and the drag force $F_{\mathrm{drag}}$ can be broken up into a drag coefficient $f$ times the velocity $v$ of the particle, such that
+              </p>
+
+              <div id="eq-energy-balance">
+                <p>
+                  $$k_B T \sim f \cdot v \cdot \Delta x \tag{D1.2}$$
+                </p>
+              </div>
+
+              <p>
+                Assuming an average velocity $v \sim \Delta x / \Delta t$,
+              </p>
+
+              <div id="eq-energy-drag">
+                <p>
+                  $$k_B T \sim f \cdot \left( \frac{\Delta x^2}{\Delta t} \right) \tag{D1.3}$$
+                </p>
+              </div>
+
+              <p>
+                Note that the quantity in parentheses in <a href="#eq-energy-drag" class="text-blue-300 font-bold hover:underline">Equation D1.3</a> is essentially the diffusion coefficient $D$ in <a href="#eq-position-time" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:position-time}$</a>, to within a factor of 2.
+                Making this substitution leads to the Einstein relation
+              </p>
+
+              <div id="eq-einstein-relation-result">
+                <p>
+                  $$\boxed{Df = k_BT} \tag{D1.4}$$
+                </p>
+              </div>
+            </div>
+          </details>
+
+          <p>
+          </p>
+
+          <p>
+            According to Stokes' Law, the drag coefficient for a spherical particle of radius $r$ moving through a fluid with dynamic viscosity $\eta$ is
+          </p>
+
+          <div id="eq-stokes">
+            <p>
+              $$\begin{equation}
+                f = 6\pi\eta r\,. \label{eq:stokes}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Substituting this into <a href="#eq-einstein-relation" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:einstein-relation}$</a> gives the Stokes–Einstein equation for the diffusion coefficient of a spherical particle:
+          </p>
+
+          <div id="eq-diffusion-coefficient">
+            <p>
+              $$\begin{equation}
+                D = \frac{k_BT}{6\pi\eta r}\,. \label{eq:diffusion-coefficient}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This equation links the microscopic dynamics of Brownian motion—random collisions between fluid molecules and suspended particles—to macroscopic, measurable quantities: temperature, fluid viscosity, and particle size.
+            The diffusion coefficient is then effectively a ratio of the thermal energy of the surrounding fluid to the drag coefficient of particles moving through the fluid.
+            Higher thermal energy (i.e., higher temperature $T$) increases the strength of molecular agitation, leading to a larger $D$ and faster spreading of particles.
+            In contrast, more viscous fluids exert greater drag on the particles, hindering their motion and reducing $D$, resulting in slower diffusion.
           </p>
 
           <p>
