@@ -65,6 +65,7 @@
           <li><a href="#background" class="hover:underline">Historical Background</a></li>
           <li><a href="#theory" class="hover:underline">Theory</a></li>
           <li><a href="#pre-lab-questions" class="hover:underline">Pre-Lab Questions</a></li>
+          <li><a href="#procedure" class="hover:underline">Procedure</a></li>
         </ul>
       </nav>
 
@@ -710,6 +711,10 @@
             </p>
           </div>
 
+          <p>
+            This expression provided one of the earliest methods for experimentally estimating Avogadro’s number, by measuring how thermal energy, viscous resistance, and particle diffusion are interrelated at microscopic scales.
+          </p>
+
         </div>
       </details>
 
@@ -719,45 +724,141 @@
         <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
           Pre-Lab Questions
         </summary>
-        <div class="mt-4 space-y-6">
+        <div class="mt-4 border border-blue-300 rounded-lg shadow-md bg-white/5 py-3 px-4 text-justify">
+
+          <p>
+            Submit your responses to the following questions by the start of the relevant lab meeting.
+          </p>
+
+          <ol class="list-decimal space-y-4 pl-6">
+            <li>
+              <p>
+                Prove by direct substitution that $\rho(x, t)$ from
+                <a href="#eq-concentration" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:concentration}$</a>
+                is a solution to
+                <a href="#eq-diffusion" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:diffusion}$</a>.
+              </p>
+            </li>
+          </ol>
+          <p class="mt-6">
+            The following questions relate to <a href="data/lab1/brownian_motion_prelab_data.csv" download class="text-blue-300 font-bold hover:underline">this CSV file</a> - download it before proceeding.
+          </p>
+          <ol class="list-decimal space-y-4 pl-6" start="2">
+            <li>
+              <p>
+                Plot a histogram of the data.
+                What type of distribution do you think best models this data?
+              </p>
+            </li>
+            <li>
+              <p>
+                What is the standard deviation of the data?
+              </p>
+            </li>
+            <li>
+              <p>
+                What is the root-mean-square of the data?
+              </p>
+            </li>
+            <li>
+              <p>
+                The standard deviation and root-mean-square of the data should be very similar, but slightly different.
+                What is the reason for this slight difference?
+              </p>
+            </li>
+          </ol>
+
+        </div>
+      </details>
+
+    <!-- Section: Procedure -->
+    <details id="procedure" class="mb-8">
+      <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+        Procedure
+      </summary>
+      <div class="mt-4 border border-blue-300 rounded-lg shadow-md bg-white/5 py-3 px-4 text-justify">
+
+        <p>
+          In this experiment, you will observe and quantify Brownian motion by analyzing the random trajectories of suspended polystyrene microspheres in water.
+          Your goal is to use these observations to estimate the diffusion coefficient $D$ and, from that, calculate Avogadro’s number $N_A$.
+        </p>
 
         <ol class="list-decimal space-y-4 pl-6">
+
           <li>
-            <p>
-              Prove by direct substitution that $\rho(x, t)$ from
-              <a href="#eq-concentration" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:concentration}$</a>
-              is a solution to
-              <a href="#eq-diffusion" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:diffusion}$</a>.
-            </p>
+            <strong>Prepare the Sample:</strong>
+            Use a pipette to place 2–3 drops of the polystyrene microsphere solution into a clean glass vial.
+            Add 100mL of deionized water and gently swirl or shake to dilute the solution.
           </li>
+
+          <li>
+            <strong>Mount the Slide:</strong>
+            Place a drop of the diluted solution onto a clean microscope slide.
+            Carefully lower a coverslip onto the drop to create a thin, uniform layer of fluid.
+            Avoid trapping air bubbles, as these can induce non-random flow that biases the motion.
+          </li>
+
+          <li>
+            <strong>Record Brownian Motion:</strong>
+            Using the microscope at maximum magnification (40x), focus on a plane where the particles are clearly suspended and moving freely.
+            Record a short video ($\sim 10$ seconds) of the particles undergoing Brownian motion, keeping the field of view steady.
+          </li>
+
+          <li>
+            <strong>Transfer the Video File:</strong>
+            Remove the SD card from the microscope and transfer the video to your computer for analysis.
+          </li>
+
+          <li>
+            <strong>Track Particle Positions:</strong>
+            Open the video in ImageJ (Fiji recommended).
+            Rather than measuring the final positions of many particles, track a single particle across many frames.
+            Select one clearly visible particle that remains in focus throughout the video, and record its $(x, y)$ position in each frame.
+            You may use ImageJ’s particle tracking plugin or manually log the coordinates frame by frame.
+            Aim for at least 50 frame-by-frame measurements of $(x, y)$ before proceeding.
+          </li>
+
+          <li>
+            <strong>Analyze Displacements:</strong>
+            Compute the frame-to-frame displacements $\Delta x$ and $\Delta y$ from your data.
+            Since motion in $x$ and $y$ is statistically independent, you may combine both sets of displacements into a single dataset for analysis.
+            Square each displacement and compute the average value:
+            $$\langle \Delta x^2 \rangle \quad \text{(where $x$ stands in for either axis)}$$
+          </li>
+
+          <li>
+            <strong>Convert Pixels to Microns:</strong>
+            Use the provided pixel-to-micron conversion factor to express all displacements in physical units.
+          </li>
+
+          <li>
+            <strong>Calculate the Diffusion Coefficient:</strong>
+            Use the relation
+            $$\langle \Delta x^2 \rangle = 4D\Delta t$$
+            to solve for $D$, where $\Delta t$ is the time between video frames.
+            You can determine the frame rate (the reciprocal of $\Delta t$) by checking the video file’s metadata.
+          </li>
+
+          <li>
+            <strong>Estimate Avogadro’s Number:</strong>
+            Use <a href="#eq-avogadro" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:avogadro}$</a> to solve for $N_A$.
+            The radius of the polystyrene spheres is printed on the bottle.
+            Use $\eta = 10^{-3}$ Pa$\cdot$s for the viscosity of water.
+            Record the room temperature from the thermostat and convert to Kelvins before use.
+            For comparison, use the accepted value $N_A = 6.022 \times 10^{23}\,\text{mol}^{-1}$ to estimate your experimental error.
+          </li>
+
         </ol>
-        <p class="mt-6">
-          The next questions relate to <a href="data/lab1/brownian_motion_prelab_data.csv" download class="text-blue-300 font-bold hover:underline">this CSV file</a> - download it before proceeding.
+
+        <p>
         </p>
-        <ol class="list-decimal space-y-4 pl-6" start="2">
-          <li>
-            <p>
-              Plot a histogram of the data.
-              What type of distribution do you think best models this data?
-            </p>
-          </li>
-          <li>
-            <p>
-              What is the standard deviation of the data?
-            </p>
-          </li>
-          <li>
-            <p>
-              What is the root-mean-square of the data?
-            </p>
-          </li>
-          <li>
-            <p>
-              The standard deviation and root-mean-square of the data should be very similar, but slightly different.
-              What is the reason for this slight difference?
-            </p>
-          </li>
-        </ol>
+
+        <p>
+          Record all measured values and calculations clearly.
+          Document your goals and thought processes as explicitly as possible.
+          Report your calculated diffusion coefficient and estimate of Avogadro’s number.
+          Discuss sources of uncertainty in your measurements and how they may have affected your results.
+        </p>
 
       </div>
     </details>
