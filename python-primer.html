@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Python Primer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          tags: 'ams',
+        },
+      };
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+      async
+    ></script>
+    <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
+    <style>
+      pre[class*="language-"] {
+        padding-top: 0.75rem !important;
+        padding-bottom: 0.75rem !important;
+        line-height: 1.25 !important;
+      }
+
+      code[class*="language-"] {
+        padding: 0 !important;
+        margin: 0 !important;
+        line-height: 1.25 !important;
+      }
+    </style>
+    <style>
+      pre[class*="language-"],
+      code[class*="language-"] {
+        background-color: #1f2937 !important; /* Tailwind gray-800 */
+        color: #d1d5db !important;           /* Tailwind's gray-300 (or adjust) */
+        font-family: 'Fira Code', monospace; /* Optional, looks nice */
+      }
+    </style>
+    <style>
+      html {
+        overflow-y: scroll;
+      }
+      
+      body p {
+        text-align: justify;
+        margin-bottom: 1.5rem !important;
+      }
+
+      footer p {
+        text-align: justify;
+        margin-bottom: 0 !important;
+      }
+    </style>
+  </head>
+
+
+
+
+
+  <body class="bg-black text-gray-100 font-sans">
+    <div class="p-6 md:p-12 rounded-xl max-w-4xl mx-auto mt-12">
+      <main class="bg-gray-900 rounded-xl p-8 space-y-8 max-w-3xl mx-auto shadow-inner">
+
+
+
+        <!-- Back to Main Page -->
+        <div class="mb-4">
+          <a href="index.html" class="text-blue-300 hover:underline text-sm font-semibold">
+            ← Back to Main Page (PHYS 2240)
+          </a>
+        </div>
+
+
+
+        <!-- Title -->
+        <header>
+          <h1 class="text-3xl font-bold">Python Primer</h1>
+        </header>
+
+
+
+        <section class="space-y-4">
+
+          <p>
+            In this lab course, we'll frequently use <a href="https://www.python.org/" class="text-blue-300 hover:underline font-semibold">Python</a>, a powerful and widely used programming language in many fields, including physics.
+            Whether analyzing data, simulating systems, or visualizing results, Python provides a flexible and accessible environment for scientific computing.
+            If you're new to programming, don’t worry—this primer is designed to walk you through the essentials for this course.
+            To make things easy, I recommend using <a href="https://colab.research.google.com/" class="text-blue-300 hover:underline font-semibold">Google Colab</a>, a free, cloud-based platform that lets you write and run Python code directly in your browser.
+            This avoids the need to install any software on your own computer and ensures you can get started right away with just a Google account.
+          </p>
+
+          <p>
+            This primer is built around answering selected pre-lab questions from the <a href="brownian-motion.html" class="text-blue-300 hover:underline font-semibold">Brownian Motion lab</a>, with the goal of integrating Python directly into the course content.
+            It also provides concrete examples of the kinds of situations in which you'll be using Python throughout the lab.
+          </p>
+
+          <p>
+            To get started, open a new notebook in Google Colab and give it a name.
+            Make sure the file has a .ipynb extension, which stands for <em>interactive Python notebook</em> and is the standard format for Colab notebooks.
+          </p>
+
+          <p>
+            You'll begin by loading <a href="data/lab1/brownian_motion_data.csv" download class="text-blue-300 font-semibold hover:underline">this CSV file</a>, which contains the data we'll be working with: position vs. time data of a particle undergoing Brownian motion.
+            You’ll do this using a text-loading function from NumPy, a powerful Python library for numerical computing that provides support for arrays, mathematical operations, and efficient data handling. 
+          </p>
+
+          <p>
+            Before you can access the file in Python, you need to upload it to your Colab environment.
+            On the left side of the screen, click the folder icon at the bottom of the sidebar.
+            Then, look for the upload button—it's the page icon with an upward arrow (not the blue "Analyze your files with code written by Gemini" button).
+            If the upload option doesn’t appear right away, try waiting a few moments or running the notebook by clicking the play icon in the editor.
+            Once available, <strong>use the upload button to add the CSV file</strong>.
+          </p>
+
+          <p>
+            <strong>Keep in mind that files uploaded to Colab are stored temporarily and will be lost if the session is closed or times out.</strong>
+            Always save a backup copy of any data or files you upload so you can re-upload them if needed.
+          </p>
+
+          <p>
+            Now that the file has been uploaded, you can access it in Python.
+            In your new notebook, enter the following:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">import numpy as np</code>
+</pre>
+          
+          <p>
+            Here, you imported the NumPy package and assigned it a short name, <code>np</code>, for convenience.
+            You can then use it to load the CSV file with:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">data = np.loadtxt("brownian_motion_data.csv", delimiter=',', skiprows=1)</code>
+</pre>
+
+          <p>
+            This line uses NumPy's <code>loadtxt()</code> function to read the contents of the CSV file into a variable named <code>data</code>.
+            You specified the file name (<code>"brownian_motion_data.csv"</code>), set the delimiter to a comma, and skipped the first row, which contains the column headers.
+          </p>
+
+          <p>
+            You can confirm that the data is loaded in properly by printing it:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">print(data)</code>
+</pre>
+
+          <p>
+            To run the code, click the play icon next to the cell in the editor.
+            You should see a two-column list of values printed as output, confirming that the data was properly loaded.
+            You can remove this print statement after this confirmation, as it's not needed for the rest of this primer.
+          </p>
+
+          <p>
+            Right now, both columns from the file are stored together in the <code>data</code> variable.
+            To separate them into individual variables for time and position, use:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">t = data[:,0]
+x = data[:,1]</code>
+</pre>
+          
+          <p>
+            These lines use array slicing to extract each column from the 2D <code>data</code> array.
+            In NumPy, the syntax <code>data[row,column]</code> is used to index elements, where the first value specifies the <strong>row</strong> and the second specifies the <strong>column</strong>.
+            When we write <code>data[:,0]</code>, the colon (<code>:</code>) means “select all rows,” and the <code>0</code> selects the first column.
+            Similarly, <code>data[:,1]</code> selects all rows from the second column.
+            Note that Python uses <strong>zero-based indexing</strong>, meaning that counting starts at 0—so column 0 is the first column, column 1 is the second, and so on.
+            This separates the time values into the variable <code>t</code> and the position values into <code>x</code>, each as a 1D array.
+          </p>
+
+          <p>
+            To better visualize the data (instead of just printing numbers), you can create a plot.
+            For this, you'll need to import a plotting package.
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">import matplotlib.pyplot as plt</code>
+</pre>
+
+          <p>
+            This imports the <code>matplotlib</code> library and gives it the alias <code>plt</code> for convenience.
+            With the library loaded, you can plot the data using:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">plt.plot(t, x)
+plt.xlabel('t (time)')
+plt.ylabel('x (position)')
+plt.show()</code>
+</pre>
+
+          <p>
+            The first line tells Python to produce a plot of <code>t</code> (time) on the x-axis and <code>x</code> (position) on the y-axis.
+            The second and third lines label the x and y axes accordingly. Note that no units are specified in the data file—this will not be the case in the lab, and you will need to include appropriate units under those circumstances.
+            The fourth line, <code>plt.show()</code>, actually displays the plot—it’s necessary to make the figure appear in the output.
+            You should see the following after running the code again:
+          </p>
+
+          <figure id="fig-1" class="my-8 text-center">
+            <img
+              src="figures/lab0/plot.png"
+              alt="Random walk plot"
+              class="mx-auto rounded"
+            >
+          </figure>
+
+          <p>
+            Matplotlib can create many types of plots beyond simple line graphs, including scatter plots, bar charts, histograms, and more.
+            Histograms are especially useful for visualizing the distribution of data—such as how often certain values occur—and are what you’ll explore next.
+          </p>
+
+          <p>
+            The particle’s trajectory that you plotted above is an example of a random walk.
+            A key characteristic of random walks is that the distribution of displacements over equal time intervals tends to follow a Gaussian (or normal) distribution.
+            To observe this behavior, start by calculating the displacement between each consecutive time step:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">dx = np.diff(x)</code>
+</pre>
+
+          <p>
+            This line uses NumPy’s <code>diff()</code> function to calculate the difference between each pair of consecutive position values in <code>x</code>.
+            The result is a new array, <code>dx</code>, which contains the sequence of displacements between time steps.
+            Since each displacement is computed between a pair of points, the resulting array has one fewer element than the original position array.
+          </p>
+
+          <p>
+            To visualize the distribution of the displacement values, you can use a histogram instead of a line plot.
+            This can be done with the following command:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">plt.hist(dx)</code>
+</pre>
+
+          <p>
+            To label the x-axis with a mathematical symbol like $\Delta$, you can include LaTeX-style math formatting using a raw string, as shown below:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">plt.xlabel(R'$\Delta x$ (Displacements)')</code>
+</pre>
+
+          <p>
+            Here, the <code>R</code> before the string tells Python to treat it as a raw string, so backslashes aren't interpreted as escape characters.
+            The dollar signs enclose the math expression for rendering, and <code>\Delta x</code> uses LaTeX syntax to produce the Greek letter $\Delta$ followed by the variable <code>x</code> in the plot label.
+            You can quickly label the y-axis as well:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">plt.ylabel('Likelihood')</code>
+</pre>
+
+          <p>
+            And show the plot:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">plt.show()</code>
+</pre>
+
+          <p>
+            You should see the following histogram (in addition to the previous plot if you hadn't deleted any of those lines):
+          </p>
+
+          <figure id="fig-1" class="my-8 text-center">
+            <img
+              src="figures/lab0/histogram.png"
+              alt="Random walk plot"
+              class="mx-auto rounded"
+            >
+          </figure>
+
+          <p>
+            As you can see, the distribution of these particle displacements is approximately Gaussian.
+          </p>
+
+          <p>
+            We would like to use this data to calculate the diffusion coefficient associated with the particle's motion.
+            To do so, start by calculating the standard deviation of these displacements:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">sigma = np.std(dx)</code>
+</pre>
+
+          <p>
+            This line uses NumPy’s <code>std()</code> function to compute the standard deviation of <code>dx</code>, which is a measure of how spread out the displacement values are around the mean.
+            The result is stored in the variable <code>sigma</code>.
+            As a check, we can print this variable:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">print(sigma)</code>
+</pre>
+
+          <p>
+            Running this will output <code>0.5319016252385396</code>.
+            Take a moment to consider whether this value makes sense based on the spread you observed in the histogram of displacements.
+          </p>
+
+          <p>
+            The diffusion coefficient, denoted by $D$, is related to the standard deviation of the particle displacements by the formula $D = \sigma^2/(4\Delta t)$, where $\Delta t$ is the time interval between measurements.
+            To compute $\Delta t$, you can simply subtract the first two time values:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">dt = t[1] - t[0]</code>
+</pre>
+
+          <p>
+            This calculates the difference between the first and second time entries.
+            Note that this approach assumes the time steps are evenly spaced, which is true for this data set.
+          </p>
+
+          <p>
+            With both <code>sigma</code> and <code>dt</code> defined, you can now calculate the diffusion coefficient using:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">D = sigma ** 2.0 / 4.0 / dt</code>
+</pre>
+
+          <p>
+            In Python, <code>**</code> is the operator used to raise a number to a power.
+            To print the value of <code>D</code>, use:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">print(D)</code>
+</pre>
+
+          <p>
+            This will output <code>2.1218950419854985</code>.
+            That’s a lot of digits! For a cleaner display, you can round the result using a formatted string:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">print(f'{D:.3f}')</code>
+</pre>
+
+          <p>
+            The leading <code>f</code> designates this as a formatted string, allowing you to control how values are displayed.
+            The <code>.3f</code> specifies that the number should be printed as a floating-point value with three decimal places.
+            After running this line, you should see: <code>2.122</code>.
+          </p>
+
+          <p>
+            You can also include text alongside variables in a formatted string, like so:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">print(f'The diffusion coefficient is {D:.3f}.')</code>
+</pre>
+
+          <p>
+            This will output: <code>The diffusion coefficient is 2.122.</code>
+          </p>
+
+          <p>
+            While this number doesn’t carry physical units in our case, the process you’ve followed closely mirrors what you'll do in the actual Brownian motion lab.
+            It also serves as a solid introduction to the kinds of data analysis tasks you’ll be expected to handle in Python throughout the course.
+          </p>
+
+          <p>
+            You've now seen how to load data, perform calculations, generate plots, and format output using Python.
+            These core skills will help you throughout the lab course and beyond, as they form the foundation of data analysis in modern physics.
+            Refer back to this primer anytime you need a quick example or reminder of how to get started.
+            You are encouraged to look up additional resources online as needed, and to ask your TA for help if you get stuck.
+          </p>
+          
+        </section>
+
+
+
+      </main>
+    </div>
+  </body>
+</html>
