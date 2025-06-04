@@ -833,33 +833,10 @@
               </li>
 
               <li>
-                <strong>Analyze Displacements:</strong>
-                Compute the frame-to-frame displacements $\Delta x$ and $\Delta y$ from your data.
-                Since motion in $x$ and $y$ is statistically independent, you may combine both sets of displacements into a single dataset for analysis.
-                Square each displacement and compute the average value:
-                $$\langle \Delta x^2 \rangle \quad \text{(where $x$ stands in for either axis)}$$
-              </li>
-
-              <li>
-                <strong>Convert Pixels to Microns:</strong>
-                Use the provided pixel-to-micron conversion factor to express all displacements in physical units.
-              </li>
-
-              <li>
-                <strong>Calculate the Diffusion Coefficient:</strong>
-                Use the relation
-                $$\langle \Delta x^2 \rangle = 4D\Delta t$$
-                to solve for $D$, where $\Delta t$ is the time between video frames.
-                You can determine the frame rate (the reciprocal of $\Delta t$) by checking the video file’s metadata.
-              </li>
-
-              <li>
                 <strong>Estimate Avogadro’s Number:</strong>
-                Use <a href="#eq-avogadro" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:avogadro}$</a> to solve for $N_A$.
-                The radius of the polystyrene spheres is printed on the bottle.
-                Use $\eta = 10^{-3}$ Pa$\cdot$s for the viscosity of water.
-                Record the room temperature from the thermostat and convert to Kelvins before use.
-                For comparison, use the accepted value $N_A = 6.022 \times 10^{23}\,\text{mol}^{-1}$ to estimate your experimental error.
+                Using what you've learned from the reading above, use your measurements to calculate $N_A$.
+                Note that you will need a pixel-to-length conversion factor from your TA.
+                For comparison of your final calculated value, use the accepted value $N_A = 6.022 \times 10^{23}\,\text{mol}^{-1}$ to estimate your experimental error.
               </li>
 
             </ol>
