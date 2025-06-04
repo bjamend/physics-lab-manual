@@ -107,6 +107,8 @@
             Make sure the file has a .ipynb extension, which stands for <em>interactive Python notebook</em> and is the standard format for Colab notebooks.
           </p>
 
+          <h1 class="text-2xl font-bold">Importing Data</h1>
+
           <p>
             You'll begin by loading <a href="data/lab1/brownian_motion_data.csv" download class="text-blue-300 font-semibold hover:underline">this CSV file</a>, which contains the data we'll be working with: position vs. time data of a particle undergoing Brownian motion.
             You’ll do this using a text-loading function from NumPy, a powerful Python library for numerical computing that provides support for arrays, mathematical operations, and efficient data handling. 
@@ -180,6 +182,8 @@ x = data[:,1]</code>
             Note that Python uses <strong>zero-based indexing</strong>, meaning that counting starts at 0—so column 0 is the first column, column 1 is the second, and so on.
             This separates the time values into the variable <code>t</code> and the position values into <code>x</code>, each as a 1D array.
           </p>
+
+          <h1 class="text-2xl font-bold">Plotting</h1>
 
           <p>
             To better visualize the data (instead of just printing numbers), you can create a plot.
@@ -289,6 +293,8 @@ plt.show()</code>
             As you can see, the distribution of these particle displacements is approximately Gaussian.
           </p>
 
+          <h1 class="text-2xl font-bold">Basic Calculations</h1>
+
           <p>
             We would like to use this data to calculate the diffusion coefficient associated with the particle's motion.
             To do so, start by calculating the standard deviation of these displacements:
@@ -337,6 +343,11 @@ plt.show()</code>
 
           <p>
             In Python, <code>**</code> is the operator used to raise a number to a power.
+          </p>
+
+          <h1 class="text-2xl font-bold">Formatting Output</h1>
+
+          <p>
             To print the value of <code>D</code>, use:
           </p>
 
