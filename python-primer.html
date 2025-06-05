@@ -59,6 +59,12 @@
         margin-bottom: 0 !important;
       }
     </style>
+    <style>
+      .faded {
+        opacity: 0.4;
+        display: block;
+      }
+    </style>
   </head>
 
 
@@ -67,7 +73,7 @@
 
   <body class="bg-black text-gray-100 font-sans">
     <div class="p-6 md:p-12 rounded-xl max-w-4xl mx-auto mt-12">
-      <main class="bg-gray-900 rounded-xl p-8 space-y-8 max-w-3xl mx-auto shadow-inner">
+      <main class="bg-gray-900 rounded-xl p-8 space-y-8 max-w-4xl mx-auto shadow-inner">
 
 
 
@@ -338,7 +344,7 @@ plt.show()</code>
           </p>
 
 <pre class="border border-gray-600 rounded">
-<code class="language-python">D = sigma ** 2.0 / 4.0 / dt</code>
+<code class="language-python">D = sigma ** 2 / 4 / dt</code>
 </pre>
 
           <p>
@@ -382,31 +388,162 @@ plt.show()</code>
             This will output: <code>The diffusion coefficient is 2.122.</code>
           </p>
 
+          <h1 class="text-2xl font-bold">Fitting Trendlines and More Plotting</h1>
+
           <p>
-            While this number doesn’t carry physical units in our case, the process you’ve followed closely mirrors what you'll do in the actual Brownian motion lab.
-            It also serves as a solid introduction to the kinds of data analysis tasks you’ll be expected to handle in Python throughout the course.
+            An alternative method for measuring the diffusion coefficient involves tracking the motion of <em>multiple</em> particles simultaneously.
+            In this approach, you record the mean squared displacement of all particle positions from the origin at each time $t$.
+            By plotting $\langle x^2 \rangle$ against $t$ and fitting a straight line to the data, you can estimate the diffusion coefficient from the slope via $D = \text{slope} \, / \, 4$.
           </p>
 
           <p>
-            You've now seen how to load data, perform calculations, generate plots, and format output using Python.
+            To explore this, download and upload <a href="data/lab1/brownian_motion_data_2.csv" download class="text-blue-300 font-semibold hover:underline">this CSV file</a> to Colab, and load the data using the same method introduced earlier in this primer.
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">data_2 = np.loadtxt("brownian_motion_data_2.csv", delimiter=",", skiprows=1)
+t_2 = data_2[:,0]
+x_2 = data_2[:,1]</code>
+</pre>
+
+          <p>
+            Begin by creating a scatter plot to visualize how the mean squared displacement depends on time:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">plt.scatter(t_2, x_2)
+plt.xlabel(R'$t$')
+plt.ylabel(R'$\langle \Delta x^2 \rangle$')
+plt.show()</code>
+</pre>
+
+          <p>
+            You should see the following plot:
+          </p>
+
+          <figure id="fig-1" class="my-8 text-center">
+            <img
+              src="figures/lab0/scatterplot.png"
+              alt="Scatter plot"
+              class="mx-auto rounded"
+            >
+          </figure>
+          
+          <p>
+            To fit a straight line to this data, you'll use the <code>linregress()</code> function from the <code>scipy.stats</code> module.
+            Since <code>SciPy</code> is a large library, it's good practice to import only what you need:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">from scipy.stats import linregress</code>
+</pre>
+
+          <p>
+            The <code>linregress()</code> function takes your time and MSD data and returns several values.
+            For our purposes, we only care about the <code>slope</code> and <code>intercept</code>:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">slope, intercept, _, _, _ = linregress(t_2, x_2)</code>
+</pre>
+
+          <p>
+            You can print these results using a formatted string:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">print(f'Slope = {slope:.3f}, Intercept = {intercept:.3f}')</code>
+</pre>
+
+          <p>
+            This should output: <code>Slope = 8.270, Intercept = -2.140</code>.
+          </p>
+
+          <p>
+            Now calculate the diffusion coefficient from the slope:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">D = slope / 4
+print(f'The diffusion coefficient is {D:.3f}')</code>
+</pre>
+
+          <p>
+            You should see: <code>The diffusion coefficient is 2.068</code>.
+          </p>
+
+          <p>
+            To visualize the best-fit line alongside your data, plot the fitted equation using the slope and intercept just after your scatter plot line (note that the text after a <code>#</code> symbol has no effect; this is an example of a comment, only useful for documentation purposes):
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">plt.scatter(t_2, x_2)
+plt.plot(t_2, slope * t_2 + intercept) #<- New line added
+plt.xlabel(R'$t$')
+plt.ylabel(R'$\langle \Delta x^2 \rangle$')
+plt.show()</code>
+</pre>
+
+          <p>
+            This will produce the following plot:
+          </p>
+
+          <figure id="fig-1" class="my-8 text-center">
+            <img
+              src="figures/lab0/trendline.png"
+              alt="Scatter plot with best-fit line"
+              class="mx-auto rounded"
+            >
+          </figure>
+
+          <p>
+            When plotting multiple datasets together, always include a legend to clarify what each element represents.
+            In this case, the scatter points represent the measured data, and the line shows the best-fit trendline.
+            You can include a legend anywhere between the plotting commands and showing the plot:
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">plt.scatter(t_2, x_2)
+plt.plot(t_2, slope * t_2 + intercept)
+plt.xlabel(R'$t$')
+plt.ylabel(R'$\langle \Delta x^2 \rangle$')
+plt.legend() #<- New line added
+plt.show()</code>
+</pre>
+
+          <p>
+            Currently, this legend is empty as neither of the data sets have labels. To label them, include <code>label='insert name here'</code> in the scatter and line plot commands:
+            E.g., modify
+          </p>
+
+<pre class="border border-gray-600 rounded">
+<code class="language-python">plt.scatter(t_2, x_2, label='Measurements') #<- Line modified to add label
+plt.plot(t_2, slope * t_2 + intercept, label='Trendline') #<- Line modified to add label
+plt.xlabel(R'$t$')
+plt.ylabel(R'$\langle \Delta x^2 \rangle$')
+plt.legend()
+plt.show()</code>
+</pre>
+
+          <p>
+            Running this should now generate the following plot:
+          </p>
+
+          <figure id="fig-1" class="my-8 text-center">
+            <img
+              src="figures/lab0/legend.png"
+              alt="Scatter plot with best-fit line and legend"
+              class="mx-auto rounded"
+            >
+          </figure>
+
+          <p>
+            You've now seen how to load data, perform calculations, generate plots, format output, and fit trendlines to data using Python.
             These core skills will help you throughout the lab course and beyond, as they form the foundation of data analysis in modern physics.
             Refer back to this primer anytime you need a quick example or reminder of how to get started.
             You are encouraged to look up additional resources online as needed, and to ask your TA for help if you get stuck.
           </p>
 
-          <h1 class="text-2xl font-bold">Fitting Trendlines</h1>
-
-          <p>
-            An alternative method for measuring the diffusion coefficient involves keeping a running tally of the displacements of <em>multiple</em> particles over time.
-            In this method, at each time $t$ you would record the time and the mean square of all particle positions relative to the origin.
-            The diffusion coefficient could then be measured by fitting a trendline to the $\langle x^2 \rangle$ vs. $t$ data and dividing the slope by 4.
-          </p>
-
-          <p>
-            To explore this, load the data in this CSV file and store the columns as variables, following the steps outlined earlier in this primer.
-            Plot the data to ensure it's been imported properly.
-          </p>
-          
         </section>
 
 
