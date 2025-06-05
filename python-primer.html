@@ -473,12 +473,13 @@ print(f'The diffusion coefficient is {D:.3f}')</code>
           </p>
 
           <p>
-            To visualize the best-fit line alongside your data, plot the fitted equation using the slope and intercept just after your scatter plot line (note that the text after a <code>#</code> symbol has no effect; this is an example of a comment, only useful for documentation purposes):
+            To visualize the best-fit line alongside your data, plot the fitted equation using the slope and intercept just after your scatter plot line (note that the text after a <code>#</code> symbol has no effect; this is an example of a comment, only useful for documentation purposes).
+            Because we want this to be plotted together with the scatter points, this new plotting command should be added directly after.
           </p>
 
 <pre class="border border-gray-600 rounded">
 <code class="language-python">plt.scatter(t_2, x_2)
-plt.plot(t_2, slope * t_2 + intercept) #<- New line added
+plt.plot(t_2, slope * t_2 + intercept) #<- Add only this line, relative to the lines above and below it
 plt.xlabel(R'$t$')
 plt.ylabel(R'$\langle \Delta x^2 \rangle$')
 plt.show()</code>
@@ -507,18 +508,18 @@ plt.show()</code>
 plt.plot(t_2, slope * t_2 + intercept)
 plt.xlabel(R'$t$')
 plt.ylabel(R'$\langle \Delta x^2 \rangle$')
-plt.legend() #<- New line added
+plt.legend() #<- Add only this line, relative to the lines above and below it
 plt.show()</code>
 </pre>
 
           <p>
-            Currently, this legend is empty as neither of the data sets have labels. To label them, include <code>label='insert name here'</code> in the scatter and line plot commands:
-            E.g., modify
+            Currently, this legend is empty as neither of the data sets have labels. To label them, include <code>label='insert name here'</code> in the scatter and line plot commands.
+            E.g., modify:
           </p>
 
 <pre class="border border-gray-600 rounded">
-<code class="language-python">plt.scatter(t_2, x_2, label='Measurements') #<- Line modified to add label
-plt.plot(t_2, slope * t_2 + intercept, label='Trendline') #<- Line modified to add label
+<code class="language-python">plt.scatter(t_2, x_2, label='Measurements') #<- This line was modified to add a label
+plt.plot(t_2, slope * t_2 + intercept, label=f'Trendline: {slope:.3f}t + ({intercept:.3f})') #<- This line was modified to add a label
 plt.xlabel(R'$t$')
 plt.ylabel(R'$\langle \Delta x^2 \rangle$')
 plt.legend()
