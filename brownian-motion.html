@@ -772,12 +772,20 @@
               </li>
               <li>
                 <p>
-                  Compute the standard deviation of the $x$ values. (Since the mean should be close to zero, this is approximately equal to the root-mean-square displacement.)
+                  Compute the standard deviation of the $x$ values (approximately equal to the root-mean-square displacement since the mean is near zero), and the time interval $\Delta t$ between data points.
+                  Use these to estimate the diffusion coefficient $D$ using <a href="#eq-position-time" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:position-time}$</a>.
                 </p>
               </li>
+            </ol>
+            <p class="mt-6">
+              The final question pertains to <a href="data/lab1/brownian_motion_data_2.csv" download class="text-blue-300 font-bold hover:underline">this other CSV file</a> — please download it before continuing.
+              (The <a href="python-primer.html" class="text-blue-300 hover:underline font-semibold">Python primer</a> may be helpful here, as well.)
+            </p>
+            <ol class="list-decimal space-y-4 pl-6" start="5">
               <li>
                 <p>
-                  Determine the time interval $\Delta t$ between data points, and use it along with the standard deviation to estimate the diffusion coefficient $D$ using <a href="#eq-position-time" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:position-time}$</a>.
+                  Use Python to make a scatter plot of the data, and fit a trendline to it.
+                  Include a legend in the plot that also contains the equation of the best-fit line.
                 </p>
               </li>
             </ol>
@@ -825,11 +833,9 @@
 
               <li>
                 <strong>Track Particle Positions:</strong>
-                Open the video in ImageJ (Fiji recommended).
-                Rather than measuring the final positions of many particles, track a single particle across many frames.
-                Select one clearly visible particle that remains in focus throughout the video, and record its $(x, y)$ position in each frame.
-                You may use ImageJ’s particle tracking plugin or manually log the coordinates frame by frame.
-                Aim for at least 50 frame-by-frame measurements of $(x, y)$ before proceeding.
+                Open the video in ImageJ (Fiji recommended), and make measurements of particle displacements and times.
+                You may use Fiji’s particle tracking plugin or manually log the coordinates frame by frame.
+                Aim for at least 50 displacement measurements before proceeding.
               </li>
 
               <li>
