@@ -841,7 +841,7 @@
               <li>
                 <strong>Estimate Avogadro’s Number:</strong>
                 Using what you've learned from the reading above, use your measurements to calculate $N_A$.
-                Note that you will need a pixel-to-length conversion factor from your TA.
+                Note that you will need a pixel-to-length conversion factor from your TA (this should be $2.25\times 10^{-7}$ m/px).
                 For comparison of your final calculated value, use the accepted value $N_A = 6.022 \times 10^{23}\,\text{mol}^{-1}$ to estimate your experimental error.
               </li>
 
@@ -857,6 +857,345 @@
               Discuss sources of uncertainty in your measurements and how they may have affected your results.
             </p>
 
+          </div>
+        </details>
+
+        <!-- Section: Particle Collision Simulation -->
+        <details id="brownian-motion-virtual" class="mb-8">
+          <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+            Virtual Lab Simulation
+          </summary>
+          <div class="mt-6 space-y-4 text-gray-100">
+
+            <p>
+              <strong>This section is only relevant if this lab is being done online.</strong>
+              <strong>If you are taking an in-person lab, you are not required to do anything with this material.</strong>
+              The simulation below shows larger polystyrene spheres being bombarded by smaller, faster water molecules.
+              You can pause the simulation, reset it, and select individual spheres to export their tracked paths as CSV files.
+              Use the data from this simulation to calculate Avogadro's number by following step 6 from the procedure above (you will need to use the pixel-to-length conversion factor).
+            </p>
+
+            <div class="flex justify-center">
+              <canvas id="canvas" width="600" height="600" class="border border-gray-500 rounded bg-gray-900"></canvas>
+            </div>
+
+            <div class="flex justify-center gap-4 mt-4">
+              <button id="toggleButton" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 transition">Pause</button>
+              <button id="resetButton" class="px-4 py-2 bg-gray-600 text-white font-semibold rounded hover:bg-gray-500 transition">Reset</button>
+              <button id="exportButton" class="px-4 py-2 bg-green-600 text-white font-semibold rounded hover:bg-green-500 transition" disabled>Export CSV</button>
+            </div>
+
+            <p id="message" class="text-center text-sm mt-2 text-gray-300 font-mono"></p>
+
+            <script>
+            document.addEventListener("DOMContentLoaded", () => {
+              const canvas = document.getElementById("canvas");
+              const ctx = canvas.getContext("2d");
+              const width = canvas.width;
+              const height = canvas.height;
+              const frameDelay = 1000 / 24;
+
+              const N_water = 3000;
+              const N_poly = 5;
+
+              const water_radius = 1.0;
+              const poly_radius = 12;
+
+              const water_speed = 2.5;
+              const poly_mass = 100;
+              const water_mass = 1;
+
+              const poly_colors = ['#0077cc', '#cc3300', '#33aa00', '#9933cc', '#ffaa00'];
+
+              let particles = [];
+              let poly_trails = [];
+              let running = false;
+              let selectingForExport = false;
+              let hoveredPolyIndex = null;
+              let selectedPolyIndices = [];
+              let frameCount = 0;
+
+              const toggleBtn = document.getElementById("toggleButton");
+              const resetBtn = document.getElementById("resetButton");
+              const exportBtn = document.getElementById("exportButton");
+              const messageBox = document.getElementById("message");
+
+              toggleBtn.textContent = running ? "Pause" : "Play";
+
+              toggleBtn.onclick = function () {
+                running = !running;
+                toggleBtn.textContent = running ? "Pause" : "Play";
+                exportBtn.disabled = running;
+                selectingForExport = false;
+                selectedPolyIndices = [];
+                messageBox.textContent = "";
+              };
+
+              resetBtn.onclick = function () {
+                initializeParticles();
+                exportBtn.disabled = running;
+                selectingForExport = false;
+                selectedPolyIndices = [];
+                messageBox.textContent = "";
+              };
+
+              exportBtn.onclick = function () {
+                if (!running) {
+                  if (!selectingForExport) {
+                    selectingForExport = true;
+                    selectedPolyIndices = [];
+                    messageBox.textContent = "Click one or more polystyrene spheres to select them for export. Click 'Export CSV' again to export.";
+                  } else {
+                    selectingForExport = false;
+                    exportCombinedTrajectories(selectedPolyIndices);
+                    messageBox.textContent = `Exported ${selectedPolyIndices.length} particle trajectories.`;
+                    selectedPolyIndices = [];
+                  }
+                }
+              };
+
+              canvas.addEventListener("click", function (e) {
+                if (!selectingForExport) return;
+
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+
+                for (const p of particles) {
+                  if (p.isPoly) {
+                    const dx = p.x - mouseX;
+                    const dy = p.y - mouseY;
+                    if (Math.hypot(dx, dy) < p.radius) {
+                      const index = selectedPolyIndices.indexOf(p.trailIndex);
+                      if (index > -1) {
+                        selectedPolyIndices.splice(index, 1);
+                      } else {
+                        selectedPolyIndices.push(p.trailIndex);
+                      }
+                      break;
+                    }
+                  }
+                }
+              });
+
+              canvas.addEventListener("mousemove", function (e) {
+                if (!selectingForExport) {
+                  hoveredPolyIndex = null;
+                  return;
+                }
+
+                const rect = canvas.getBoundingClientRect();
+                const mouseX = e.clientX - rect.left;
+                const mouseY = e.clientY - rect.top;
+
+                hoveredPolyIndex = null;
+                for (const p of particles) {
+                  if (p.isPoly) {
+                    const dx = p.x - mouseX;
+                    const dy = p.y - mouseY;
+                    if (Math.hypot(dx, dy) < p.radius) {
+                      hoveredPolyIndex = p.trailIndex;
+                      break;
+                    }
+                  }
+                }
+              });
+
+              function exportCombinedTrajectories(indices) {
+                if (!indices.length) return;
+
+                let maxLength = 0;
+                indices.forEach(i => {
+                  maxLength = Math.max(maxLength, poly_trails[i].length);
+                });
+
+                let csvHeader = ['Time'];
+                indices.forEach((idx, j) => {
+                  csvHeader.push(`x${j+1}`, `y${j+1}`);
+                });
+
+                let csvRows = [csvHeader.join(',')];
+
+                for (let t = 0; t < maxLength; t++) {
+                  let time_scaled = t * (1 / 24);
+                  let row = [time_scaled];
+                  indices.forEach(idx => {
+                    const trail = poly_trails[idx];
+                    if (t < trail.length) {
+                      row.push(trail[t].x, trail[t].y);
+                    } else {
+                      row.push('', '');
+                    }
+                  });
+                  csvRows.push(row.join(','));
+                }
+
+                const csvContent = csvRows.join("\n");
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = `particle_trails.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+              }
+
+              function createParticle(x, y, vx, vy, radius, mass, color, isPoly = false, index = -1) {
+                const p = { x, y, vx, vy, radius, mass, color, isPoly, trailIndex: index };
+                if (isPoly) {
+                  poly_trails[index] = [{ x, y }];
+                }
+                return p;
+              }
+
+              function initializeParticles() {
+                particles = [];
+                poly_trails = new Array(N_poly);
+                hoveredPolyIndex = null;
+
+                for (let i = 0; i < N_water; i++) {
+                  particles.push(createParticle(
+                    Math.random() * width,
+                    Math.random() * height,
+                    (Math.random() - 0.5) * water_speed * 2,
+                    (Math.random() - 0.5) * water_speed * 2,
+                    water_radius,
+                    water_mass,
+                    '#bbbbbb'
+                  ));
+                }
+
+                const margin = 0.125;
+                const xMin = width * margin;
+                const xMax = width * (1 - margin);
+                const yMin = height * margin;
+                const yMax = height * (1 - margin);
+
+                for (let i = 0; i < N_poly; i++) {
+                  particles.push(createParticle(
+                    xMin + Math.random() * (xMax - xMin),
+                    yMin + Math.random() * (yMax - yMin),
+                    0,
+                    0,
+                    poly_radius,
+                    poly_mass,
+                    poly_colors[i % poly_colors.length],
+                    true,
+                    i
+                  ));
+                }
+              }
+
+              function updateParticles() {
+                for (let i = 0; i < particles.length; i++) {
+                  const p = particles[i];
+
+                  p.x += p.vx;
+                  p.y += p.vy;
+
+                  if (p.x - p.radius < 0 || p.x + p.radius > width) p.vx *= -1;
+                  if (p.y - p.radius < 0 || p.y + p.radius > height) p.vy *= -1;
+
+                  if (p.isPoly && frameCount % 5 === 0) {
+                    const trail = poly_trails[p.trailIndex];
+                    trail.push({ x: p.x, y: p.y });
+                  }
+                }
+
+                for (let i = 0; i < particles.length; i++) {
+                  for (let j = i + 1; j < particles.length; j++) {
+                    const a = particles[i];
+                    const b = particles[j];
+
+                    if (!a.isPoly && !b.isPoly) continue;
+
+                    const dx = b.x - a.x;
+                    const dy = b.y - a.y;
+                    const dist = Math.hypot(dx, dy);
+                    const minDist = a.radius + b.radius;
+
+                    if (dist < minDist) {
+                      const nx = dx / dist;
+                      const ny = dy / dist;
+                      const dvx = b.vx - a.vx;
+                      const dvy = b.vy - a.vy;
+                      const relVel = dvx * nx + dvy * ny;
+                      if (relVel > 0) continue;
+
+                      const impulse = (2 * relVel) / (a.mass + b.mass);
+
+                      a.vx += impulse * b.mass * nx;
+                      a.vy += impulse * b.mass * ny;
+                      b.vx -= impulse * a.mass * nx;
+                      b.vy -= impulse * a.mass * ny;
+
+                      const overlap = 0.5 * (minDist - dist);
+                      a.x -= overlap * nx;
+                      a.y -= overlap * ny;
+                      b.x += overlap * nx;
+                      b.y += overlap * ny;
+                    }
+                  }
+                }
+                frameCount++;
+              }
+
+              function drawParticles() {
+                ctx.clearRect(0, 0, width, height);
+
+                ctx.lineWidth = 1.5;
+                for (let t = 0; t < poly_trails.length; t++) {
+                  ctx.strokeStyle = poly_colors[t % poly_colors.length];
+                  const trail = poly_trails[t];
+                  if (trail && trail.length > 1) {
+                    ctx.beginPath();
+                    for (let i = 0; i < trail.length - 1; i++) {
+                      ctx.moveTo(trail[i].x, trail[i].y);
+                      ctx.lineTo(trail[i + 1].x, trail[i + 1].y);
+                    }
+                    ctx.stroke();
+                  }
+                }
+
+                for (const p of particles) {
+                  ctx.beginPath();
+                  ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                  ctx.fillStyle = p.color;
+                  ctx.fill();
+
+                  if (p.isPoly) {
+                    if (selectedPolyIndices.includes(p.trailIndex)) {
+                      // Selected particle: gray by default, black if hovered
+                      ctx.strokeStyle = (hoveredPolyIndex === p.trailIndex) ? '#ffffff' : '#666666';
+                      ctx.lineWidth = 2;
+                      ctx.stroke();
+                    } else if (hoveredPolyIndex === p.trailIndex) {
+                      // Unselected but hovered: black outline
+                      ctx.strokeStyle = '#ffffff';
+                      ctx.lineWidth = 2;
+                      ctx.stroke();
+                    }
+                  }
+                }
+              }
+
+              function loop() {
+                setTimeout(() => {
+                  if (running) updateParticles();
+                  drawParticles();
+                  requestAnimationFrame(loop);
+                }, frameDelay);
+              }
+
+              initializeParticles();
+              loop();
+
+              requestAnimationFrame(() => {
+              initializeParticles();
+              loop();
+            });
+          });
+            </script>
           </div>
         </details>
 
