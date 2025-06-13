@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>PHYS 2240</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -20,11 +20,12 @@
       src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
       async
     ></script>
+
     <style>
       html {
         overflow-y: scroll;
       }
-      
+
       body p {
         text-align: justify;
         margin-bottom: 1.5rem !important;
@@ -38,150 +39,157 @@
   </head>
 
   <body class="bg-black text-gray-100 font-sans">
-    <div class="p-6 md:p-12 rounded-xl max-w-4xl mx-auto mt-12">
-      <main class="bg-gray-900 rounded-xl p-8 space-y-8 max-w-4xl mx-auto shadow-inner">
+    <div class="max-w-6xl mx-auto mt-12 p-4">
+      <header class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-blue-300">PHYS 2240</h1>
+      </header>
 
-        <header class="space-y-2 text-center">
-          <h1 class="text-5xl font-bold text-blue-300">PHYS 2240</h1>
-          <h2 class="text-3xl font-bold text-gray-100">Physics III with Calculus Lab</h2>
-        </header>
+      <div class="relative bg-gray-900 rounded-lg shadow-inner p-6">
+        <!-- Navigation -->
+        <button onclick="prevPage()" class="absolute left-0 top-1/2 transform -translate-y-1/2 px-4 py-2 text-2xl bg-blue-900/40 hover:bg-blue-700/60 rounded-full z-10">
+          &#8592;
+        </button>
+        <button onclick="nextPage()" class="absolute right-0 top-1/2 transform -translate-y-1/2 px-4 py-2 text-2xl bg-blue-900/40 hover:bg-blue-700/60 rounded-full z-10">
+          &#8594;
+        </button>
 
-        <section class="space-y-4">
-          <a href="python-primer.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">Python Primer</h2>
-            <p class="text-gray-300">
-              Learn basic Python tools for analyzing and visualizing data.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="brownian-motion.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">Brownian Motion</h2>
-            <p class="text-gray-300">
-              Calculate Avogadro's number from measurements of random walk behavior of particles suspended in fluid, inspired by Einstein's 1905 paper.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="waves-on-a-string.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">Waves on a String</h2>
-            <p class="text-gray-300">
-              Use standing wave patterns to measure the linear mass density of a string made of unknown material.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="acoustic-resonance.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">Acoustic Resonance</h2>
-            <p class="text-gray-300">
-              Determine the speed of sound in air by analyzing the conditions under which resonance amplifies standing sound waves in a tube.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="the-classical-doppler-effect.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">The Classical Doppler Effect</h2>
-            <p class="text-gray-300">
-              Use measurements of frequency shifts from a moving sound source to determine its emitted frequency via the Doppler effect.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="mirrors-and-the-law-of-reflection.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">Mirrors & The Law of Reflection</h2>
-            <p class="text-gray-300">
-              Apply the law of reflection to investigate image formation and determine the focal lengths of curved mirrors.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="lenses-and-the-law-of-refraction.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">Lenses & The Law of Refraction</h2>
-            <p class="text-gray-300">
-              Use the law of refraction to determine the focal lengths of lenses and measure the index of refraction of water.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="interference-and-diffraction-of-light.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">Interference & Diffraction of Light</h2>
-            <p class="text-gray-300">
-              Analyze interference and diffraction patterns of visible light to explore its wave nature and measure its wavelength.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="thin-film-interference.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">Thin Film Interference</h2>
-            <p class="text-gray-300">
-              Observe Newton’s rings to investigate thin-film interference and determine the radius of curvature of a lens from the resulting fringe pattern.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="the-relativistic-doppler-effect.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">The Relativistic Doppler Effect</h2>
-            <p class="text-gray-300">
-              Analyze the relativistic Doppler shift in galactic spectra to determine the Hubble constant and explore the expansion of the universe.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="relativistic-energy-and-momentum.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">Relativistic Energy & Momentum</h2>
-            <p class="text-gray-300">
-              Use conservation of relativistic energy and momentum to analyze LHC collision data and estimate the mass of the Higgs boson.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="blackbody-radiation.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">Blackbody Radiation</h2>
-            <p class="text-gray-300">
-              Apply the principles of blackbody radiation to estimate the surface temperature of the Sun from its observed spectrum.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="the-photoelectric-effect.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">The Photoelectric Effect</h2>
-            <p class="text-gray-300">
-              Investigate the photoelectric effect to determine Planck’s constant and explore the quantization of light.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="atomic-emission-spectra.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">Atomic Emission Spectra</h2>
-            <p class="text-gray-300">
-              Analyze atomic emission spectra to measure the Rydberg constant and probe the quantized energy levels of hydrogen.
-            </p>
-          </a>
-        </section>
-
-        <section class="space-y-4">
-          <a href="nuclear-radiation.html" class="block p-4 rounded-lg bg-white/5 hover:bg-blue-900/30 border border-blue-300 shadow-md transition">
-            <h2 class="text-xl font-semibold text-blue-200">Nuclear Radiation</h2>
-            <p class="text-gray-300">
-              Measure how different types of nuclear radiation interact with shielding to identify them and explore their properties.
-            </p>
-          </a>
-        </section>
-
-      </main>
+        <!-- Page Spread -->
+        <div id="bookPages" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <!-- Dynamic content goes here -->
+        </div>
+      </div>
     </div>
+
+    <script>
+      const labs = [
+        {
+          title: "Python Primer",
+          link: "python-primer.html",
+          img: "images/python.png",
+          desc: "Learn basic Python tools for analyzing and visualizing data."
+        },
+        {
+          title: "Brownian Motion",
+          link: "brownian-motion.html",
+          img: "images/brownian-motion.png",
+          desc: "Calculate Avogadro's number from measurements of random walk behavior of particles suspended in fluid, inspired by Einstein's 1905 paper."
+        },
+        {
+          title: "Waves on a String",
+          link: "waves-on-a-string.html",
+          img: "images/standing-waves.png",
+          desc: "Use standing wave patterns to measure the linear mass density of a string made of unknown material."
+        },
+        {
+          title: "Acoustic Resonance",
+          link: "acoustic-resonance.html",
+          img: "images/cover.png",
+          desc: "Determine the speed of sound in air by analyzing the conditions under which resonance amplifies standing sound waves in a tube."
+        },
+        {
+          title: "The Classical Doppler Effect",
+          link: "the-classical-doppler-effect.html",
+          img: "images/cover.png",
+          desc: "Use measurements of frequency shifts from a moving sound source to determine its emitted frequency via the Doppler effect."
+        },
+        {
+          title: "Mirrors & The Law of Reflection",
+          link: "mirrors-and-the-law-of-reflection.html",
+          img: "images/cover.png",
+          desc: "Apply the law of reflection to investigate image formation and determine the focal lengths of curved mirrors."
+        },
+        {
+          title: "Lenses & The Law of Refraction",
+          link: "lenses-and-the-law-of-refraction.html",
+          img: "images/cover.png",
+          desc: "Use the law of refraction to determine the focal lengths of lenses and measure the index of refraction of water."
+        },
+        {
+          title: "Interference & Diffraction of Light",
+          link: "interference-and-diffraction-of-light.html",
+          img: "images/cover.png",
+          desc: "Analyze interference patterns of visible light to explore its wave nature and measure its wavelength."
+        },
+        {
+          title: "Thin Film Interference",
+          link: "thin-film-interference.html",
+          img: "images/cover.png",
+          desc: "Observe Newton's rings to investigate thin-film interference and determine the radius of curvature of a lens from the resulting fringe pattern."
+        },
+        {
+          title: "The Relativistic Doppler Effect",
+          link: "the-relativistic-doppler-effect.html",
+          img: "images/cover.png",
+          desc: "Analyze the relativistic Doppler shift in galactic spectra to determine the Hubble constant and explore the expansion of the universe."
+        },
+        {
+          title: "Relativistic Energy & Momentum",
+          link: "relativistic-energy-and-momentum.html",
+          img: "images/cover.png",
+          desc: "Use conservation of relativistic energy and momentum to analyze LHC collision data and estimate the mass of the Higgs boson."
+        },
+        {
+          title: "Blackbody Radiation",
+          link: "blackbody-radiation.html",
+          img: "images/cover.png",
+          desc: "Apply the principles of blackbody radiation to estimate the surface temperature of the sun from its observed spectrum."
+        },
+        {
+          title: "The Photoelectric Effect",
+          link: "the-photoelectric-effect.html",
+          img: "images/cover.png",
+          desc: "Investigate the photoelectric effect to determine Planck's constant and explore the quantization of light."
+        },
+        {
+          title: "Atomic Emission Spectra",
+          link: "atomic-emission-spectra.html",
+          img: "images/cover.png",
+          desc: "Analyze atomic emission spectra to measure the Rydberg constant and probe the quantized energy levels of hydrogen."
+        },
+        {
+          title: "Nuclear Radiation",
+          link: "nuclear-radiation.html",
+          img: "images/cover.png",
+          desc: "Measure how different types of nuclear radiation interact with shielding to identify them and explore their properties."
+        }
+      ];
+
+      let currentIndex = 0;
+
+      function renderPage() {
+        const book = document.getElementById("bookPages");
+        book.innerHTML = "";
+
+        for (let i = currentIndex; i < currentIndex + 2; i++) {
+          if (labs[i]) {
+            const lab = labs[i];
+            book.innerHTML += `
+              <a href="${lab.link}" class="relative block group aspect-[8.5/11] overflow-hidden shadow-lg">
+                <img src="${lab.img}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt="${lab.title}">
+                <div class="absolute bottom-0 left-0 right-0 bg-black/70 text-white p-4 text-sm font-light text-center">
+                  ${lab.desc}
+                </div>
+              </a>
+            `;
+          }
+        }
+      }
+
+      function nextPage() {
+        if (currentIndex + 2 < labs.length) {
+          currentIndex += 2;
+          renderPage();
+        }
+      }
+
+      function prevPage() {
+        if (currentIndex - 2 >= 0) {
+          currentIndex -= 2;
+          renderPage();
+        }
+      }
+
+      renderPage();
+    </script>
   </body>
 </html>
