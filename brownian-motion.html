@@ -1,1228 +1,1172 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <title>Brownian Motion</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+  <meta charset="UTF-8">
+  <title>Brownian Motion</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Use custom styles -->
+  <link rel="stylesheet" href="manual_entry_style.css">
 
-    <script>
-      window.MathJax = {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          displayMath: [['$$', '$$'], ['\\[', '\\]']],
-          tags: 'ams',
-        },
-      };
-    </script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
-      async
-    ></script>
-    <style>
-      html {
-        overflow-y: scroll;
-      }
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        tags: 'ams',
+      },
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+</head>
 
-      body p {
-        text-align: justify;
-        margin-bottom: 1.5rem !important;
-      }
+<body>
+  <div class="container">
+    <main class="main-box">
 
-      footer p {
-        text-align: justify;
-        margin-bottom: 0 !important;
-      }
-    </style>
-  </head>
+      <!-- Back to Main Page -->
+      <div>
+        <a href="index.html">← Back to Main Page (PHYS 2240)</a>
+      </div>
 
+      <!-- Title -->
+      <header>
+        <h1>Brownian Motion</h1>
+      </header>
 
+      <!-- Quote -->
+      <p class="italic">
+        "If, in some cataclysm, all of scientific knowledge were to be destroyed, and only one sentence passed on to the next generation of creatures, what statement would contain the most information in the fewest words?  
+        I believe it is the <strong>atomic hypothesis</strong> [...] that all things are made of atoms — little particles that move around in perpetual motion, attracting each other when they are a little distance apart, but repelling upon being squeezed into one another."
+        <sup><a href="#feynman-1963">[1]</a></sup>
+      </p>
+      <p class="text-right text-gray-400">— Richard Feynman</p>
 
+      <!-- Navigation Menu -->
+      <nav>
+        <h2>Jump to Section:</h2>
+        <ul>
+          <li><a href="#background">Historical Background</a></li>
+          <li><a href="#theory">Theory</a></li>
+          <li><a href="#pre-lab-questions">Pre-Lab Questions</a></li>
+          <li><a href="#procedure">Procedure</a></li>
+        </ul>
+      </nav>
 
+      <!-- Section: Historical Background -->
+      <details id="background" open class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Historical Background
+        </summary>
+        <div class="mt-4 space-y-6">
 
-  <body class="bg-black text-gray-100 font-sans">
-    <div class="p-6 md:p-12 rounded-xl max-w-4xl mx-auto mt-12">
-      <main class="bg-gray-900 rounded-xl p-8 space-y-8 max-w-4xl mx-auto shadow-inner">
+          <p>
+            In 1827, Scottish botanist Robert Brown, while investigating the structure and fertilization role of pollen grains, observed that wildflower pollen contained tiny spherical particles that moved erratically when suspended in water.
+            He determined that this motion was not caused by external factors such as evaporation or fluid currents, as the motion persisted under conditions where such influences were absent.
+            Extending his observations beyond pollen, Brown discovered the same erratic motion in a wide variety of substances, including plant and animal tissues, fossilized wood, volcanic ash, and even powdered minerals like glass and obsidian<sup><a href="#brown-1828" class="text-blue-300 hover:underline">[2]</a></sup>.
+            This seemingly spontaneous and universal motion of microscopic particles became known as <strong>Brownian motion</strong> in his honor.
+          </p>
 
+          <p>
+            Although the physical origin of Brownian motion remained uncertain throughout the 19th century, early developments in kinetic theory and probability—alongside mathematical formulations of random processes—laid the groundwork for Einstein’s landmark 1905 paper, “On the Movement of Small Particles Suspended in a Stationary Liquid Demanded by the Molecular-Kinetic Theory of Heat”<sup><a href="#einstein-1956" class="text-blue-300 hover:underline">[3]</a></sup>.
+            In this work, Einstein provided a quantitative framework linking the erratic motion of suspended particles to molecular collisions, deriving a relation between the diffusion coefficient and measurable physical quantities such as temperature, viscosity, and particle size.
+            His theory not only explained the mechanism behind Brownian motion but also offered a method to estimate Avogadro’s number, lending strong support to the atomic theory of matter.
+            This theoretical advance was experimentally confirmed by Jean Perrin in the years that followed, through meticulous observations of suspended particles that matched Einstein’s predictions<sup><a href="#perrin-1910" class="text-blue-300 hover:underline">[4]</a></sup>.
+            Perrin’s work provided decisive empirical validation of molecular reality and earned him the Nobel Prize in Physics in 1926.
+          </p>
 
-
-        <!-- Back to Main Page -->
-        <div class="mb-4">
-          <a href="index.html" class="text-blue-300 hover:underline text-sm font-semibold">
-            ← Back to Main Page (PHYS 2240)
-          </a>
         </div>
+      </details>
 
 
 
-        <!-- Title -->
-        <header>
-          <h1 class="text-3xl font-bold">Brownian Motion</h1>
-        </header>
+      <!-- Section: Theory -->
+      <details id="theory" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Theory
+        </summary>
+        <div class="mt-4 space-y-6">
 
+          <p>
+            Before diving into the physics behind Brownian motion, it’s helpful to first consider the mathematical framework used to describe it.
+            In most of your previous motion problems—such as those involving constant acceleration—you learned how to determine an object’s trajectory using deterministic equations.
+            These equations, like the one below, describe an object’s position as a function of time:
+          </p>
 
-
-        <!-- Quote -->
-        <p class="italic">
-          "If, in some cataclysm, all of scientific knowledge were to be destroyed, and only one sentence passed on to the next generation of creatures, what statement would contain the most information in the fewest words?
-          I believe it is the <strong>atomic hypothesis</strong> [...] that all things are made of atoms — little particles that move around in perpetual motion, attracting each other when they are a little distance apart, but repelling upon being squeezed into one another."<sup><a href="#feynman-1963" class="text-blue-300 hover:underline">[1]</a></sup>
-        </p>
-        <p class="text-right text-gray-400">— Richard Feynman</p>
-
-
-
-        <!-- Navigation Menu -->
-        <nav class="mb-8 p-4 bg-gray-800 rounded shadow-md">
-          <h2 class="text-lg font-semibold mb-2">Jump to Section:</h2>
-          <ul class="space-y-1 text-sm text-blue-300 list-disc list-inside">
-            <li><a href="#background" class="hover:underline">Historical Background</a></li>
-            <li><a href="#theory" class="hover:underline">Theory</a></li>
-            <li><a href="#pre-lab-questions" class="hover:underline">Pre-Lab Questions</a></li>
-            <li><a href="#procedure" class="hover:underline">Procedure</a></li>
-          </ul>
-        </nav>
-
-
-
-        <!-- Section: Historical Background -->
-        <details id="background" open class="mb-8">
-          <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
-            Historical Background
-          </summary>
-          <div class="mt-4 space-y-6">
-
+          <div id="eq-kinematics">
             <p>
-              In 1827, Scottish botanist Robert Brown, while investigating the structure and fertilization role of pollen grains, observed that wildflower pollen contained tiny spherical particles that moved erratically when suspended in water.
-              He determined that this motion was not caused by external factors such as evaporation or fluid currents, as the motion persisted under conditions where such influences were absent.
-              Extending his observations beyond pollen, Brown discovered the same erratic motion in a wide variety of substances, including plant and animal tissues, fossilized wood, volcanic ash, and even powdered minerals like glass and obsidian<sup><a href="#brown-1828" class="text-blue-300 hover:underline">[2]</a></sup>.
-              This seemingly spontaneous and universal motion of microscopic particles became known as <strong>Brownian motion</strong> in his honor.
+              $$\begin{equation}
+                \vec{x} = \vec{x}_0 + \vec{v}t + \frac{1}{2}\vec{a}t^2 \label{eq:kinematics}
+              \end{equation}$$
             </p>
-
-            <p>
-              Although the physical origin of Brownian motion remained uncertain throughout the 19th century, early developments in kinetic theory and probability—alongside mathematical formulations of random processes—laid the groundwork for Einstein’s landmark 1905 paper, “On the Movement of Small Particles Suspended in a Stationary Liquid Demanded by the Molecular-Kinetic Theory of Heat”<sup><a href="#einstein-1956" class="text-blue-300 hover:underline">[3]</a></sup>.
-              In this work, Einstein provided a quantitative framework linking the erratic motion of suspended particles to molecular collisions, deriving a relation between the diffusion coefficient and measurable physical quantities such as temperature, viscosity, and particle size.
-              His theory not only explained the mechanism behind Brownian motion but also offered a method to estimate Avogadro’s number, lending strong support to the atomic theory of matter.
-              This theoretical advance was experimentally confirmed by Jean Perrin in the years that followed, through meticulous observations of suspended particles that matched Einstein’s predictions<sup><a href="#perrin-1910" class="text-blue-300 hover:underline">[4]</a></sup>.
-              Perrin’s work provided decisive empirical validation of molecular reality and earned him the Nobel Prize in Physics in 1926.
-            </p>
-
           </div>
-        </details>
 
+          <p>
+            This kind of motion is deterministic: if you repeat the experiment with the same starting conditions, the object will follow the same path every time.
+            Whether it’s an apple falling from a tree, a cannonball arcing through the air, or a car accelerating at a constant rate, the outcome is predictable.
+          </p>
 
+          <p>
+            Brownian motion, however, is fundamentally different. It is not deterministic—instead, it is random.
+            A particle undergoing Brownian motion doesn’t follow a predictable path.
+            At any given instant, it is equally likely to move in any direction.
+            As a result, there’s no single equation, like <a href="#eq-kinematics" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:kinematics}$</a>, that can describe its position over time.
+          </p>
 
-        <!-- Section: Theory -->
-        <details id="theory" class="mb-8">
-          <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
-            Theory
-          </summary>
-          <div class="mt-4 space-y-6">
+          <p>
+            Instead of a smooth, repeatable trajectory, a Brownian particle follows a random walk—a path built from a series of unpredictable, jittery steps in different directions.
+            Each time the experiment is run, the particle traces a different path (see  <a href="#fig-1" class="text-blue-300 hover:underline">Figure 1</a>), even if the starting conditions are identical.
+          </p>
 
-            <p>
-              Before diving into the physics behind Brownian motion, it’s helpful to first consider the mathematical framework used to describe it.
-              In most of your previous motion problems—such as those involving constant acceleration—you learned how to determine an object’s trajectory using deterministic equations.
-              These equations, like the one below, describe an object’s position as a function of time:
-            </p>
+          <figure id="fig-1" class="my-8 text-center">
+            <img
+              src="figures/lab1/figure1.png"
+              alt="Examples of random walks"
+              class="mx-auto rounded"
+            >
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 1:</strong> Examples of 2D random walks. These three particles were all subject to the exact same motion constraints, yet follow entirely different paths.
+            </figcaption>
+          </figure>
 
-            <div id="eq-kinematics">
-              <p>
-                $$\begin{equation}
-                  \vec{x} = \vec{x}_0 + \vec{v}t + \frac{1}{2}\vec{a}t^2 \label{eq:kinematics}
-                \end{equation}$$
-              </p>
+          <p>
+            Although the motion of a particle undergoing Brownian motion is entirely unpredictable, this does not mean it is beyond description — it simply requires a shift in perspective.
+            Rather than attempting to write an equation that deterministically describes the path of a single particle (which is not possible due to the inherently random nature of its motion), we focus instead on the statistical behavior that emerges across many particles or repeated trials.
+          </p>
+
+          <p>
+            In the interactive panel below, you can simulate individual particles undergoing a two-dimensional random walk.
+            Each time you click the 'Start Random Walk' button, a new trajectory is generated.
+            The particle begins at the center and moves randomly for 100 steps.
+            The resulting path is displayed on the left, and will differ each time due to the randomness of the motion.
+          </p>
+
+          <p>
+            As you generate more walks, observe the two histograms on the right. These track the $x$ and $y$ displacements of each of the particles.
+            Although no single outcome can be predicted in advance, a statistical pattern gradually emerges: the displacements begin to cluster in a familiar bell-shaped curve, known as the <strong>Gaussian</strong> (or <strong>normal</strong>) distribution.
+          </p>
+
+          <!-- Histogram + Canvas Row -->
+          <div class="flex-row">
+            <!-- Left: Trajectory Panel -->
+            <div>
+              <canvas
+                id="histogramWalkCanvas"
+                width="300"
+                height="300"
+              ></canvas>
             </div>
 
-            <p>
-              This kind of motion is deterministic: if you repeat the experiment with the same starting conditions, the object will follow the same path every time.
-              Whether it’s an apple falling from a tree, a cannonball arcing through the air, or a car accelerating at a constant rate, the outcome is predictable.
-            </p>
-
-            <p>
-              Brownian motion, however, is fundamentally different. It is not deterministic—instead, it is random.
-              A particle undergoing Brownian motion doesn’t follow a predictable path.
-              At any given instant, it is equally likely to move in any direction.
-              As a result, there’s no single equation, like <a href="#eq-kinematics" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:kinematics}$</a>, that can describe its position over time.
-            </p>
-
-            <p>
-              Instead of a smooth, repeatable trajectory, a Brownian particle follows a random walk—a path built from a series of unpredictable, jittery steps in different directions.
-              Each time the experiment is run, the particle traces a different path (see  <a href="#fig-1" class="text-blue-300 hover:underline"><strong>Figure 1</strong></a>), even if the starting conditions are identical.
-            </p>
-
-            <figure id="fig-1" class="my-8 text-center">
-              <img
-                src="figures/lab1/figure1.png"
-                alt="Examples of random walks"
-                class="mx-auto rounded"
-              >
-              <figcaption class="mt-2 text-sm text-gray-400">
-                <strong>Figure 1:</strong> Examples of 2D random walks. These three particles were all subject to the exact same motion constraints, yet follow entirely different paths.
-              </figcaption>
-            </figure>
-
-            <p>
-              Although the motion of a particle undergoing Brownian motion is entirely unpredictable, this does not mean it is beyond description — it simply requires a shift in perspective.
-              Rather than attempting to write an equation that deterministically describes the path of a single particle (which is not possible due to the inherently random nature of its motion), we focus instead on the statistical behavior that emerges across many particles or repeated trials.
-            </p>
-
-            <p>
-              In the interactive panel below, you can simulate individual particles undergoing a two-dimensional random walk.
-              Each time you click the 'Start Random Walk' button, a new trajectory is generated.
-              The particle begins at the center and moves randomly for 100 steps.
-              The resulting path is displayed on the left, and will differ each time due to the randomness of the motion.
-            </p>
-
-            <p>
-              As you generate more walks, observe the two histograms on the right. These track the $x$ and $y$ displacements of each of the particles.
-              Although no single outcome can be predicted in advance, a statistical pattern gradually emerges: the displacements begin to cluster in a familiar bell-shaped curve, known as the <strong>Gaussian</strong> (or <strong>normal</strong>) distribution.
-            </p>
-
-            <div class="flex justify-center items-start" style="gap: 10px;">
-              <!-- Left: Trajectory Panel -->
-              <div>
-                <canvas
-                  id="histogramWalkCanvas"
-                  width="300"
-                  height="300"
-                  class="bg-gray-800 border border-gray-600 rounded"
-                ></canvas>
-              </div>
-
-              <!-- Right: Stacked Histograms with exact spacing -->
-              <div class="flex flex-col justify-between" style="height: 300px; gap: 10px;">
-                <canvas
-                  id="xFinalHistogram"
-                  width="300"
-                  height="144"
-                  class="bg-gray-800 border border-gray-600 rounded"
-                ></canvas>
-                <canvas
-                  id="yFinalHistogram"
-                  width="300"
-                  height="144"
-                  class="bg-gray-800 border border-gray-600 rounded"
-                ></canvas>
-              </div>
+            <!-- Right: Stacked Histograms -->
+            <div class="flex-col" style="height: 300px;">
+              <canvas
+                id="xFinalHistogram"
+                width="300"
+                height="144"
+              ></canvas>
+              <canvas
+                id="yFinalHistogram"
+                width="300"
+                height="144"
+              ></canvas>
             </div>
+          </div>
 
-            <!-- Buttons -->
-            <div class="flex justify-center items-start" style="margin-top: 10px; gap: 10px;">
-              <button
-                id="startHistogramWalk"
-                class="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 transition"
-                style="margin: 0;"
-              >
-                Start Random Walk
-              </button>
-              <button
-                id="resetHistogramWalk"
-                class="px-4 py-2 bg-gray-600 text-white font-semibold rounded hover:bg-gray-500 transition"
-                style="margin: 0;"
-              >
-                Reset
-              </button>
-            </div>
+          <!-- Buttons -->
+          <div class="flex-row" style="margin-top: 10px;">
+            <button id="startHistogramWalk" class="button">
+              Start Random Walk
+            </button>
+            <button id="resetHistogramWalk" class="button reset">
+              Reset
+            </button>
+          </div>
 
-            <script>
-              const histCanvas = document.getElementById("histogramWalkCanvas");
-              const histCtx = histCanvas.getContext("2d");
-              const startHistogramWalk = document.getElementById("startHistogramWalk");
-              const resetHistogramWalk = document.getElementById("resetHistogramWalk");
+          <script>
+            const histCanvas = document.getElementById("histogramWalkCanvas");
+            const histCtx = histCanvas.getContext("2d");
+            const startHistogramWalk = document.getElementById("startHistogramWalk");
+            const resetHistogramWalk = document.getElementById("resetHistogramWalk");
 
-              const xFinalCanvas = document.getElementById("xFinalHistogram");
-              const yFinalCanvas = document.getElementById("yFinalHistogram");
-              const xFinalCtx = xFinalCanvas.getContext("2d");
-              const yFinalCtx = yFinalCanvas.getContext("2d");
+            const xFinalCanvas = document.getElementById("xFinalHistogram");
+            const yFinalCanvas = document.getElementById("yFinalHistogram");
+            const xFinalCtx = xFinalCanvas.getContext("2d");
+            const yFinalCtx = yFinalCanvas.getContext("2d");
 
-              const histCanvasSize = 300;
-              const histSteps = 100;
-              const histScale = (histCanvasSize / 2 - 20) / (2 * Math.sqrt(histSteps));
+            const histCanvasSize = 300;
+            const histSteps = 100;
+            const histScale = (histCanvasSize / 2 - 20) / (2 * Math.sqrt(histSteps));
 
-              let finalXValues = [];
-              let finalYValues = [];
+            let finalXValues = [];
+            let finalYValues = [];
 
-              let walkCount = 0;
+            let walkCount = 0;
 
-              let trailBuffer = document.createElement('canvas');
-              trailBuffer.width = histCanvas.width;
-              trailBuffer.height = histCanvas.height;
-              let trailCtx = trailBuffer.getContext('2d');
+            let trailBuffer = document.createElement('canvas');
+            trailBuffer.width = histCanvas.width;
+            trailBuffer.height = histCanvas.height;
+            let trailCtx = trailBuffer.getContext('2d');
 
-              const binMin = -25;
-              const binMax = 25;
-              const binWidth = 2;
-              const binCount = (binMax - binMin) / binWidth;
+            const binMin = -25;
+            const binMax = 25;
+            const binWidth = 2;
+            const binCount = (binMax - binMin) / binWidth;
 
-              function drawHistogram(data, ctx, color, labelText) {
-                ctx.clearRect(0, 0, 300, 145);
+            function drawHistogram(data, ctx, color, labelText) {
+              ctx.clearRect(0, 0, 300, 145);
 
-                ctx.fillStyle = 'white';
-                ctx.font = '12px sans-serif';
-                ctx.textAlign = 'left';
-                ctx.fillText(labelText, 5, 15);
+              ctx.fillStyle = 'white';
+              ctx.font = '12px sans-serif';
+              ctx.textAlign = 'left';
+              ctx.fillText(labelText, 5, 15);
 
-                const bins = new Array(binCount).fill(0);
-                data.forEach(value => {
-                  const index = Math.floor((value - binMin) / binWidth);
-                  if (index >= 0 && index < binCount) bins[index]++;
-                });
+              const bins = new Array(binCount).fill(0);
+              data.forEach(value => {
+                const index = Math.floor((value - binMin) / binWidth);
+                if (index >= 0 && index < binCount) bins[index]++;
+              });
 
-                const barWidth = 300 / binCount;
-                const maxCount = Math.max(...bins);
+              const barWidth = 300 / binCount;
+              const maxCount = Math.max(...bins);
 
-                for (let i = 0; i < binCount; i++) {
-                  const height = (bins[i] / maxCount) * 100;
-                  ctx.fillStyle = '#ffffff';
-                  ctx.fillRect(i * barWidth, 120 - height, barWidth - 1, height);
-                }
-
-                ctx.strokeStyle = 'white';
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(0, 120);
-                ctx.lineTo(300, 120);
-                ctx.stroke();
-
-                const tickValues = [-20, -15, -10, -5, 0, 5, 10, 15, 20];
-                ctx.fillStyle = 'white';
-                ctx.font = '10px sans-serif';
-                ctx.textAlign = 'center';
-                tickValues.forEach(val => {
-                  const idx = (val - binMin) / binWidth;
-                  const xPos = idx * barWidth + barWidth / 2;
-                  ctx.fillText(val.toString(), xPos, 135);
-                });
+              for (let i = 0; i < binCount; i++) {
+                const height = (bins[i] / maxCount) * 100;
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(i * barWidth, 120 - height, barWidth - 1, height);
               }
 
-              startHistogramWalk.addEventListener("click", () => {
-                let x = 0;
-                let y = 0;
-                let path = [{ x, y }];
-                let step = 0;
+              ctx.strokeStyle = 'white';
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(0, 120);
+              ctx.lineTo(300, 120);
+              ctx.stroke();
 
-                trailCtx.clearRect(0, 0, trailBuffer.width, trailBuffer.height);
-                trailCtx.drawImage(histCanvas, 0, 0);
-
-                histCtx.clearRect(0, 0, histCanvas.width, histCanvas.height);
-                histCtx.globalAlpha = 0.95;
-                histCtx.drawImage(trailBuffer, 0, 0);
-                histCtx.globalAlpha = 1.0;
-
-                walkCount++;
-
-                const interval = setInterval(() => {
-                  const direction = Math.floor(Math.random() * 4);
-                  switch (direction) {
-                    case 0: x += 1; break;
-                    case 1: x -= 1; break;
-                    case 2: y += 1; break;
-                    case 3: y -= 1; break;
-                  }
-
-                  const prev = path[path.length - 1];
-                  const hue = (step / histSteps) * 360;
-
-                  histCtx.beginPath();
-                  histCtx.moveTo(histCanvasSize / 2 + prev.x * histScale, histCanvasSize / 2 + prev.y * histScale);
-                  histCtx.lineTo(histCanvasSize / 2 + x * histScale, histCanvasSize / 2 + y * histScale);
-                  histCtx.strokeStyle = `hsl(${hue}, 100%, 65%)`;
-                  histCtx.lineWidth = 2;
-                  histCtx.stroke();
-
-                  path.push({ x, y });
-                  step++;
-
-                  if (step >= histSteps) {
-                    clearInterval(interval);
-                    finalXValues.push(x);
-                    finalYValues.push(y);
-                    drawHistogram(finalXValues, xFinalCtx, 'cyan', '\u0394X');
-                    drawHistogram(finalYValues, yFinalCtx, 'magenta', '\u0394Y');
-                  }
-                }, 1);
+              const tickValues = [-20, -15, -10, -5, 0, 5, 10, 15, 20];
+              ctx.fillStyle = 'white';
+              ctx.font = '10px sans-serif';
+              ctx.textAlign = 'center';
+              tickValues.forEach(val => {
+                const idx = (val - binMin) / binWidth;
+                const xPos = idx * barWidth + barWidth / 2;
+                ctx.fillText(val.toString(), xPos, 135);
               });
+            }
 
-              resetHistogramWalk.addEventListener("click", () => {
-                histCtx.clearRect(0, 0, histCanvas.width, histCanvas.height);
-                xFinalCtx.clearRect(0, 0, xFinalCanvas.width, xFinalCanvas.height);
-                yFinalCtx.clearRect(0, 0, yFinalCanvas.width, yFinalCanvas.height);
-                finalXValues = [];
-                finalYValues = [];
-              });
-            </script>
+            startHistogramWalk.addEventListener("click", () => {
+              let x = 0;
+              let y = 0;
+              let path = [{ x, y }];
+              let step = 0;
 
-            <p>
-            </p>
+              trailCtx.clearRect(0, 0, trailBuffer.width, trailBuffer.height);
+              trailCtx.drawImage(histCanvas, 0, 0);
 
-            <p>
-              Note that the 2D displacements of the particles above can be characterized by two 1D distributions - one for $\Delta x$ and one for $\Delta y$.
-              The general form of the Gaussian distribution for 1D particle displacements $\Delta x$ (and similarly for $\Delta y$) is
-            </p>
+              histCtx.clearRect(0, 0, histCanvas.width, histCanvas.height);
+              histCtx.globalAlpha = 0.95;
+              histCtx.drawImage(trailBuffer, 0, 0);
+              histCtx.globalAlpha = 1.0;
 
-            <div id="eq-gaussian">
-              <p>
-                $$\begin{equation}
-                  f(\Delta x) = \frac{1}{\sigma\sqrt{2\pi}}\exp{\left[{-\frac{1}{2}\left( \frac{\Delta x-\mu}{\sigma} \right)^2}\right]}\,. \label{eq:gaussian}
-                \end{equation}$$
-              </p>
-            </div>
+              walkCount++;
 
-            <p>
-              Here, $\mu$ is the <strong>mean</strong> (or <strong>average</strong>) of the distribution, and $\sigma$ is the <strong>standard deviation</strong> (SD), a measure of the variation from the mean.
-              For a discrete number of $N$ steps, the standard deviation can be expressed in terms of the particle displacements $\Delta x_i$ as
-            </p>
-
-            <div id="eq-sd">
-              <p>
-                $$\begin{equation}
-                  \sigma = \sqrt{\frac{1}{N}\displaystyle\sum_{i=1}^N \left( \Delta x_i - \mu \right)^2}\,. \label{eq:sd}
-                \end{equation}$$
-              </p>
-            </div>
-
-            <p>
-              In this case, where the motion is purely random (e.g. no net motion in some preferred direction), the mean is 0.
-              The formula for the standard deviation then reduces to
-            </p>
-
-            <div id="eq-rms">
-              <p>
-                $$\begin{equation}
-                  \sigma = \sqrt{\frac{1}{N}\displaystyle\sum_{i=1}^N \left( \Delta x_i \right)^2}\,. \label{eq:rms}
-                \end{equation}$$
-              </p>
-            </div>
-
-            <p>
-              This is equivalent to the <strong>root-mean-square</strong> (RMS), a similar statistical measure that appears frequently in the kinetic theory of gases.
-            </p>
-
-            <p>
-              A common shorthand notation for the above equation is
-            </p>
-
-            <div id="eq-sd-short">
-              <p>
-                $$\begin{equation}
-                  \sigma = \sqrt{\langle \Delta x^2 \rangle}\,. \label{eq:sd-short}
-                \end{equation}$$
-              </p>
-            </div>
-
-            <p>
-              While this is all useful for describing the statistical behavior of particles undergoing Brownian motion, it is ultimately just a mathematical outcome—it tells us how the particles tend to move, but not why they move that way.
-              To uncover the physical origin of this motion, we must look beyond the statistics and follow Einstein’s approach: we turn to the underlying physics of microscopic collisions and thermal agitation.
-            </p>
-
-            <p>
-              If you’ve ever placed a drop of dye into a glass of still water, you’ve observed the slow and steady spread of color throughout the liquid.
-              Initially localized, the dye gradually disperses until it becomes uniformly distributed.
-              This phenomenon is known as <strong>diffusion</strong>—the net movement of particles from regions of high concentration to regions of low concentration.
-              At the microscopic level, diffusion is driven by Brownian motion.
-              Individual molecules of dye are bombarded by surrounding water molecules, receiving tiny, random impulses in every direction.
-              As a result, the particles wander erratically, with each step uncorrelated with the last.
-              Over time, this random motion leads to an observable macroscopic trend: spreading.
-              The rate of spreading is characterized by the <strong>diffusion coefficient</strong> $D$, which can be varied in the interactive widget below.
-            </p>
-
-            <div class="mt-4 space-y-6">
-              <!-- Simulation canvas -->
-              <div class="flex justify-center items-start" style="gap: 10px;">
-                <canvas
-                  id="turbulentCanvas"
-                  width="500"
-                  height="500"
-                  class="bg-gray-800 border border-gray-600 rounded"
-                ></canvas>
-              </div>
-
-              <!-- Control buttons -->
-              <div class="flex justify-center items-start" style="margin-top: 10px; gap: 10px;">
-                <button
-                  id="startTurbulence"
-                  class="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 transition"
-                >
-                  Start
-                </button>
-                <button
-                  id="pauseTurbulence"
-                  class="px-4 py-2 bg-yellow-600 text-white font-semibold rounded hover:bg-yellow-500 transition"
-                >
-                  Pause
-                </button>
-                <button
-                  id="resetTurbulence"
-                  class="px-4 py-2 bg-gray-600 text-white font-semibold rounded hover:bg-gray-500 transition"
-                >
-                  Reset
-                </button>
-              </div>
-
-              <!-- Single slider for diffusion coefficient -->
-              <div class="flex justify-center items-center mt-6">
-                <div class="flex items-center gap-2 bg-gray-800 p-2 rounded shadow text-white">
-                  <label for="diffSlider" class="text-sm font-medium">Diffusion Coefficient (D):</label>
-                  <input
-                    type="range"
-                    min="0.1"
-                    max="10"
-                    step="0.1"
-                    value="1.0"
-                    id="diffSlider"
-                    class="w-40 accent-blue-500"
-                  >
-                  <span id="diffValue" class="text-blue-300 font-mono">1.0</span>
-                </div>
-              </div>
-
-              <!-- Script -->
-              <script>
-                const turbulentCanvas = document.getElementById("turbulentCanvas");
-                const turbulentCtx = turbulentCanvas.getContext("2d");
-                const startTurbulence = document.getElementById("startTurbulence");
-                const pauseTurbulence = document.getElementById("pauseTurbulence");
-                const resetTurbulence = document.getElementById("resetTurbulence");
-
-                const diffSlider = document.getElementById("diffSlider");
-                const diffValue = document.getElementById("diffValue");
-
-                let particles = [];
-                const nParticles = 800;
-                let brownianStrength = parseFloat(diffSlider.value);
-                let paused = false;
-                let animId = null;
-
-                diffSlider.addEventListener("input", () => {
-                  brownianStrength = parseFloat(diffSlider.value);
-                  diffValue.textContent = brownianStrength.toFixed(1);
-                });
-
-                function initParticles() {
-                  particles = [];
-                  for (let i = 0; i < nParticles; i++) {
-                    particles.push({
-                      x: 250 + (Math.random() - 0.5) * 10,
-                      y: 250 + (Math.random() - 0.5) * 10
-                    });
-                  }
+              const interval = setInterval(() => {
+                const direction = Math.floor(Math.random() * 4);
+                switch (direction) {
+                  case 0: x += 1; break;
+                  case 1: x -= 1; break;
+                  case 2: y += 1; break;
+                  case 3: y -= 1; break;
                 }
 
-                function drawParticles() {
-                  turbulentCtx.clearRect(0, 0, 500, 500);
-                  turbulentCtx.fillStyle = "rgba(173,216,230,0.8)";
-                  particles.forEach(p => {
-                    turbulentCtx.beginPath();
-                    turbulentCtx.arc(p.x, p.y, 1.5, 0, 2 * Math.PI);
-                    turbulentCtx.fill();
-                  });
+                const prev = path[path.length - 1];
+                const hue = (step / histSteps) * 360;
+
+                histCtx.beginPath();
+                histCtx.moveTo(histCanvasSize / 2 + prev.x * histScale, histCanvasSize / 2 + prev.y * histScale);
+                histCtx.lineTo(histCanvasSize / 2 + x * histScale, histCanvasSize / 2 + y * histScale);
+                histCtx.strokeStyle = `hsl(${hue}, 100%, 65%)`;
+                histCtx.lineWidth = 2;
+                histCtx.stroke();
+
+                path.push({ x, y });
+                step++;
+
+                if (step >= histSteps) {
+                  clearInterval(interval);
+                  finalXValues.push(x);
+                  finalYValues.push(y);
+                  drawHistogram(finalXValues, xFinalCtx, 'cyan', '\u0394X');
+                  drawHistogram(finalYValues, yFinalCtx, 'magenta', '\u0394Y');
                 }
+              }, 1);
+            });
 
-                function stepParticles() {
-                  particles.forEach(p => {
-                    const dx = (Math.random() - 0.5) * brownianStrength;
-                    const dy = (Math.random() - 0.5) * brownianStrength;
-                    p.x += dx;
-                    p.y += dy;
-                  });
-                }
+            resetHistogramWalk.addEventListener("click", () => {
+              histCtx.clearRect(0, 0, histCanvas.width, histCanvas.height);
+              xFinalCtx.clearRect(0, 0, xFinalCanvas.width, xFinalCanvas.height);
+              yFinalCtx.clearRect(0, 0, yFinalCanvas.width, yFinalCanvas.height);
+              finalXValues = [];
+              finalYValues = [];
+            });
+          </script>
 
-                function animateTurbulence() {
-                  if (!paused) {
-                    stepParticles();
-                    drawParticles();
-                  }
-                  animId = requestAnimationFrame(animateTurbulence);
-                }
+          <p>
+          </p>
 
-                startTurbulence.addEventListener("click", () => {
-                  cancelAnimationFrame(animId);
-                  initParticles();
-                  animateTurbulence();
-                });
+          <p>
+            Note that the 2D displacements of the particles above can be characterized by two 1D distributions - one for $\Delta x$ and one for $\Delta y$.
+            The general form of the Gaussian distribution for 1D particle displacements $\Delta x$ (and similarly for $\Delta y$) is
+          </p>
 
-                pauseTurbulence.addEventListener("click", () => {
-                  paused = !paused;
-                  pauseTurbulence.textContent = paused ? "Resume" : "Pause";
-                });
-
-                resetTurbulence.addEventListener("click", () => {
-                  cancelAnimationFrame(animId);
-                  turbulentCtx.clearRect(0, 0, 500, 500);
-                  particles = [];
-                  paused = false;
-                  pauseTurbulence.textContent = "Pause";
-                });
-              </script>
-            </div>
-
+          <div id="eq-gaussian">
             <p>
+              $$\begin{equation}
+                f(\Delta x) = \frac{1}{\sigma\sqrt{2\pi}}\exp{\left[{-\frac{1}{2}\left( \frac{\Delta x-\mu}{\sigma} \right)^2}\right]}\,. \label{eq:gaussian}
+              \end{equation}$$
             </p>
-
-            <p>
-              Einstein formalized the connection between Brownian motion and diffusion by showing that the number density $n(x,t)$ of Brownian particles—i.e., the number of particles per unit length at position $x$ and time $t$—satisfies the diffusion equation,
-
-            <div id="eq-diffusion">
-              <p>
-                $$\begin{equation}
-                  \frac{\partial \rho}{\partial t} = D \cdot \frac{\partial^2\rho}{\partial x^2}\,. \label{eq:diffusion}
-                \end{equation}$$
-              </p>
-            </div>
-
-            <p>
-              Solving this differential equation for a system of $N$ particles initially concentrated at a single point gives
-            </p>
-
-            <div id="eq-concentration">
-              <p>
-                $$\begin{equation}
-                  \rho(x, t) = \frac{N}{\sqrt{4\pi D t}}\exp{\left[ -\frac{x^2}{4Dt} \right]}\,. \label{eq:concentration}
-                \end{equation}$$
-              </p>
-            </div>
-
-            <p>
-              This is a Gaussian distribution in $x$ that grows broader with time—just like the empirical distribution of displacements $\Delta x$ observed in the random walks from the interactive widget above.
-              Comparing this result to <a href="#eq-gaussian" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:gaussian}$</a> and using the definition of standard deviation from <a href="#eq-sd-short" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-short}$</a>, we find
-            </p>
-
-            <div id="eq-position-time">
-              <p>
-                $$\begin{equation}
-                  \boxed{\langle \Delta x^2 \rangle = 2Dt}\,. \label{eq:position-time}
-                \end{equation}$$
-              </p>
-            </div>
-
-            <p>
-              This relationship reveals that the mean-square displacement of Brownian particles grows linearly with time.
-              That is, although the average displacement $\langle \Delta x \rangle$ remains zero (since motion is equally likely in all directions), the average of $\Delta x^2$ increases—reflecting the overall spread of the particle ensemble.
-              Notably, this scaling with time differed from the expectations of classical mechanics at the time, in which <em>displacement</em> (not the mean-square displacement) was often assumed to grow linearly with time under uniform motion.
-            </p>
-
-            <p>
-              Not stopping at this statistical connection, Einstein attributed the erratic particle motions of Brownian motion to the random impacts of fast-moving fluid molecules.
-              These impacts impart kinetic energy to the suspended particle, converting the thermal energy of the fluid into directed motion.
-              However, as the particle moves through the fluid, it encounters resistance—drag forces from the surrounding molecules—which act to slow it down and return that kinetic energy to the fluid as heat.
-              This continual two-way exchange of energy—thermal to kinetic via molecular kicks, and kinetic to thermal via drag—is encapsulated in the Einstein relation
-            </p>
-
-            <div id="eq-einstein-relation">
-              <p>
-                $$\begin{equation}
-                  Df = k_BT\,. \label{eq:einstein-relation}
-                \end{equation}$$
-              </p>
-            </div>
-
-            <p>
-              Here, $f$ is the <strong>drag coefficient</strong>, $k_B$ is the <strong>Boltzmann constant</strong>, and $T$ is the absolute temperature.
-            </p>
-
-            <!-- Collapsible Derivation Frame -->
-            <details class="border border-blue-300 rounded-lg shadow-md bg-white/5">
-              <summary class="px-4 py-2 cursor-pointer text-sm font-semibold text-blue-300 uppercase tracking-wide">
-                Derivation 1
-              </summary>
-
-              <div class="p-4 space-y-4">
-                <p>
-                  The proper derivation of the Einstein relation is quite complicated, and involves application of the <strong>fluctuation-dissipation theorem</strong>—a relation that connects a system's equilibrium fluctuations to how it dissipates energy assuming detailed balance.
-                  To build intuition, we will instead present an approximate derivation that, while not fully rigorous, captures the essential physics and leads to the correct final result.
-                </p>
-
-                <p>
-                  Consider a particle that undergoes a displacement $\Delta x$ over a time interval $\Delta t$ as a result of a single random collision with a fluid molecule.
-                  The fluid molecule has thermal energy $\epsilon$, which it transfers to the particle as kinetic energy during the collision.
-                  As the particle moves, its kinetic energy is gradually lost due to the work done against the drag force $F_{\mathrm{drag}}$ over the distance $\Delta x$.
-                  This is all encapsulated by
-                </p>
-
-                <div id="eq-balance">
-                  <p>
-                    $$\epsilon \sim F_{\mathrm{drag}}\cdot \Delta x \tag{D1.1}$$
-                  </p>
-                </div>
-
-                <p>
-                  The thermal energy $\epsilon$ is $\sim k_B T$, and the drag force $F_{\mathrm{drag}}$ can be broken up into a drag coefficient $f$ times the velocity $v$ of the particle, such that
-                </p>
-
-                <div id="eq-energy-balance">
-                  <p>
-                    $$k_B T \sim f \cdot v \cdot \Delta x \tag{D1.2}$$
-                  </p>
-                </div>
-
-                <p>
-                  Assuming an average velocity $v \sim \Delta x / \Delta t$,
-                </p>
-
-                <div id="eq-energy-drag">
-                  <p>
-                    $$k_B T \sim f \cdot \left( \frac{\Delta x^2}{\Delta t} \right) \tag{D1.3}$$
-                  </p>
-                </div>
-
-                <p>
-                  Note that the quantity in parentheses in <a href="#eq-energy-drag" class="text-blue-300 font-bold hover:underline">Equation D1.3</a> is essentially the diffusion coefficient $D$ in <a href="#eq-position-time" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:position-time}$</a>, to within a factor of 2.
-                  Making this substitution leads to the Einstein relation
-                </p>
-
-                <div id="eq-einstein-relation-result">
-                  <p>
-                    $$\boxed{Df = k_BT} \tag{D1.4}$$
-                  </p>
-                </div>
-              </div>
-            </details>
-
-            <p>
-            </p>
-
-            <p>
-              According to Stokes' Law, the drag coefficient for a spherical particle of radius $r$ moving through a fluid with dynamic viscosity $\eta$ is
-            </p>
-
-            <div id="eq-stokes">
-              <p>
-                $$\begin{equation}
-                  f = 6\pi\eta r\,. \label{eq:stokes}
-                \end{equation}$$
-              </p>
-            </div>
-
-            <p>
-              Substituting this into <a href="#eq-einstein-relation" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:einstein-relation}$</a> gives the Stokes–Einstein equation for the diffusion coefficient of a spherical particle:
-            </p>
-
-            <div id="eq-diffusion-coefficient">
-              <p>
-                $$\begin{equation}
-                  D = \frac{k_BT}{6\pi\eta r}\,. \label{eq:diffusion-coefficient}
-                \end{equation}$$
-              </p>
-            </div>
-
-            <p>
-              This equation links the microscopic dynamics of Brownian motion—random collisions between fluid molecules and suspended particles—to macroscopic, measurable quantities: temperature, fluid viscosity, and particle size.
-              The diffusion coefficient is then effectively a ratio of the thermal energy of the surrounding fluid to the drag coefficient of particles moving through the fluid.
-              Higher thermal energy (i.e., higher temperature $T$) increases the strength of molecular agitation, leading to a larger $D$ and faster spreading of particles.
-              In contrast, more viscous fluids exert greater drag on the particles, hindering their motion and reducing $D$, resulting in slower diffusion.
-            </p>
-
-            <p>
-              Since $k_B = R/N_A$, where $R$ is the gas constant and $N_A$ is <strong>Avogadro's number</strong>, <a href="#eq-diffusion-coefficient" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:diffusion-coefficient}$</a> can be further rewritten as
-            </p>
-
-            <div id="eq-avogadro">
-              <p>
-                $$\begin{equation}
-                  \boxed{N_A = \frac{RT}{6\pi\eta r D}}\,. \label{eq:avogadro}
-                \end{equation}$$
-              </p>
-            </div>
-
-            <p>
-              This expression provided one of the earliest methods for experimentally estimating Avogadro’s number, by measuring how thermal energy, viscous resistance, and particle diffusion are interrelated at microscopic scales.
-              The ability to experimentally determine $N_A$—and thereby confirm the existence of a specific, countable number of molecules per mole—provided compelling quantitative evidence for the reality of atoms and molecules.
-            </p>
-
           </div>
-        </details>
 
+          <p>
+            Here, $\mu$ is the <strong>mean</strong> (or <strong>average</strong>) of the distribution, and $\sigma$ is the <strong>standard deviation</strong> (SD), a measure of the variation from the mean.
+            For a discrete number of $N$ steps, the standard deviation can be expressed in terms of the particle displacements $\Delta x_i$ as
+          </p>
 
-        <!-- Section: Pre-Lab Questions -->
-        <details id="pre-lab-questions" class="mb-8">
-          <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
-            Pre-Lab Questions
-          </summary>
-          <div class="mt-4 border border-blue-300 rounded-lg shadow-md bg-white/5 py-3 px-4 text-justify">
-
+          <div id="eq-sd">
             <p>
-              Submit your responses to the following questions by the start of the relevant lab meeting.
+              $$\begin{equation}
+                \sigma = \sqrt{\frac{1}{N}\displaystyle\sum_{i=1}^N \left( \Delta x_i - \mu \right)^2}\,. \label{eq:sd}
+              \end{equation}$$
             </p>
-
-            <ol class="list-decimal space-y-4 pl-6">
-              <li>
-                <p>
-                  Prove by direct substitution that $\rho(x, t)$ from
-                  <a href="#eq-concentration" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:concentration}$</a>
-                  is a solution to
-                  <a href="#eq-diffusion" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:diffusion}$</a>.
-                </p>
-              </li>
-            </ol>
-            <p class="mt-6">
-              The following questions pertain to <a href="data/lab1/brownian_motion_data.csv" download class="text-blue-300 font-bold hover:underline">this CSV file</a> — please download it before continuing.
-              Python will be used throughout this course for data analysis and plotting, and you are expected to use it to answer the questions below.
-              If you're new to Python, you may find <a href="python-primer.html" class="text-blue-300 hover:underline font-semibold">this primer</a> helpful as you work through the assignment.
-            </p>
-            <ol class="list-decimal space-y-4 pl-6" start="2">
-              <li>
-                <p>
-                  Plot $x$ vs. $t$ from the data. Make sure to include axis labels (units are not required).
-                </p>
-              </li>
-              <li>
-                <p>
-                  Create a histogram of the stepwise displacements in $x$ (i.e., the differences between consecutive $x$ values).
-                </p>
-              </li>
-              <li>
-                <p>
-                  Compute the standard deviation of the $x$ values (approximately equal to the root-mean-square displacement since the mean is near zero), and the time interval $\Delta t$ between data points.
-                  Use these to estimate the diffusion coefficient $D$ using <a href="#eq-position-time" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:position-time}$</a>.
-                </p>
-              </li>
-            </ol>
-            <p class="mt-6">
-              The final question pertains to <a href="data/lab1/brownian_motion_data_2.csv" download class="text-blue-300 font-bold hover:underline">this other CSV file</a> — please download it before continuing.
-              (The <a href="python-primer.html" class="text-blue-300 hover:underline font-semibold">Python primer</a> may be helpful here, as well.)
-            </p>
-            <ol class="list-decimal space-y-4 pl-6" start="5">
-              <li>
-                <p>
-                  Use Python to make a scatter plot of the data, and fit a trendline to it.
-                  Include a legend in the plot that also contains the equation of the best-fit line.
-                </p>
-              </li>
-            </ol>
-
           </div>
-        </details>
 
-        <!-- Section: Procedure -->
-        <details id="procedure" class="mb-8">
-          <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
-            Procedure
-          </summary>
-          <div class="mt-4 border border-blue-300 rounded-lg shadow-md bg-white/5 py-3 px-4 text-justify">
+          <p>
+            In this case, where the motion is purely random (e.g. no net motion in some preferred direction), the mean is 0.
+            The formula for the standard deviation then reduces to
+          </p>
 
+          <div id="eq-rms">
             <p>
-              In this experiment, you will observe and quantify Brownian motion by analyzing the random trajectories of suspended polystyrene microspheres in water.
-              Your goal is to use these observations to estimate the diffusion coefficient $D$ and, from that, calculate Avogadro’s number $N_A$.
+              $$\begin{equation}
+                \sigma = \sqrt{\frac{1}{N}\displaystyle\sum_{i=1}^N \left( \Delta x_i \right)^2}\,. \label{eq:rms}
+              \end{equation}$$
             </p>
-
-            <ol class="list-decimal space-y-4 pl-6">
-
-              <li>
-                <strong>Prepare the Sample:</strong>
-                Use a pipette to place 2–3 drops of the polystyrene microsphere solution into a clean glass vial.
-                Add 100mL of deionized water and gently swirl or shake to dilute the solution.
-              </li>
-
-              <li>
-                <strong>Mount the Slide:</strong>
-                Place a drop of the diluted solution onto a clean microscope slide.
-                Carefully lower a coverslip onto the drop to create a thin, uniform layer of fluid.
-                Avoid trapping air bubbles, as these can induce non-random flow that biases the motion.
-              </li>
-
-              <li>
-                <strong>Record Brownian Motion:</strong>
-                Using the microscope at maximum magnification (40x), focus on a plane where the particles are clearly suspended and moving freely.
-                Record a short video ($\sim 10$ seconds) of the particles undergoing Brownian motion, keeping the field of view steady.
-              </li>
-
-              <li>
-                <strong>Transfer the Video File:</strong>
-                Remove the SD card from the microscope and transfer the video to your computer for analysis.
-              </li>
-
-              <li>
-                <strong>Track Particle Positions:</strong>
-                Open the video in ImageJ (Fiji recommended), and make measurements of particle displacements and times.
-                You may use Fiji’s particle tracking plugin or manually log the coordinates frame by frame.
-                Aim for at least 50 displacement measurements before proceeding.
-              </li>
-
-              <li>
-                <strong>Estimate Avogadro’s Number:</strong>
-                Using what you've learned from the reading above, use your measurements to calculate $N_A$.
-                Note that you will need a pixel-to-length conversion factor from your TA (this should be $2.25\times 10^{-7}$ m/px).
-                For comparison of your final calculated value, use the accepted value $N_A = 6.022 \times 10^{23}\,\text{mol}^{-1}$ to estimate your experimental error.
-              </li>
-
-            </ol>
-
-            <p>
-            </p>
-
-            <p>
-              Record all measured values and calculations clearly.
-              Document your goals and thought processes as explicitly as possible.
-              Report your calculated diffusion coefficient and estimate of Avogadro’s number.
-              Discuss sources of uncertainty in your measurements and how they may have affected your results.
-            </p>
-
           </div>
-        </details>
 
-        <!-- Section: Particle Collision Simulation -->
-        <details id="brownian-motion-virtual" class="mb-8">
-          <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
-            Virtual Lab Simulation
-          </summary>
-          <div class="mt-6 space-y-4 text-gray-100">
+          <p>
+            This is equivalent to the <strong>root-mean-square</strong> (RMS), a similar statistical measure that appears frequently in the kinetic theory of gases.
+          </p>
 
+          <p>
+            A common shorthand notation for the above equation is
+          </p>
+
+          <div id="eq-sd-short">
             <p>
-              <strong>This section is only relevant if this lab is being done online.</strong>
-              <strong>If you are taking an in-person lab, you are not required to do anything with this material.</strong>
-              The simulation below shows larger polystyrene spheres being bombarded by smaller, faster water molecules.
-              You can pause the simulation, reset it, and select individual spheres to export their tracked paths as CSV files.
-              Use the data from this simulation to calculate Avogadro's number by following step 6 from the procedure above (you will need to use the pixel-to-length conversion factor).
+              $$\begin{equation}
+                \sigma = \sqrt{\langle \Delta x^2 \rangle}\,. \label{eq:sd-short}
+              \end{equation}$$
             </p>
+          </div>
 
-            <div class="flex justify-center">
-              <canvas id="canvas" width="600" height="600" class="border border-gray-500 rounded bg-gray-900"></canvas>
+          <p>
+            While this is all useful for describing the statistical behavior of particles undergoing Brownian motion, it is ultimately just a mathematical outcome—it tells us how the particles tend to move, but not why they move that way.
+            To uncover the physical origin of this motion, we must look beyond the statistics and follow Einstein’s approach: we turn to the underlying physics of microscopic collisions and thermal agitation.
+          </p>
+
+          <p>
+            If you’ve ever placed a drop of dye into a glass of still water, you’ve observed the slow and steady spread of color throughout the liquid.
+            Initially localized, the dye gradually disperses until it becomes uniformly distributed.
+            This phenomenon is known as <strong>diffusion</strong>—the net movement of particles from regions of high concentration to regions of low concentration.
+            At the microscopic level, diffusion is driven by Brownian motion.
+            Individual molecules of dye are bombarded by surrounding water molecules, receiving tiny, random impulses in every direction.
+            As a result, the particles wander erratically, with each step uncorrelated with the last.
+            Over time, this random motion leads to an observable macroscopic trend: spreading.
+            The rate of spreading is characterized by the <strong>diffusion coefficient</strong> $D$, which can be varied in the interactive widget below.
+          </p>
+
+          <div style="margin-top: 1.5rem;">
+            <!-- Simulation canvas -->
+            <div class="flex-row">
+              <canvas
+                id="turbulentCanvas"
+                width="500"
+                height="500"
+              ></canvas>
             </div>
 
-            <div class="flex justify-center gap-4 mt-4">
-              <button id="toggleButton" class="px-4 py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-500 transition">Pause</button>
-              <button id="resetButton" class="px-4 py-2 bg-gray-600 text-white font-semibold rounded hover:bg-gray-500 transition">Reset</button>
-              <button id="exportButton" class="px-4 py-2 bg-green-600 text-white font-semibold rounded hover:bg-green-500 transition" disabled>Export CSV</button>
+            <!-- Control buttons -->
+            <div class="flex-row" style="margin-top: 10px;">
+              <button id="startTurbulence" class="button">Start</button>
+              <button id="pauseTurbulence" class="button pause">Pause</button>
+              <button id="resetTurbulence" class="button reset">Reset</button>
             </div>
 
-            <p id="message" class="text-center text-sm mt-2 text-gray-300 font-mono"></p>
+            <!-- Single slider for diffusion coefficient -->
+            <div class="flex-row" style="margin-top: 1.5rem;">
+              <div class="slider-box">
+                <label for="diffSlider">Diffusion Coefficient (D):</label>
+                <input
+                  type="range"
+                  min="0.1"
+                  max="10"
+                  step="0.1"
+                  value="1.0"
+                  id="diffSlider"
+                >
+                <span id="diffValue">1.0</span>
+              </div>
+            </div>
 
+            <!-- Script -->
             <script>
-            document.addEventListener("DOMContentLoaded", () => {
-              const canvas = document.getElementById("canvas");
-              const ctx = canvas.getContext("2d");
-              const width = canvas.width;
-              const height = canvas.height;
-              const frameDelay = 1000 / 24;
+              const turbulentCanvas = document.getElementById("turbulentCanvas");
+              const turbulentCtx = turbulentCanvas.getContext("2d");
+              const startTurbulence = document.getElementById("startTurbulence");
+              const pauseTurbulence = document.getElementById("pauseTurbulence");
+              const resetTurbulence = document.getElementById("resetTurbulence");
 
-              const N_water = 3000;
-              const N_poly = 5;
-
-              const water_radius = 1.0;
-              const poly_radius = 12;
-
-              const water_speed = 2.5;
-              const poly_mass = 100;
-              const water_mass = 1;
-
-              const poly_colors = ['#0077cc', '#cc3300', '#33aa00', '#9933cc', '#ffaa00'];
+              const diffSlider = document.getElementById("diffSlider");
+              const diffValue = document.getElementById("diffValue");
 
               let particles = [];
-              let poly_trails = [];
-              let running = false;
-              let selectingForExport = false;
-              let hoveredPolyIndex = null;
-              let selectedPolyIndices = [];
-              let frameCount = 0;
+              const nParticles = 800;
+              let brownianStrength = parseFloat(diffSlider.value);
+              let paused = false;
+              let animId = null;
 
-              const toggleBtn = document.getElementById("toggleButton");
-              const resetBtn = document.getElementById("resetButton");
-              const exportBtn = document.getElementById("exportButton");
-              const messageBox = document.getElementById("message");
-
-              toggleBtn.textContent = running ? "Pause" : "Play";
-
-              toggleBtn.onclick = function () {
-                running = !running;
-                toggleBtn.textContent = running ? "Pause" : "Play";
-                exportBtn.disabled = running;
-                selectingForExport = false;
-                selectedPolyIndices = [];
-                messageBox.textContent = "";
-              };
-
-              resetBtn.onclick = function () {
-                initializeParticles();
-                exportBtn.disabled = running;
-                selectingForExport = false;
-                selectedPolyIndices = [];
-                messageBox.textContent = "";
-              };
-
-              exportBtn.onclick = function () {
-                if (!running) {
-                  if (!selectingForExport) {
-                    selectingForExport = true;
-                    selectedPolyIndices = [];
-                    messageBox.textContent = "Click one or more polystyrene spheres to select them for export. Click 'Export CSV' again to export.";
-                  } else {
-                    selectingForExport = false;
-                    exportCombinedTrajectories(selectedPolyIndices);
-                    messageBox.textContent = `Exported ${selectedPolyIndices.length} particle trajectories.`;
-                    selectedPolyIndices = [];
-                  }
-                }
-              };
-
-              canvas.addEventListener("click", function (e) {
-                if (!selectingForExport) return;
-
-                const rect = canvas.getBoundingClientRect();
-                const mouseX = e.clientX - rect.left;
-                const mouseY = e.clientY - rect.top;
-
-                for (const p of particles) {
-                  if (p.isPoly) {
-                    const dx = p.x - mouseX;
-                    const dy = p.y - mouseY;
-                    if (Math.hypot(dx, dy) < p.radius) {
-                      const index = selectedPolyIndices.indexOf(p.trailIndex);
-                      if (index > -1) {
-                        selectedPolyIndices.splice(index, 1);
-                      } else {
-                        selectedPolyIndices.push(p.trailIndex);
-                      }
-                      break;
-                    }
-                  }
-                }
+              diffSlider.addEventListener("input", () => {
+                brownianStrength = parseFloat(diffSlider.value);
+                diffValue.textContent = brownianStrength.toFixed(1);
               });
 
-              canvas.addEventListener("mousemove", function (e) {
-                if (!selectingForExport) {
-                  hoveredPolyIndex = null;
-                  return;
-                }
-
-                const rect = canvas.getBoundingClientRect();
-                const mouseX = e.clientX - rect.left;
-                const mouseY = e.clientY - rect.top;
-
-                hoveredPolyIndex = null;
-                for (const p of particles) {
-                  if (p.isPoly) {
-                    const dx = p.x - mouseX;
-                    const dy = p.y - mouseY;
-                    if (Math.hypot(dx, dy) < p.radius) {
-                      hoveredPolyIndex = p.trailIndex;
-                      break;
-                    }
-                  }
-                }
-              });
-
-              function exportCombinedTrajectories(indices) {
-                if (!indices.length) return;
-
-                let maxLength = 0;
-                indices.forEach(i => {
-                  maxLength = Math.max(maxLength, poly_trails[i].length);
-                });
-
-                let csvHeader = ['Time'];
-                indices.forEach((idx, j) => {
-                  csvHeader.push(`x${j+1}`, `y${j+1}`);
-                });
-
-                let csvRows = [csvHeader.join(',')];
-
-                for (let t = 0; t < maxLength; t++) {
-                  let time_scaled = t * (1 / 24);
-                  let row = [time_scaled];
-                  indices.forEach(idx => {
-                    const trail = poly_trails[idx];
-                    if (t < trail.length) {
-                      row.push(trail[t].x, trail[t].y);
-                    } else {
-                      row.push('', '');
-                    }
-                  });
-                  csvRows.push(row.join(','));
-                }
-
-                const csvContent = csvRows.join("\n");
-                const blob = new Blob([csvContent], { type: 'text/csv' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement("a");
-                a.href = url;
-                a.download = `particle_trails.csv`;
-                a.click();
-                URL.revokeObjectURL(url);
-              }
-
-              function createParticle(x, y, vx, vy, radius, mass, color, isPoly = false, index = -1) {
-                const p = { x, y, vx, vy, radius, mass, color, isPoly, trailIndex: index };
-                if (isPoly) {
-                  poly_trails[index] = [{ x, y }];
-                }
-                return p;
-              }
-
-              function initializeParticles() {
+              function initParticles() {
                 particles = [];
-                poly_trails = new Array(N_poly);
-                hoveredPolyIndex = null;
-
-                for (let i = 0; i < N_water; i++) {
-                  particles.push(createParticle(
-                    Math.random() * width,
-                    Math.random() * height,
-                    (Math.random() - 0.5) * water_speed * 2,
-                    (Math.random() - 0.5) * water_speed * 2,
-                    water_radius,
-                    water_mass,
-                    '#bbbbbb'
-                  ));
+                for (let i = 0; i < nParticles; i++) {
+                  particles.push({
+                    x: 250 + (Math.random() - 0.5) * 10,
+                    y: 250 + (Math.random() - 0.5) * 10
+                  });
                 }
-
-                const margin = 0.125;
-                const xMin = width * margin;
-                const xMax = width * (1 - margin);
-                const yMin = height * margin;
-                const yMax = height * (1 - margin);
-
-                for (let i = 0; i < N_poly; i++) {
-                  particles.push(createParticle(
-                    xMin + Math.random() * (xMax - xMin),
-                    yMin + Math.random() * (yMax - yMin),
-                    0,
-                    0,
-                    poly_radius,
-                    poly_mass,
-                    poly_colors[i % poly_colors.length],
-                    true,
-                    i
-                  ));
-                }
-              }
-
-              function updateParticles() {
-                for (let i = 0; i < particles.length; i++) {
-                  const p = particles[i];
-
-                  p.x += p.vx;
-                  p.y += p.vy;
-
-                  if (p.x - p.radius < 0 || p.x + p.radius > width) p.vx *= -1;
-                  if (p.y - p.radius < 0 || p.y + p.radius > height) p.vy *= -1;
-
-                  if (p.isPoly && frameCount % 5 === 0) {
-                    const trail = poly_trails[p.trailIndex];
-                    trail.push({ x: p.x, y: p.y });
-                  }
-                }
-
-                for (let i = 0; i < particles.length; i++) {
-                  for (let j = i + 1; j < particles.length; j++) {
-                    const a = particles[i];
-                    const b = particles[j];
-
-                    if (!a.isPoly && !b.isPoly) continue;
-
-                    const dx = b.x - a.x;
-                    const dy = b.y - a.y;
-                    const dist = Math.hypot(dx, dy);
-                    const minDist = a.radius + b.radius;
-
-                    if (dist < minDist) {
-                      const nx = dx / dist;
-                      const ny = dy / dist;
-                      const dvx = b.vx - a.vx;
-                      const dvy = b.vy - a.vy;
-                      const relVel = dvx * nx + dvy * ny;
-                      if (relVel > 0) continue;
-
-                      const impulse = (2 * relVel) / (a.mass + b.mass);
-
-                      a.vx += impulse * b.mass * nx;
-                      a.vy += impulse * b.mass * ny;
-                      b.vx -= impulse * a.mass * nx;
-                      b.vy -= impulse * a.mass * ny;
-
-                      const overlap = 0.5 * (minDist - dist);
-                      a.x -= overlap * nx;
-                      a.y -= overlap * ny;
-                      b.x += overlap * nx;
-                      b.y += overlap * ny;
-                    }
-                  }
-                }
-                frameCount++;
               }
 
               function drawParticles() {
-                ctx.clearRect(0, 0, width, height);
+                turbulentCtx.clearRect(0, 0, 500, 500);
+                turbulentCtx.fillStyle = "rgba(173,216,230,0.8)";
+                particles.forEach(p => {
+                  turbulentCtx.beginPath();
+                  turbulentCtx.arc(p.x, p.y, 1.5, 0, 2 * Math.PI);
+                  turbulentCtx.fill();
+                });
+              }
 
-                ctx.lineWidth = 1.5;
-                for (let t = 0; t < poly_trails.length; t++) {
-                  ctx.strokeStyle = poly_colors[t % poly_colors.length];
-                  const trail = poly_trails[t];
-                  if (trail && trail.length > 1) {
-                    ctx.beginPath();
-                    for (let i = 0; i < trail.length - 1; i++) {
-                      ctx.moveTo(trail[i].x, trail[i].y);
-                      ctx.lineTo(trail[i + 1].x, trail[i + 1].y);
+              function stepParticles() {
+                particles.forEach(p => {
+                  const dx = (Math.random() - 0.5) * brownianStrength;
+                  const dy = (Math.random() - 0.5) * brownianStrength;
+                  p.x += dx;
+                  p.y += dy;
+                });
+              }
+
+              function animateTurbulence() {
+                if (!paused) {
+                  stepParticles();
+                  drawParticles();
+                }
+                animId = requestAnimationFrame(animateTurbulence);
+              }
+
+              startTurbulence.addEventListener("click", () => {
+                cancelAnimationFrame(animId);
+                initParticles();
+                animateTurbulence();
+              });
+
+              pauseTurbulence.addEventListener("click", () => {
+                paused = !paused;
+                pauseTurbulence.textContent = paused ? "Resume" : "Pause";
+              });
+
+              resetTurbulence.addEventListener("click", () => {
+                cancelAnimationFrame(animId);
+                turbulentCtx.clearRect(0, 0, 500, 500);
+                particles = [];
+                paused = false;
+                pauseTurbulence.textContent = "Pause";
+              });
+            </script>
+          </div>
+
+          <p>
+          </p>
+
+          <p>
+            Einstein formalized the connection between Brownian motion and diffusion by showing that the number density $n(x,t)$ of Brownian particles—i.e., the number of particles per unit length at position $x$ and time $t$—satisfies the diffusion equation,
+
+          <div id="eq-diffusion">
+            <p>
+              $$\begin{equation}
+                \frac{\partial \rho}{\partial t} = D \cdot \frac{\partial^2\rho}{\partial x^2}\,. \label{eq:diffusion}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Solving this differential equation for a system of $N$ particles initially concentrated at a single point gives
+          </p>
+
+          <div id="eq-concentration">
+            <p>
+              $$\begin{equation}
+                \rho(x, t) = \frac{N}{\sqrt{4\pi D t}}\exp{\left[ -\frac{x^2}{4Dt} \right]}\,. \label{eq:concentration}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This is a Gaussian distribution in $x$ that grows broader with time—just like the empirical distribution of displacements $\Delta x$ observed in the random walks from the interactive widget above.
+            Comparing this result to <a href="#eq-gaussian" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:gaussian}$</a> and using the definition of standard deviation from <a href="#eq-sd-short" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-short}$</a>, we find
+          </p>
+
+          <div id="eq-position-time">
+            <p>
+              $$\begin{equation}
+                \boxed{\langle \Delta x^2 \rangle = 2Dt}\,. \label{eq:position-time}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This relationship reveals that the mean-square displacement of Brownian particles grows linearly with time.
+            That is, although the average displacement $\langle \Delta x \rangle$ remains zero (since motion is equally likely in all directions), the average of $\Delta x^2$ increases—reflecting the overall spread of the particle ensemble.
+            Notably, this scaling with time differed from the expectations of classical mechanics at the time, in which <em>displacement</em> (not the mean-square displacement) was often assumed to grow linearly with time under uniform motion.
+          </p>
+
+          <p>
+            Not stopping at this statistical connection, Einstein attributed the erratic particle motions of Brownian motion to the random impacts of fast-moving fluid molecules.
+            These impacts impart kinetic energy to the suspended particle, converting the thermal energy of the fluid into directed motion.
+            However, as the particle moves through the fluid, it encounters resistance—drag forces from the surrounding molecules—which act to slow it down and return that kinetic energy to the fluid as heat.
+            This continual two-way exchange of energy—thermal to kinetic via molecular kicks, and kinetic to thermal via drag—is encapsulated in the Einstein relation
+          </p>
+
+          <div id="eq-einstein-relation">
+            <p>
+              $$\begin{equation}
+                Df = k_BT\,. \label{eq:einstein-relation}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Here, $f$ is the <strong>drag coefficient</strong>, $k_B$ is the <strong>Boltzmann constant</strong>, and $T$ is the absolute temperature.
+          </p>
+
+          <!-- Collapsible Derivation Frame -->
+          <details class="derivation-box">
+            <summary>
+              Derivation 1
+            </summary>
+
+            <div>
+              <p>
+                The proper derivation of the Einstein relation is quite complicated, and involves application of the <strong>fluctuation-dissipation theorem</strong>—a relation that connects a system's equilibrium fluctuations to how it dissipates energy assuming detailed balance.
+                To build intuition, we will instead present an approximate derivation that, while not fully rigorous, captures the essential physics and leads to the correct final result.
+              </p>
+
+              <p>
+                Consider a particle that undergoes a displacement $\Delta x$ over a time interval $\Delta t$ as a result of a single random collision with a fluid molecule.
+                The fluid molecule has thermal energy $\epsilon$, which it transfers to the particle as kinetic energy during the collision.
+                As the particle moves, its kinetic energy is gradually lost due to the work done against the drag force $F_{\mathrm{drag}}$ over the distance $\Delta x$.
+                This is all encapsulated by
+              </p>
+
+              <div id="eq-balance">
+                <p>
+                  $$\epsilon \sim F_{\mathrm{drag}}\cdot \Delta x \tag{D1.1}$$
+                </p>
+              </div>
+
+              <p>
+                The thermal energy $\epsilon$ is $\sim k_B T$, and the drag force $F_{\mathrm{drag}}$ can be broken up into a drag coefficient $f$ times the velocity $v$ of the particle, such that
+              </p>
+
+              <div id="eq-energy-balance">
+                <p>
+                  $$k_B T \sim f \cdot v \cdot \Delta x \tag{D1.2}$$
+                </p>
+              </div>
+
+              <p>
+                Assuming an average velocity $v \sim \Delta x / \Delta t$,
+              </p>
+
+              <div id="eq-energy-drag">
+                <p>
+                  $$k_B T \sim f \cdot \left( \frac{\Delta x^2}{\Delta t} \right) \tag{D1.3}$$
+                </p>
+              </div>
+
+              <p>
+                Note that the quantity in parentheses in <a href="#eq-energy-drag" class="text-blue-300 font-bold hover:underline">Equation D1.3</a> is essentially the diffusion coefficient $D$ in <a href="#eq-position-time" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:position-time}$</a>, to within a factor of 2.
+                Making this substitution leads to the Einstein relation
+              </p>
+
+              <div id="eq-einstein-relation-result">
+                <p>
+                  $$\boxed{Df = k_BT} \tag{D1.4}$$
+                </p>
+              </div>
+            </div>
+          </details>
+
+          <p>
+          </p>
+
+          <p>
+            According to Stokes' Law, the drag coefficient for a spherical particle of radius $r$ moving through a fluid with dynamic viscosity $\eta$ is
+          </p>
+
+          <div id="eq-stokes">
+            <p>
+              $$\begin{equation}
+                f = 6\pi\eta r\,. \label{eq:stokes}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Substituting this into <a href="#eq-einstein-relation" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:einstein-relation}$</a> gives the Stokes–Einstein equation for the diffusion coefficient of a spherical particle:
+          </p>
+
+          <div id="eq-diffusion-coefficient">
+            <p>
+              $$\begin{equation}
+                D = \frac{k_BT}{6\pi\eta r}\,. \label{eq:diffusion-coefficient}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This equation links the microscopic dynamics of Brownian motion—random collisions between fluid molecules and suspended particles—to macroscopic, measurable quantities: temperature, fluid viscosity, and particle size.
+            The diffusion coefficient is then effectively a ratio of the thermal energy of the surrounding fluid to the drag coefficient of particles moving through the fluid.
+            Higher thermal energy (i.e., higher temperature $T$) increases the strength of molecular agitation, leading to a larger $D$ and faster spreading of particles.
+            In contrast, more viscous fluids exert greater drag on the particles, hindering their motion and reducing $D$, resulting in slower diffusion.
+          </p>
+
+          <p>
+            Since $k_B = R/N_A$, where $R$ is the gas constant and $N_A$ is <strong>Avogadro's number</strong>, <a href="#eq-diffusion-coefficient" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:diffusion-coefficient}$</a> can be further rewritten as
+          </p>
+
+          <div id="eq-avogadro">
+            <p>
+              $$\begin{equation}
+                \boxed{N_A = \frac{RT}{6\pi\eta r D}}\,. \label{eq:avogadro}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This expression provided one of the earliest methods for experimentally estimating Avogadro’s number, by measuring how thermal energy, viscous resistance, and particle diffusion are interrelated at microscopic scales.
+            The ability to experimentally determine $N_A$—and thereby confirm the existence of a specific, countable number of molecules per mole—provided compelling quantitative evidence for the reality of atoms and molecules.
+          </p>
+
+        </div>
+      </details>
+
+
+      <!-- Section: Pre-Lab Questions -->
+      <details id="pre-lab-questions" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Pre-Lab Questions
+        </summary>
+        <div class="mt-4 border border-blue-300 rounded-lg shadow-md bg-white/5 py-3 px-4 text-justify">
+
+          <p>
+            Submit your responses to the following questions by the start of the relevant lab meeting.
+          </p>
+
+          <ol class="list-decimal space-y-4 pl-6">
+            <li>
+              <p>
+                Prove by direct substitution that $\rho(x, t)$ from
+                <a href="#eq-concentration" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:concentration}$</a>
+                is a solution to
+                <a href="#eq-diffusion" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:diffusion}$</a>.
+              </p>
+            </li>
+          </ol>
+          <p class="mt-6">
+            The following questions pertain to <a href="data/lab1/brownian_motion_data.csv" download class="text-blue-300 font-bold hover:underline">this CSV file</a> — please download it before continuing.
+            Python will be used throughout this course for data analysis and plotting, and you are expected to use it to answer the questions below.
+            If you're new to Python, you may find <a href="python-primer.html" class="text-blue-300 hover:underline font-semibold">this primer</a> helpful as you work through the assignment.
+          </p>
+          <ol class="list-decimal space-y-4 pl-6" start="2">
+            <li>
+              <p>
+                Plot $x$ vs. $t$ from the data. Make sure to include axis labels (units are not required).
+              </p>
+            </li>
+            <li>
+              <p>
+                Create a histogram of the stepwise displacements in $x$ (i.e., the differences between consecutive $x$ values).
+              </p>
+            </li>
+            <li>
+              <p>
+                Compute the standard deviation of the $x$ values (approximately equal to the root-mean-square displacement since the mean is near zero), and the time interval $\Delta t$ between data points.
+                Use these to estimate the diffusion coefficient $D$ using <a href="#eq-position-time" class="text-blue-300 font-bold hover:underline">Equation $\ref{eq:position-time}$</a>.
+              </p>
+            </li>
+          </ol>
+          <p class="mt-6">
+            The final question pertains to <a href="data/lab1/brownian_motion_data_2.csv" download class="text-blue-300 font-bold hover:underline">this other CSV file</a> — please download it before continuing.
+            (The <a href="python-primer.html" class="text-blue-300 hover:underline font-semibold">Python primer</a> may be helpful here, as well.)
+          </p>
+          <ol class="list-decimal space-y-4 pl-6" start="5">
+            <li>
+              <p>
+                Use Python to make a scatter plot of the data, and fit a trendline to it.
+                Include a legend in the plot that also contains the equation of the best-fit line.
+              </p>
+            </li>
+          </ol>
+
+        </div>
+      </details>
+
+      <!-- Section: Procedure -->
+      <details id="procedure" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Procedure
+        </summary>
+        <div class="mt-4 border border-blue-300 rounded-lg shadow-md bg-white/5 py-3 px-4 text-justify">
+
+          <p>
+            In this experiment, you will observe and quantify Brownian motion by analyzing the random trajectories of suspended polystyrene microspheres in water.
+            Your goal is to use these observations to estimate the diffusion coefficient $D$ and, from that, calculate Avogadro’s number $N_A$.
+          </p>
+
+          <ol class="list-decimal space-y-4 pl-6">
+
+            <li>
+              <strong>Prepare the Sample:</strong>
+              Use a pipette to place 2–3 drops of the polystyrene microsphere solution into a clean glass vial.
+              Add 100mL of deionized water and gently swirl or shake to dilute the solution.
+            </li>
+
+            <li>
+              <strong>Mount the Slide:</strong>
+              Place a drop of the diluted solution onto a clean microscope slide.
+              Carefully lower a coverslip onto the drop to create a thin, uniform layer of fluid.
+              Avoid trapping air bubbles, as these can induce non-random flow that biases the motion.
+            </li>
+
+            <li>
+              <strong>Record Brownian Motion:</strong>
+              Using the microscope at maximum magnification (40x), focus on a plane where the particles are clearly suspended and moving freely.
+              Record a short video ($\sim 10$ seconds) of the particles undergoing Brownian motion, keeping the field of view steady.
+            </li>
+
+            <li>
+              <strong>Transfer the Video File:</strong>
+              Remove the SD card from the microscope and transfer the video to your computer for analysis.
+            </li>
+
+            <li>
+              <strong>Track Particle Positions:</strong>
+              Open the video in ImageJ (Fiji recommended), and make measurements of particle displacements and times.
+              You may use Fiji’s particle tracking plugin or manually log the coordinates frame by frame.
+              Aim for at least 50 displacement measurements before proceeding.
+            </li>
+
+            <li>
+              <strong>Estimate Avogadro’s Number:</strong>
+              Using what you've learned from the reading above, use your measurements to calculate $N_A$.
+              Note that you will need a pixel-to-length conversion factor from your TA (this should be $2.25\times 10^{-7}$ m/px).
+              For comparison of your final calculated value, use the accepted value $N_A = 6.022 \times 10^{23}\,\text{mol}^{-1}$ to estimate your experimental error.
+            </li>
+
+          </ol>
+
+          <p>
+          </p>
+
+          <p>
+            Record all measured values and calculations clearly.
+            Document your goals and thought processes as explicitly as possible.
+            Report your calculated diffusion coefficient and estimate of Avogadro’s number.
+            Discuss sources of uncertainty in your measurements and how they may have affected your results.
+          </p>
+
+        </div>
+      </details>
+
+      <!-- Section: Particle Collision Simulation -->
+      <details id="brownian-motion-virtual" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Virtual Lab Simulation
+        </summary>
+        <div class="mt-6 space-y-4 text-gray-100">
+
+          <p>
+            <strong>This section is only relevant if this lab is being done online.</strong>
+            <strong>If you are taking an in-person lab, you are not required to do anything with this material.</strong>
+            The simulation below shows larger polystyrene spheres being bombarded by smaller, faster water molecules.
+            You can pause the simulation, reset it, and select individual spheres to export their tracked paths as CSV files.
+            Use the data from this simulation to calculate Avogadro's number by following step 6 from the procedure above (you will need to use the pixel-to-length conversion factor).
+          </p>
+
+          <!-- Canvas container -->
+          <div class="flex-row">
+            <canvas id="canvas" width="600" height="600"></canvas>
+          </div>
+
+          <!-- Button row -->
+          <div class="flex-row" style="margin-top: 1rem;">
+            <button id="toggleButton" class="button">Pause</button>
+            <button id="resetButton" class="button reset">Reset</button>
+            <button id="exportButton" class="button export" disabled>Export CSV</button>
+          </div>
+
+          <p id="message" class="text-center text-sm mt-2 text-gray-300 font-mono"></p>
+
+          <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            const width = canvas.width;
+            const height = canvas.height;
+            const frameDelay = 1000 / 24;
+
+            const N_water = 3000;
+            const N_poly = 5;
+
+            const water_radius = 1.0;
+            const poly_radius = 12;
+
+            const water_speed = 2.5;
+            const poly_mass = 100;
+            const water_mass = 1;
+
+            const poly_colors = ['#0077cc', '#cc3300', '#33aa00', '#9933cc', '#ffaa00'];
+
+            let particles = [];
+            let poly_trails = [];
+            let running = false;
+            let selectingForExport = false;
+            let hoveredPolyIndex = null;
+            let selectedPolyIndices = [];
+            let frameCount = 0;
+
+            const toggleBtn = document.getElementById("toggleButton");
+            const resetBtn = document.getElementById("resetButton");
+            const exportBtn = document.getElementById("exportButton");
+            const messageBox = document.getElementById("message");
+
+            toggleBtn.textContent = running ? "Pause" : "Play";
+
+            toggleBtn.onclick = function () {
+              running = !running;
+              toggleBtn.textContent = running ? "Pause" : "Play";
+              exportBtn.disabled = running;
+              selectingForExport = false;
+              selectedPolyIndices = [];
+              messageBox.textContent = "";
+            };
+
+            resetBtn.onclick = function () {
+              initializeParticles();
+              exportBtn.disabled = running;
+              selectingForExport = false;
+              selectedPolyIndices = [];
+              messageBox.textContent = "";
+            };
+
+            exportBtn.onclick = function () {
+              if (!running) {
+                if (!selectingForExport) {
+                  selectingForExport = true;
+                  selectedPolyIndices = [];
+                  messageBox.textContent = "Click one or more polystyrene spheres to select them for export. Click 'Export CSV' again to export.";
+                } else {
+                  selectingForExport = false;
+                  exportCombinedTrajectories(selectedPolyIndices);
+                  messageBox.textContent = `Exported ${selectedPolyIndices.length} particle trajectories.`;
+                  selectedPolyIndices = [];
+                }
+              }
+            };
+
+            canvas.addEventListener("click", function (e) {
+              if (!selectingForExport) return;
+
+              const rect = canvas.getBoundingClientRect();
+              const mouseX = e.clientX - rect.left;
+              const mouseY = e.clientY - rect.top;
+
+              for (const p of particles) {
+                if (p.isPoly) {
+                  const dx = p.x - mouseX;
+                  const dy = p.y - mouseY;
+                  if (Math.hypot(dx, dy) < p.radius) {
+                    const index = selectedPolyIndices.indexOf(p.trailIndex);
+                    if (index > -1) {
+                      selectedPolyIndices.splice(index, 1);
+                    } else {
+                      selectedPolyIndices.push(p.trailIndex);
                     }
+                    break;
+                  }
+                }
+              }
+            });
+
+            canvas.addEventListener("mousemove", function (e) {
+              if (!selectingForExport) {
+                hoveredPolyIndex = null;
+                return;
+              }
+
+              const rect = canvas.getBoundingClientRect();
+              const mouseX = e.clientX - rect.left;
+              const mouseY = e.clientY - rect.top;
+
+              hoveredPolyIndex = null;
+              for (const p of particles) {
+                if (p.isPoly) {
+                  const dx = p.x - mouseX;
+                  const dy = p.y - mouseY;
+                  if (Math.hypot(dx, dy) < p.radius) {
+                    hoveredPolyIndex = p.trailIndex;
+                    break;
+                  }
+                }
+              }
+            });
+
+            function exportCombinedTrajectories(indices) {
+              if (!indices.length) return;
+
+              let maxLength = 0;
+              indices.forEach(i => {
+                maxLength = Math.max(maxLength, poly_trails[i].length);
+              });
+
+              let csvHeader = ['Time'];
+              indices.forEach((idx, j) => {
+                csvHeader.push(`x${j+1}`, `y${j+1}`);
+              });
+
+              let csvRows = [csvHeader.join(',')];
+
+              for (let t = 0; t < maxLength; t++) {
+                let time_scaled = t * (1 / 24);
+                let row = [time_scaled];
+                indices.forEach(idx => {
+                  const trail = poly_trails[idx];
+                  if (t < trail.length) {
+                    row.push(trail[t].x, trail[t].y);
+                  } else {
+                    row.push('', '');
+                  }
+                });
+                csvRows.push(row.join(','));
+              }
+
+              const csvContent = csvRows.join("\n");
+              const blob = new Blob([csvContent], { type: 'text/csv' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement("a");
+              a.href = url;
+              a.download = `particle_trails.csv`;
+              a.click();
+              URL.revokeObjectURL(url);
+            }
+
+            function createParticle(x, y, vx, vy, radius, mass, color, isPoly = false, index = -1) {
+              const p = { x, y, vx, vy, radius, mass, color, isPoly, trailIndex: index };
+              if (isPoly) {
+                poly_trails[index] = [{ x, y }];
+              }
+              return p;
+            }
+
+            function initializeParticles() {
+              particles = [];
+              poly_trails = new Array(N_poly);
+              hoveredPolyIndex = null;
+
+              for (let i = 0; i < N_water; i++) {
+                particles.push(createParticle(
+                  Math.random() * width,
+                  Math.random() * height,
+                  (Math.random() - 0.5) * water_speed * 2,
+                  (Math.random() - 0.5) * water_speed * 2,
+                  water_radius,
+                  water_mass,
+                  '#bbbbbb'
+                ));
+              }
+
+              const margin = 0.125;
+              const xMin = width * margin;
+              const xMax = width * (1 - margin);
+              const yMin = height * margin;
+              const yMax = height * (1 - margin);
+
+              for (let i = 0; i < N_poly; i++) {
+                particles.push(createParticle(
+                  xMin + Math.random() * (xMax - xMin),
+                  yMin + Math.random() * (yMax - yMin),
+                  0,
+                  0,
+                  poly_radius,
+                  poly_mass,
+                  poly_colors[i % poly_colors.length],
+                  true,
+                  i
+                ));
+              }
+            }
+
+            function updateParticles() {
+              for (let i = 0; i < particles.length; i++) {
+                const p = particles[i];
+
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x - p.radius < 0 || p.x + p.radius > width) p.vx *= -1;
+                if (p.y - p.radius < 0 || p.y + p.radius > height) p.vy *= -1;
+
+                if (p.isPoly && frameCount % 5 === 0) {
+                  const trail = poly_trails[p.trailIndex];
+                  trail.push({ x: p.x, y: p.y });
+                }
+              }
+
+              for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                  const a = particles[i];
+                  const b = particles[j];
+
+                  if (!a.isPoly && !b.isPoly) continue;
+
+                  const dx = b.x - a.x;
+                  const dy = b.y - a.y;
+                  const dist = Math.hypot(dx, dy);
+                  const minDist = a.radius + b.radius;
+
+                  if (dist < minDist) {
+                    const nx = dx / dist;
+                    const ny = dy / dist;
+                    const dvx = b.vx - a.vx;
+                    const dvy = b.vy - a.vy;
+                    const relVel = dvx * nx + dvy * ny;
+                    if (relVel > 0) continue;
+
+                    const impulse = (2 * relVel) / (a.mass + b.mass);
+
+                    a.vx += impulse * b.mass * nx;
+                    a.vy += impulse * b.mass * ny;
+                    b.vx -= impulse * a.mass * nx;
+                    b.vy -= impulse * a.mass * ny;
+
+                    const overlap = 0.5 * (minDist - dist);
+                    a.x -= overlap * nx;
+                    a.y -= overlap * ny;
+                    b.x += overlap * nx;
+                    b.y += overlap * ny;
+                  }
+                }
+              }
+              frameCount++;
+            }
+
+            function drawParticles() {
+              ctx.clearRect(0, 0, width, height);
+
+              ctx.lineWidth = 1.5;
+              for (let t = 0; t < poly_trails.length; t++) {
+                ctx.strokeStyle = poly_colors[t % poly_colors.length];
+                const trail = poly_trails[t];
+                if (trail && trail.length > 1) {
+                  ctx.beginPath();
+                  for (let i = 0; i < trail.length - 1; i++) {
+                    ctx.moveTo(trail[i].x, trail[i].y);
+                    ctx.lineTo(trail[i + 1].x, trail[i + 1].y);
+                  }
+                  ctx.stroke();
+                }
+              }
+
+              for (const p of particles) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+
+                if (p.isPoly) {
+                  if (selectedPolyIndices.includes(p.trailIndex)) {
+                    // Selected particle: gray by default, black if hovered
+                    ctx.strokeStyle = (hoveredPolyIndex === p.trailIndex) ? '#ffffff' : '#666666';
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                  } else if (hoveredPolyIndex === p.trailIndex) {
+                    // Unselected but hovered: black outline
+                    ctx.strokeStyle = '#ffffff';
+                    ctx.lineWidth = 2;
                     ctx.stroke();
                   }
                 }
-
-                for (const p of particles) {
-                  ctx.beginPath();
-                  ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                  ctx.fillStyle = p.color;
-                  ctx.fill();
-
-                  if (p.isPoly) {
-                    if (selectedPolyIndices.includes(p.trailIndex)) {
-                      // Selected particle: gray by default, black if hovered
-                      ctx.strokeStyle = (hoveredPolyIndex === p.trailIndex) ? '#ffffff' : '#666666';
-                      ctx.lineWidth = 2;
-                      ctx.stroke();
-                    } else if (hoveredPolyIndex === p.trailIndex) {
-                      // Unselected but hovered: black outline
-                      ctx.strokeStyle = '#ffffff';
-                      ctx.lineWidth = 2;
-                      ctx.stroke();
-                    }
-                  }
-                }
               }
+            }
 
-              function loop() {
-                setTimeout(() => {
-                  if (running) updateParticles();
-                  drawParticles();
-                  requestAnimationFrame(loop);
-                }, frameDelay);
-              }
+            function loop() {
+              setTimeout(() => {
+                if (running) updateParticles();
+                drawParticles();
+                requestAnimationFrame(loop);
+              }, frameDelay);
+            }
 
-              initializeParticles();
-              loop();
+            initializeParticles();
+            loop();
 
-              requestAnimationFrame(() => {
-              initializeParticles();
-              loop();
-            });
+            requestAnimationFrame(() => {
+            initializeParticles();
+            loop();
           });
-            </script>
-          </div>
-        </details>
+        });
+          </script>
+        </div>
+      </details>
 
-        <!-- Section: Footnotes -->
-        <footer class="mt-8 text-sm text-gray-400 space-y-1">
+      <!-- Section: Footnotes -->
+      <footer class="mt-8 text-sm text-gray-400 space-y-1">
 
-          <p id="feynman-1963">
-            [1] Richard P. Feynman, <em>The Feynman Lectures on Physics</em>, Vol. I, Chapter 1: "Atoms in Motion", Addison-Wesley (1963).
-          </p>
+        <p id="feynman-1963">
+          [1] Richard P. Feynman, <em>The Feynman Lectures on Physics</em>, Vol. I, Chapter 1: "Atoms in Motion", Addison-Wesley (1963).
+        </p>
 
-          <p id="brown-1828">
-            [2] R. Brown, "A brief Account of Microscopical Observations...", <em>Philos. Mag.</em> 4(21), 161–173 (1828).
-          </p>
+        <p id="brown-1828">
+          [2] R. Brown, "A brief Account of Microscopical Observations...", <em>Philos. Mag.</em> 4(21), 161–173 (1828).
+        </p>
 
-          <p id="einstein-1956">
-            [3] A. Einstein, <em>Investigations on the Theory of Brownian Movement</em>, translated by A. D. Cowper (Dover, New York, 1956).
-          </p>
+        <p id="einstein-1956">
+          [3] A. Einstein, <em>Investigations on the Theory of Brownian Movement</em>, translated by A. D. Cowper (Dover, New York, 1956).
+        </p>
 
-          <p id="perrin-1910">
-            [4] J. Perrin, "Brownian movement and molecular reality", translated by F. Soddy (Taylor and Francis, London, 1910).
-          </p>
+        <p id="perrin-1910">
+          [4] J. Perrin, "Brownian movement and molecular reality", translated by F. Soddy (Taylor and Francis, London, 1910).
+        </p>
 
-        </footer>
+      </footer>
 
 
 
-      </main>
-    </div>
-  </body>
+    </main>
+  </div>
+</body>
 </html>

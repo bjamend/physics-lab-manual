@@ -1,0 +1,290 @@
+/* === Base Layout and Text === */
+html {
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #000; /* Tailwind bg-black */
+  color: #f3f4f6;          /* Tailwind text-gray-100 */
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+}
+
+/* === Paragraph and Footer Text Justification === */
+body p,
+footer p {
+  text-align: justify;
+  margin-bottom: 1.5rem !important;
+}
+
+footer {
+  font-size: 0.75rem;         /* smaller than the rest of the body text */
+  color: #9ca3af;             /* Tailwind gray-400 */
+  line-height: 1.4;           /* tighter spacing */
+  margin-top: 2rem;
+}
+
+footer p {
+  margin-bottom: 0.0rem !important;  /* reduce vertical space between entries */
+  text-align: justify;
+}
+
+/* === Main Container === */
+.container {
+  padding: 1.5rem;           /* Tailwind p-6 */
+  padding-top: 6rem;
+  padding-bottom: 3rem;
+  max-width: 56rem;          /* Tailwind max-w-4xl = 896px */
+  margin-left: auto;
+  margin-right: auto;
+  border-radius: 0.75rem;    /* Tailwind rounded-xl */
+}
+
+/* === Main Box === */
+.main-box {
+  background-color: #111827;  /* Tailwind bg-gray-900 */
+  padding: 2rem;              /* Tailwind p-8 */
+  border-radius: 0.75rem;
+}
+
+/* === Back Link === */
+.container a {
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600;    /* font-semibold */
+  color: #93c5fd;      /* Tailwind text-blue-300 */
+  text-decoration: none;
+}
+
+.container a:hover {
+  text-decoration: underline;
+}
+
+/* === Headings === */
+h1 {
+  font-size: 1.875rem; /* text-3xl */
+  font-weight: 700;    /* font-bold */
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* === Quote and Attribution === */
+.italic {
+  font-style: italic;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-gray-400 {
+  color: #9ca3af; /* Tailwind text-gray-400 */
+}
+
+/* === Navigation Menu === */
+nav {
+  background-color: #1f2937; /* Tailwind bg-gray-800 */
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  margin-bottom: 2rem;
+}
+
+nav ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 0;
+}
+
+nav li {
+  margin-bottom: 0.25rem;
+}
+
+nav a {
+  color: #93c5fd; /* Tailwind text-blue-300 */
+  font-size: 0.875rem;
+  text-decoration: none;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* === Expandable Sections === */
+details {
+  margin-bottom: 2rem;
+}
+
+details summary {
+  font-size: 1.25rem; /* text-xl */
+  font-weight: bold;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+details summary:hover {
+  color: #93c5fd;
+}
+
+details > div {
+  margin-top: 1rem;
+}
+
+/* === Highlight Boxes (Pre-Lab / Procedure) === */
+#pre-lab-questions > div,
+#procedure > div {
+  background-color: rgba(255, 255, 255, 0.03); /* Tailwind bg-white/5 */
+  border: 1px solid #93c5fd;                  /* Tailwind border-blue-300 */
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-align: justify;
+}
+
+/* === Ordered List Styling === */
+ol.list-decimal {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+}
+
+ol.list-decimal li {
+  margin-bottom: 1rem;
+}
+
+img, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem; /* equivalent to Tailwind's rounded */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Optional for text-centered figures */
+figure {
+  text-align: center;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+figcaption {
+  font-size: 0.875rem;
+  color: #9ca3af; /* Tailwind text-gray-400 */
+  margin-top: 0.5rem;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  color: white;
+  background-color: #2563eb; /* blue-600 */
+  border: none;
+  border-radius: 0.375rem; /* Tailwind rounded */
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-family: inherit;
+}
+
+button:hover {
+  background-color: #3b82f6; /* blue-500 */
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+details.derivation-box {
+  border: 1px solid #93c5fd; /* Tailwind blue-300 */
+  border-radius: 0.5rem;      /* rounded-lg */
+  background-color: rgba(255, 255, 255, 0.03); /* Tailwind bg-white/5 */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);     /* shadow-md */
+  margin-top: 1.5rem;
+}
+
+details.derivation-box summary {
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  font-size: 0.875rem;       /* text-sm */
+  font-weight: 600;
+  color: #93c5fd;            /* text-blue-300 */
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+details.derivation-box > div {
+  padding: 1rem;
+  margin-top: 0;
+}
+
+details.derivation-box p {
+  margin-bottom: 1rem;
+}
+
+canvas {
+  background-color: #1f2937; /* gray-800 */
+  border: 1px solid #4b5563; /* gray-600 */
+  border-radius: 0.5rem;     /* rounded */
+  display: block;
+}
+
+#message {
+  text-align: center;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  color: #d1d5db; /* Tailwind gray-300 */
+  font-family: monospace;
+}
+
+/* === Code blocks styled manually, not using Prism's theme background === */
+pre[class*="language-"] {
+  background-color: #111827; /* Tailwind gray-900 */
+  color: #d1d5db; /* Tailwind gray-300 */
+  font-family: 'Fira Code', monospace;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* === Highlighted code inside blocks === */
+code[class*="language-"] {
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* === Inline code (e.g. p code) === */
+p code {
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 0.1rem 0.25rem;
+  border-radius: 0.25rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem;
+}
