@@ -8,28 +8,49 @@
   <!-- External CSS -->
   <link rel="stylesheet" href="manual_entry_style.css" />
 
-  <!-- MathJax for LaTeX -->
-  <script src="mathjax-config.js"></script>
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        tags: 'ams',
+      },
+    };
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 </head>
+
+
 
 <body>
   <div class="container">
     <main class="main-box">
+
+
 
       <!-- Back to Main Page -->
       <div>
         <a href="index.html">← Back to Main Page (PHYS 2240)</a>
       </div>
 
+
+
       <!-- Title -->
       <header>
         <h1>Waves on a String</h1>
       </header>
 
+
+
       <!-- Quote -->
-      <p class="italic">"Text."</p>
-      <p class="attribution">— Attribution</p>
+      <p class="italic">
+        "There is geometry in the humming of the strings.
+        There is music in the spacing of the spheres"
+      </p>
+      <p class="text-right text-gray-400">— Pythagoras (allegedly)</p>
+
+
 
       <!-- Navigation Menu -->
       <nav>
@@ -42,21 +63,183 @@
         </ul>
       </nav>
 
+
+
       <!-- Section: Historical Background -->
       <details id="background" open>
         <summary>Historical Background</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            In the 17th century, Marin Mersenne conducted some of the earliest quantitative studies of vibrating strings, showing how pitch depends on a string's length, tension, and mass per unit length<sup><a href="#chapman-1957" class="text-blue-300 hover:underline">[1]</a></sup>.
+            A century later, the theoretical framework for wave motion began to take shape.
+            Jean le Rond d’Alembert derived the one-dimensional wave equation in 1747, which described how disturbances travel along a string<sup><a href="#curtin-2017" class="text-blue-300 hover:underline">[2]</a></sup>.
+            In 1787, Ernst Chladni visualized standing wave patterns on metal plates by sprinkling sand on them and exciting the plates with a violin bow, revealing the now-famous Chladni figures<sup><a href="#chladni-1787" class="text-blue-300 hover:underline">[3]</a></sup>.
+            Michael Faraday extended the concept to fluids in 1831, observing standing wave patterns—now called Faraday waves—on the surface of liquids driven by vertical oscillation<sup><a href="#faraday-1831" class="text-blue-300 hover:underline">[4]</a></sup>.
+            In the 1850s, Franz Melde used a tuning fork to drive a taut string and observed stable wave patterns, clearly demonstrating the connection between periodic driving and resonance<sup><a href="#melde-1859" class="text-blue-300 hover:underline">[5]</a></sup>.
+            Together, these contributions established standing waves not just as a mathematical solution, but as a real and observable phenomenon across a wide range of physical systems.
+          </p>
         </div>
       </details>
+
+
 
       <!-- Section: Theory -->
       <details id="theory">
         <summary>Theory</summary>
         <div>
-          <p>Text.</p>
+
+          <p>
+            All waves are governed by the wave equation:
+          </p>
+
+          <div id="eq-wave-equation">
+            <p>
+              $$\begin{equation}
+                \frac{\partial^2y}{\partial x^2} = v^2 \frac{\partial^2y}{\partial t^2} \label{eq:wave-equation}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Here, in the context of a wave on a string, $y(x,t)$ is the transverse displacement of the string, $v$ is the wave speed along the string, $x$ is the position along the string, and $t$ is time.
+          </p>
+
+          <details class="derivation-box">
+            <summary>
+              Derivation 1
+            </summary>
+
+            <div>
+
+              <p>
+                Suppose we have a string stretched tightly between two supports.
+                The string is under constant tension $T$ and has a uniform linear mass density $\mu$.
+                When the string is plucked or disturbed, it moves slightly up and down, and we want to understand how those vibrations evolve over time.
+              </p>
+
+              <p>
+                Let's call the vertical displacement of the string at position $x$ and time $t$ by the function $y(x,t)$.
+                We'll make a key assumption: the displacements are small.
+                This means that although the string bends slightly, its overall shape stays nearly horizontal, and the slope $\frac{\partial y}{\partial x}$ remains small.
+                This will let us use a small-angle approximation later.
+              </p>
+
+              <p>
+                To analyze the motion, we zoom in on a tiny segment of the string, running from $x$ to $x + \Delta x$.
+                Tension $T$ acts on both ends of this segment, pulling along the tangent to the string at each end.
+                The key idea is that while the magnitude of the tension is the same at both ends (since we assume constant tension), the direction can be slightly different since the string might be curved.
+              </p>
+
+              <p>
+                Each tension vector can be broken into horizontal and vertical components.
+                The vertical component of the tension at position $x$ is given by
+              </p>
+
+              <div id="eq-vertical-force">
+                <p>
+                  $$T_y(x) = T\sin{\theta}(x)\,, \tag{D1.1}$$
+                </p>
+              </div>
+
+              <p>
+                where $\theta(x)$ is the angle the string makes with the horizontal at that point.
+                If the slope of the string is small, we can use the approximation $\sin{\theta} \approx \tan{\theta} = \frac{\partial y}{\partial x}$.
+                So the vertical component becomes
+              </p>
+
+              <div id="eq-vertical-small-angle">
+                <p>
+                  $$T_y(x) \approx T\frac{\partial y}{\partial x}(x,t)\,. \tag{D1.2}$$
+                </p>
+              </div>
+
+              <p>
+                Similarly, the vertical component at the other end, $x + \Delta x$, is
+              </p>
+
+              <div id="eq-vertical-force-2">
+                <p>
+                  $$T_y(x + \Delta x) \approx T\frac{\partial y}{\partial x}(x + \Delta x, t)\,. \tag{D1.3}$$
+                </p>
+              </div>
+
+              <p>
+                The net vertical force on the segment is the difference between these two vertical components:
+              </p>
+
+              <div id="eq-force-difference">
+                <p>
+                  $$F_y = T\left[ \frac{\partial y}{\partial x}(x + \Delta x, t) - \frac{\partial y}{\partial x}(x,t) \right]\,. \tag{D1.4}$$
+                </p>
+              </div>
+
+              <p>
+                Now, if $\Delta x$ is very small, the difference in slope becomes a derivative:
+              </p>
+
+              <div id="eq-force-difference">
+                <p>
+                  $$F_y = T\frac{\partial^2y}{\partial x^2}\Delta x\,. \tag{D1.5}$$
+                </p>
+              </div>
+
+              <p>
+                This is the net vertical force acting on the segment of the string due to the way the slope (and thus the vertical component of tension) changes along the string.
+              </p>
+
+              <p>
+                Next, we apply Newton's second law to this segment.
+                The mass of the small piece of string is $\mu\Delta x$, and its vertical acceleration is $\frac{\partial^2y}{\partial t^2}$, so:
+              </p>
+
+              <div id="eq-newtons-law">
+                <p>
+                  $$\mu\Delta x \frac{\partial^2y}{\partial t^2} = T\frac{\partial^2y}{\partial x^2}\Delta x\,. \tag{D1.6}$$
+                </p>
+              </div>
+
+              <p>
+                Canceling the $\Delta x$ and dividing both sides by $\mu$, we get:
+              </p>
+
+              <div id="eq-cancel-dx">
+                <p>
+                  $$\frac{\partial^2y}{\partial t^2} = \frac{T}{\mu}\frac{\partial^2y}{\partial x^2}\,. \tag{D1.7}$$
+                </p>
+              </div>
+
+              <p>
+                This is the wave equation for a vibrating string.
+                It tells us that the acceleration of a small piece of string depends on the curvature of the string at that point; if the string is curved, tension pulls it back toward being straight.
+              </p>
+
+              <p>
+                We define the wave speed as
+              </p>
+
+              <div id="eq-wave-speed">
+                <p>
+                  $$v = \sqrt{\frac{T}{\mu}}\,, \tag{D1.8}$$
+                </p>
+              </div>
+
+              <p>
+                which leads to the final form of the wave equation:
+              </p>
+
+              <div id="eq-final-wave-equation">
+                <p>
+                  $$\boxed{\frac{\partial^2y}{\partial t^2} = v^2\frac{\partial^2y}{\partial x^2}}\,. \tag{D1.9}$$
+                </p>
+              </div>
+
+            </div>
+          </details>
+
         </div>
       </details>
+
+
 
       <!-- Section: Pre-Lab Questions -->
       <details id="pre-lab-questions">
@@ -75,6 +258,8 @@
         </div>
       </details>
 
+
+
       <!-- Section: Procedure -->
       <details id="procedure">
         <summary>Procedure</summary>
@@ -88,10 +273,34 @@
         </div>
       </details>
 
+
+
       <!-- Section: Footnotes -->
       <footer>
-        <!-- Optional footnote content -->
+
+        <p id="chapman-1957">
+          [1] M. Mersenne, Harmonie universelle: The Books on Instruments, translated by Roger E. Chapman (Springer, 1957).
+        </p>
+
+        <p id="curtin-2017">
+          [2] J. le R. d'Alembert, "A Study of the Curve Formed by a Taut String Set to Vibrating," translated by Dan Curtin, from Mémoires de l'Académie royale des sciences... (1747), t. 3, pp. 214–219 (2017 digital edition, ORESME Reading Group).
+        </p>
+
+        <p id="chladni-1787">
+          [3] Chladni, E. F. F. Entdeckungen über die Theorie des Klanges (Leipzig, 1787), Tab. I–XII.
+        </p>
+
+        <p id="faraday-1831">
+          [4] Faraday, M. (1831) "On a peculiar class of acoustical figures; and on certain forms assumed by a group of particles upon vibrating elastic surfaces", Philosophical Transactions of the Royal Society (London), vol. 121, pp. 299–318.
+        </p>
+
+        <p id="melde-1859">
+          [5] Melde, Franz, and Philipps-Universität Marburg. 1859. "Ueber Einige Krumme FläChen, Welche von Ebenen, Parallel Einer Bestimmten Ebene, Durchschnitten, Als Durchschnittsfigur Einen Kegelschnitt Liefern."" Dissertation.
+        </p>
+
       </footer>
+
+
 
     </main>
   </div>
