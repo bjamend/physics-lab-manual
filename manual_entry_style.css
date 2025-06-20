@@ -288,3 +288,44 @@ p code {
   font-family: 'Fira Code', monospace;
   font-size: 0.85rem;
 }
+
+/* 1) Limit the overall width, center on page */
+.slider-wrapper {
+  max-width: 640px;       /* whatever maximum width you prefer */
+  margin: 1.5rem auto 0;  /* top margin + auto left/right centering */
+  padding: 0 1rem;        /* small side padding */
+}
+
+/* 2) Keep same flex-row behavior, but drop any extra margins */
+.flex-row {
+  display: flex;
+  gap: 1rem;              /* space between two slider-boxes */
+  margin-top: 1rem;
+  justify-content: space-between;
+}
+
+/* 3) Make each slider-box take about half the wrapper */
+.slider-box {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 0 1 48%;          /* don’t grow past 48% of wrapper */
+}
+
+/* 4) Optional: tighten range so it doesn’t fill entire 48% */
+.slider-box input[type="range"] {
+  flex: 1;
+  margin: 0;
+  max-width: calc(100% - 4rem); /* leaves room for the number input */
+}
+
+/* 5) Number input stays fixed */
+.slider-box input[type="number"] {
+  background-color: #1f2937;
+  border: 1px solid #4b5563;
+  border-radius: 0.5rem;
+  padding: 0.2rem 0.4rem;
+  color: inherit;
+  width: 3.5rem;
+  text-align: center;
+}

@@ -250,44 +250,50 @@
 
           <p>
             One way to produce a standing wave is by adding two identical traveling waves moving in opposite directions.
+            You can explore this by adjusting the properties of the waves in the interactive widget below.
           </p>
 
-          <div style="margin-top: 1.5rem;">
+          <div class="slider-wrapper">
             <div class="flex-row">
               <canvas id="waveCanvas" width="800" height="300"></canvas>
             </div>
+            <div class="flex-row" style="margin-top: 1rem; justify-content: center;">
+              <button id="playPause" class="button">
+                Play
+              </button>
+            </div>
             <div class="flex-row">
               <div class="slider-box">
-                <label for="A1">Amplitude A₁ (right):</label>
+                <label for="A1">$A_1$:</label>
                 <input type="range" id="A1" min="0" max="100" value="50">
                 <input type="number" id="A1Num" min="0" max="100" value="50">
               </div>
               <div class="slider-box">
-                <label for="A2">Amplitude A₂ (left):</label>
+                <label for="A2">$A_2$:</label>
                 <input type="range" id="A2" min="0" max="100" value="50">
                 <input type="number" id="A2Num" min="0" max="100" value="50">
               </div>
             </div>
             <div class="flex-row">
               <div class="slider-box">
-                <label for="k1">Wave Number k₁:</label>
+                <label for="k1">$k_1$:</label>
                 <input type="range" id="k1" min="0.01" max="0.1" step="0.001" value="0.0314">
                 <input type="number" id="k1Num" min="0.01" max="0.1" step="0.001" value="0.0314">
               </div>
               <div class="slider-box">
-                <label for="k2">Wave Number k₂:</label>
+                <label for="k2">$k_2$:</label>
                 <input type="range" id="k2" min="0.01" max="0.1" step="0.001" value="0.0314">
                 <input type="number" id="k2Num" min="0.01" max="0.1" step="0.001" value="0.0314">
               </div>
             </div>
             <div class="flex-row">
               <div class="slider-box">
-                <label for="omega1">Angular Freq ω₁:</label>
+                <label for="omega1">$\omega_1$:</label>
                 <input type="range" id="omega1" min="0.1" max="10" step="0.1" value="3.14">
                 <input type="number" id="omega1Num" min="0.1" max="10" step="0.1" value="3.14">
               </div>
               <div class="slider-box">
-                <label for="omega2">Angular Freq ω₂:</label>
+                <label for="omega2">$\omega_2$:</label>
                 <input type="range" id="omega2" min="0.1" max="10" step="0.1" value="3.14">
                 <input type="number" id="omega2Num" min="0.1" max="10" step="0.1" value="3.14">
               </div>
@@ -295,13 +301,25 @@
           </div>
 
           <script>
+            // Grab elements
             const canvas = document.getElementById("waveCanvas");
             const ctx = canvas.getContext("2d");
+            const playBtn = document.getElementById("playPause");
 
+            // Playback state
+            let isPlaying = false;    // start paused
+            playBtn.textContent = "Play";
+            playBtn.addEventListener("click", () => {
+              isPlaying = !isPlaying;
+              playBtn.textContent = isPlaying ? "Pause" : "Play";
+            });
+
+            // Wave parameters
             let A1 = 50, A2 = 50;
             let k1 = 0.0314, k2 = 0.0314;
             let omega1 = 3.14, omega2 = 3.14;
 
+            // Utility to bind a range + number input pair
             const bindSliderPair = (slider, number, onChange) => {
               slider.addEventListener('input', () => {
                 number.value = slider.value;
@@ -313,75 +331,103 @@
               });
             };
 
-            bindSliderPair(document.getElementById("A1"), document.getElementById("A1Num"), val => A1 = val);
-            bindSliderPair(document.getElementById("A2"), document.getElementById("A2Num"), val => A2 = val);
-            bindSliderPair(document.getElementById("k1"), document.getElementById("k1Num"), val => k1 = val);
-            bindSliderPair(document.getElementById("k2"), document.getElementById("k2Num"), val => k2 = val);
-            bindSliderPair(document.getElementById("omega1"), document.getElementById("omega1Num"), val => omega1 = val);
-            bindSliderPair(document.getElementById("omega2"), document.getElementById("omega2Num"), val => omega2 = val);
+            // Wire up all six controls
+            bindSliderPair(
+              document.getElementById("A1"),
+              document.getElementById("A1Num"),
+              val => A1 = val
+            );
+            bindSliderPair(
+              document.getElementById("A2"),
+              document.getElementById("A2Num"),
+              val => A2 = val
+            );
+            bindSliderPair(
+              document.getElementById("k1"),
+              document.getElementById("k1Num"),
+              val => k1 = val
+            );
+            bindSliderPair(
+              document.getElementById("k2"),
+              document.getElementById("k2Num"),
+              val => k2 = val
+            );
+            bindSliderPair(
+              document.getElementById("omega1"),
+              document.getElementById("omega1Num"),
+              val => omega1 = val
+            );
+            bindSliderPair(
+              document.getElementById("omega2"),
+              document.getElementById("omega2Num"),
+              val => omega2 = val
+            );
 
+            // Time stepping
             let t = 0;
             const dt = 1 / 60;
             const dx = 2;
             const N = Math.floor(canvas.width / dx);
 
+            // Wave functions
             function rightWave(x, t) {
               return A1 * Math.sin(k1 * x - omega1 * t);
             }
-
             function leftWave(x, t) {
               return A2 * Math.sin(k2 * x + omega2 * t);
             }
 
+            // Draw both traveling waves and their sum
             function drawWave() {
               ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-              // Right-moving wave
+              // Right-moving
               ctx.beginPath();
               for (let i = 0; i < N; i++) {
                 const x = i * dx;
                 const y = rightWave(x, t);
                 const screenY = canvas.height / 2 - y;
-                if (i === 0) ctx.moveTo(x, screenY);
-                else ctx.lineTo(x, screenY);
+                i === 0 ? ctx.moveTo(x, screenY) : ctx.lineTo(x, screenY);
               }
-              ctx.strokeStyle = "blue";
+              ctx.strokeStyle = "rgba(135, 206, 235, 0.5)";
               ctx.lineWidth = 1.5;
               ctx.stroke();
 
-              // Left-moving wave
+              // Left-moving
               ctx.beginPath();
               for (let i = 0; i < N; i++) {
                 const x = i * dx;
                 const y = leftWave(x, t);
                 const screenY = canvas.height / 2 - y;
-                if (i === 0) ctx.moveTo(x, screenY);
-                else ctx.lineTo(x, screenY);
+                i === 0 ? ctx.moveTo(x, screenY) : ctx.lineTo(x, screenY);
               }
-              ctx.strokeStyle = "green";
+              ctx.strokeStyle = "rgba(240, 128, 128, 0.5)";
               ctx.lineWidth = 1.5;
               ctx.stroke();
 
-              // Sum of waves
+              // Superposition
               ctx.beginPath();
               for (let i = 0; i < N; i++) {
                 const x = i * dx;
                 const y = rightWave(x, t) + leftWave(x, t);
                 const screenY = canvas.height / 2 - y;
-                if (i === 0) ctx.moveTo(x, screenY);
-                else ctx.lineTo(x, screenY);
+                i === 0 ? ctx.moveTo(x, screenY) : ctx.lineTo(x, screenY);
               }
-              ctx.strokeStyle = "red";
+              ctx.strokeStyle = "white";
               ctx.lineWidth = 2;
               ctx.stroke();
             }
 
+            // Animation loop
             function animate() {
-              t += dt;
+              if (isPlaying) {
+                t += dt;
+              }
               drawWave();
               requestAnimationFrame(animate);
             }
 
+            // Start the loop (paused)
             animate();
           </script>
 
