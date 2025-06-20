@@ -148,6 +148,20 @@ details > div {
   text-align: justify;
 }
 
+.online-only-note {
+  background-color: rgba(255, 255, 255, 0.03); /* same subtle bg as procedure */
+  border: 1px solid #f87171;                  /* Tailwind red-400 */
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-align: center !important;
+  color: white;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1.5rem;
+}
+
 /* === Ordered List Styling === */
 ol.list-decimal {
   list-style-type: decimal;
@@ -296,10 +310,8 @@ p code {
   padding: 0 1rem;        /* small side padding */
 }
 
-/* 2) Keep same flex-row behavior, but drop any extra margins */
-.flex-row {
-  display: flex;
-  gap: 1rem;              /* space between two slider-boxes */
+.slider-wrapper .flex-row {
+  gap: 1rem;
   margin-top: 1rem;
   justify-content: space-between;
 }

@@ -60,6 +60,7 @@
           <li><a href="#theory">Theory</a></li>
           <li><a href="#pre-lab-questions">Pre-Lab Questions</a></li>
           <li><a href="#procedure">Procedure</a></li>
+          <li><a href="#standing-waves-virtual">Virtual Lab Simulation</a></li>
         </ul>
       </nav>
 
@@ -607,6 +608,170 @@
           </p>
         </div>
       </details>
+
+
+      <details id="standing-waves-virtual" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Virtual Lab Simulation
+        </summary>
+        <div class="mt-6 space-y-4 text-gray-100">
+          <p class="online-only-note">
+            <strong>This section is only relevant if you are doing this lab online instead of in-person.</strong>
+          </p>
+          <p>
+            The simulation below shows a $1\,\mathrm{m}$-long string vibrating at a frequency of $120\,\mathrm{Hz}$.
+            The mass hanging from the other end can be varied to produce standing waves of different harmonics.
+            Use this setup to measure the linear mass density of the string.
+          </p>
+          <div id="simulation" class="p-4 bg-gray-900 rounded-lg shadow-lg mx-auto" style="max-width:820px;">
+            <canvas id="swCanvas" width="800" height="300" class="border border-gray-700 block mx-auto bg-black"></canvas>
+            <div class="flex-row" style="margin-top: 1rem; justify-content: center;">
+              <button id="swplayPause" class="button">
+                Play
+              </button>
+            </div>
+            <!-- Centered controls like your other widget -->
+            <div class="flex-row" style="margin-top:1.5rem; justify-content:center;">
+              <div class="slider-box">
+                <label for="swMassSlider">Mass (g):</label>
+                <input type="range" id="swMassSlider" min="10" max="1000" step="0.001" value="500">
+                <input type="number" id="swMassInput" min="10" max="1000" step="0.001" value="500">
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+      <script>
+        (function () {
+          const canvas = document.getElementById('swCanvas');
+          const ctx = canvas.getContext('2d');
+
+          // Simulation parameters
+          const N = 150;
+          const L = 1.0;
+          const mu = 9.5e-5;
+          const g = 9.81;
+          const f = 120.0;
+          const driveAmp = 0.25;
+          const dx = L / (N - 1);
+          const dt = 1.5e-5;
+          const stepsPerFrame = 12;
+
+          // Controls
+          const slider = document.getElementById('swMassSlider');
+          const input = document.getElementById('swMassInput');
+          const playPauseBtn = document.getElementById('swplayPause');
+          let mass = parseFloat(slider.value);
+          let isPlaying = false;
+
+          // Wave arrays
+          const y = new Float32Array(N);
+          const yPrev = new Float32Array(N);
+          const yNext = new Float32Array(N);
+
+          // Initialize
+          y.fill(0);
+          yPrev.fill(0);
+          let time = 0;
+
+          // Sync slider + number input
+          function updateMass(v) {
+            mass = v;
+            slider.value = v;
+            input.value = v;
+          }
+
+          slider.addEventListener('input', (e) => {
+            updateMass(parseFloat(e.target.value));
+          });
+
+          input.addEventListener('change', (e) => {
+            let v = parseFloat(e.target.value);
+            if (isNaN(v)) return;
+            v = Math.max(Math.min(v, parseFloat(input.max)), parseFloat(input.min));
+            updateMass(v);
+          });
+
+          // Play/Pause toggle
+          playPauseBtn.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            playPauseBtn.textContent = isPlaying ? 'Pause' : 'Play';
+          });
+
+          // One time-step of the wave
+          function step() {
+            const T = (mass * g) / 1000;
+            const c = Math.sqrt(T / mu);
+            const coeff = (c * dt / dx) ** 2;
+            const damping = 0.0005;
+
+            for (let i = 1; i < N - 1; i++) {
+              yNext[i] =
+                2 * y[i] -
+                yPrev[i] +
+                coeff * (y[i + 1] + y[i - 1] - 2 * y[i]) -
+                damping * (y[i] - yPrev[i]);
+            }
+
+            // Boundary conditions
+            yNext[0] = driveAmp * Math.sin(2 * Math.PI * f * time);
+            yNext[N - 1] = 0;
+
+            // Rotate buffers
+            yPrev.set(y);
+            y.set(yNext);
+            time += dt;
+          }
+
+          // Draw the current wave + hardware
+          function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const pulleyX = canvas.width - 20;
+            const pulleyY = canvas.height / 2;
+
+            // Wave line
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = '#fff';
+            ctx.beginPath();
+            for (let i = 0; i < N; i++) {
+              const x = pulleyX * (i / (N - 1));
+              const yy = canvas.height / 2 + y[i] * (canvas.height / 5);
+              if (i === 0) ctx.moveTo(x, yy);
+              else ctx.lineTo(x, yy);
+            }
+            ctx.stroke();
+
+            // Pulley wheel
+            ctx.beginPath();
+            ctx.arc(pulleyX, pulleyY, 15, 0, 2 * Math.PI);
+            ctx.fillStyle = '#888';
+            ctx.fill();
+
+            // Hanging mass
+            ctx.beginPath();
+            ctx.moveTo(pulleyX, pulleyY + 15);
+            ctx.lineTo(pulleyX, pulleyY + 95);
+            ctx.strokeStyle = '#fff';
+            ctx.stroke();
+
+            ctx.fillStyle = '#4B3A26';
+            ctx.fillRect(pulleyX - 15, pulleyY + 95, 30, 30);
+          }
+
+          // Animation loop
+          function loop() {
+            if (isPlaying) {
+              for (let i = 0; i < stepsPerFrame; i++) step();
+            }
+            draw();
+            requestAnimationFrame(loop);
+          }
+
+          draw(); // Show initial state
+          loop(); // Begin loop
+        })();
+      </script>
 
 
 
