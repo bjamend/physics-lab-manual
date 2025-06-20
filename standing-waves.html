@@ -95,7 +95,7 @@
           <div id="eq-wave-equation">
             <p>
               $$\begin{equation}
-                \frac{\partial^2y}{\partial x^2} = v^2 \frac{\partial^2y}{\partial t^2} \label{eq:wave-equation}
+                \frac{\partial^2y}{\partial t^2} = v^2 \frac{\partial^2y}{\partial x^2} \label{eq:wave-equation}
               \end{equation}$$
             </p>
           </div>
@@ -236,6 +236,288 @@
             </div>
           </details>
 
+          <p>
+            A solution to this equation for a harmonic wave traveling in the positive $x$ direction with wave number $k$ and angular frequency $\omega$ is
+          </p>
+
+          <div id="eq-solution-1">
+            <p>
+              $$\begin{equation}
+                y(x,t) = A\sin{\left( kx - \omega t \right)} \,.\label{eq:solution-1}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            One way to produce a standing wave is by adding two identical traveling waves moving in opposite directions.
+          </p>
+
+          <div style="margin-top: 1.5rem;">
+            <div class="flex-row">
+              <canvas id="waveCanvas" width="800" height="300"></canvas>
+            </div>
+            <div class="flex-row">
+              <div class="slider-box">
+                <label for="A1">Amplitude A₁ (right):</label>
+                <input type="range" id="A1" min="0" max="100" value="50">
+                <input type="number" id="A1Num" min="0" max="100" value="50">
+              </div>
+              <div class="slider-box">
+                <label for="A2">Amplitude A₂ (left):</label>
+                <input type="range" id="A2" min="0" max="100" value="50">
+                <input type="number" id="A2Num" min="0" max="100" value="50">
+              </div>
+            </div>
+            <div class="flex-row">
+              <div class="slider-box">
+                <label for="k1">Wave Number k₁:</label>
+                <input type="range" id="k1" min="0.01" max="0.1" step="0.001" value="0.0314">
+                <input type="number" id="k1Num" min="0.01" max="0.1" step="0.001" value="0.0314">
+              </div>
+              <div class="slider-box">
+                <label for="k2">Wave Number k₂:</label>
+                <input type="range" id="k2" min="0.01" max="0.1" step="0.001" value="0.0314">
+                <input type="number" id="k2Num" min="0.01" max="0.1" step="0.001" value="0.0314">
+              </div>
+            </div>
+            <div class="flex-row">
+              <div class="slider-box">
+                <label for="omega1">Angular Freq ω₁:</label>
+                <input type="range" id="omega1" min="0.1" max="10" step="0.1" value="3.14">
+                <input type="number" id="omega1Num" min="0.1" max="10" step="0.1" value="3.14">
+              </div>
+              <div class="slider-box">
+                <label for="omega2">Angular Freq ω₂:</label>
+                <input type="range" id="omega2" min="0.1" max="10" step="0.1" value="3.14">
+                <input type="number" id="omega2Num" min="0.1" max="10" step="0.1" value="3.14">
+              </div>
+            </div>
+          </div>
+
+          <script>
+            const canvas = document.getElementById("waveCanvas");
+            const ctx = canvas.getContext("2d");
+
+            let A1 = 50, A2 = 50;
+            let k1 = 0.0314, k2 = 0.0314;
+            let omega1 = 3.14, omega2 = 3.14;
+
+            const bindSliderPair = (slider, number, onChange) => {
+              slider.addEventListener('input', () => {
+                number.value = slider.value;
+                onChange(+slider.value);
+              });
+              number.addEventListener('input', () => {
+                slider.value = number.value;
+                onChange(+number.value);
+              });
+            };
+
+            bindSliderPair(document.getElementById("A1"), document.getElementById("A1Num"), val => A1 = val);
+            bindSliderPair(document.getElementById("A2"), document.getElementById("A2Num"), val => A2 = val);
+            bindSliderPair(document.getElementById("k1"), document.getElementById("k1Num"), val => k1 = val);
+            bindSliderPair(document.getElementById("k2"), document.getElementById("k2Num"), val => k2 = val);
+            bindSliderPair(document.getElementById("omega1"), document.getElementById("omega1Num"), val => omega1 = val);
+            bindSliderPair(document.getElementById("omega2"), document.getElementById("omega2Num"), val => omega2 = val);
+
+            let t = 0;
+            const dt = 1 / 60;
+            const dx = 2;
+            const N = Math.floor(canvas.width / dx);
+
+            function rightWave(x, t) {
+              return A1 * Math.sin(k1 * x - omega1 * t);
+            }
+
+            function leftWave(x, t) {
+              return A2 * Math.sin(k2 * x + omega2 * t);
+            }
+
+            function drawWave() {
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+              // Right-moving wave
+              ctx.beginPath();
+              for (let i = 0; i < N; i++) {
+                const x = i * dx;
+                const y = rightWave(x, t);
+                const screenY = canvas.height / 2 - y;
+                if (i === 0) ctx.moveTo(x, screenY);
+                else ctx.lineTo(x, screenY);
+              }
+              ctx.strokeStyle = "blue";
+              ctx.lineWidth = 1.5;
+              ctx.stroke();
+
+              // Left-moving wave
+              ctx.beginPath();
+              for (let i = 0; i < N; i++) {
+                const x = i * dx;
+                const y = leftWave(x, t);
+                const screenY = canvas.height / 2 - y;
+                if (i === 0) ctx.moveTo(x, screenY);
+                else ctx.lineTo(x, screenY);
+              }
+              ctx.strokeStyle = "green";
+              ctx.lineWidth = 1.5;
+              ctx.stroke();
+
+              // Sum of waves
+              ctx.beginPath();
+              for (let i = 0; i < N; i++) {
+                const x = i * dx;
+                const y = rightWave(x, t) + leftWave(x, t);
+                const screenY = canvas.height / 2 - y;
+                if (i === 0) ctx.moveTo(x, screenY);
+                else ctx.lineTo(x, screenY);
+              }
+              ctx.strokeStyle = "red";
+              ctx.lineWidth = 2;
+              ctx.stroke();
+            }
+
+            function animate() {
+              t += dt;
+              drawWave();
+              requestAnimationFrame(animate);
+            }
+
+            animate();
+          </script>
+
+          <p>
+            The equivalent of <a href="#eq-solution-1" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:solution-1}$</a> for a wave traveling in the <em>negative</em> $x$ direction with the same wave number and angular frequency is
+          </p>
+
+          <div id="eq-solution-2">
+            <p>
+              $$\begin{equation}
+                y(x,t) = A\sin{\left( kx + \omega t \right)} \,.\label{eq:solution-2}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            The sum of these two waves is then
+          </p>
+
+          <div id="eq-wave-sum">
+            <p>
+              $$\begin{equation}
+                y(x,t) = A[\sin{(kx-\omega t)}+\sin{(kx + \omega t)}]\,.\label{eq:wave-sum}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Using the identity for the sum of sines, this becomes
+          </p>
+
+          <div id="eq-identity">
+            <p>
+              $$\begin{equation}
+                y(x,t) = 2A\sin{(kx)}\cos{(\omega t)} \,.\label{eq:identity}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This represents a standing wave: a spatial sine function multiplied by a time-dependent cosine factor.
+            The amplitude at each position $x$ oscillates in time but does not propagate along the string.
+          </p>
+
+          <p>
+            For a string of length $L$ fixed at both ends ($x=0$ and $x=L$), the displacement must vanish at these points for all times.
+            The boundary condition at $x=0$ is automatically satisfied by $\sin{(kx)}$, since $\sin{(0)}=0$.
+            The second condition, $y(L,t)=0$, requires
+          </p>
+
+          <div id="eq-bc">
+            <p>
+              $$\begin{equation}
+                \sin{(kL)}=0 \,,\label{eq:bc}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            which holds when
+          </p>
+
+          <div id="eq-kL">
+            <p>
+              $$\begin{equation}
+                kL=n\pi, \hspace{0.25cm} \mathrm{where} \hspace{0.15cm} n=1,2,3,... \label{eq:kL}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Thus, the allowed wave numbers are
+          </p>
+
+          <div id="eq-wavenumbers">
+            <p>
+              $$\begin{equation}
+                k = \frac{n\pi}{L} \hspace{0.25cm} \mathrm{where} \hspace{0.15cm} n=1,2,3,... \label{eq:wavenumbers}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            The value $n$ is called the <strong>harmonic number</strong>.
+            A standing wave with $n$ antinodes is said to be oscillating in its $n$-th harmonic.
+          </p>
+
+          <p>
+            The wave speed $v$ on a string under tension $T$ with linear mass density $\mu$ is given by
+          </p>
+
+          <div id="eq-velocity">
+            <p>
+              $$\begin{equation}
+                v = \sqrt{\frac{T}{\mu}} \,.\label{eq:velocity}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This wave speed also relates frequency $f$ and wave number by
+          </p>
+
+          <div id="eq-vwk">
+            <p>
+              $$\begin{equation}
+                v = \lambda f = \frac{2\pi f}{k} \,.\label{eq:vwk}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Substituting <a href="#eq-wavenumbers" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:wavenumbers}$</a> for $k$ and <a href="#eq-velocity" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:velocity}$</a> for $v$,
+          </p>
+
+          <div id="eq-frequency">
+            <p>
+              $$\begin{equation}
+                \sqrt{\frac{T}{\mu}} = 2\pi f \cdot \frac{L}{n\pi} = \frac{2Lf}{n} \,.\label{eq:frequency}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            The easiest dependent variable to measure in an experiment involving standing waves on a string is the number of antinodes $n$.
+            Solving for this,
+          </p>
+
+          <div id="eq-n">
+            <p>
+              $$\begin{equation}
+                \boxed{n = 2Lf\sqrt{\frac{\mu}{T}}} \,.\label{eq:n}
+              \end{equation}$$
+            </p>
+          </div>
+
         </div>
       </details>
 
@@ -249,11 +531,21 @@
             Submit your responses to the following questions by the start of the relevant lab meeting.
           </p>
           <ol class="list-decimal">
-            <li><p>Question 1</p></li>
-            <li><p>Question 2</p></li>
-            <li><p>Question 3</p></li>
-            <li><p>Question 4</p></li>
-            <li><p>Question 5</p></li>
+            <li><p>Prove by direct substitution that <a href="#eq-solution-1" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:solution-1}$</a> satisfies the wave equation.</p></li>
+            <li><p>A standing wave is created on a string, driven by some frequency $f$.
+            Now suppose this frequency is doubled.
+            Would the resultant wave still be a standing wave?
+            If so, by what factor is its wavelength changed?</p></li>
+            <li><p>A standing wave is created on a string of tension $T$.
+            Now suppose this tension is doubled.
+            Would the resultant wave still be a standing wave?
+            If so, by what factor is its wavelength changed?</p></li>
+            <li><p>A frequency of $440\,\mathrm{Hz}$ is used to vibrate one end of a $20\,\mathrm{cm}$ string with linear mass density $1\,\mathrm{mg/cm}$, and a weight of $35\,\mathrm{g}$ is suspended from the other end of this string.
+            A standing wave is produced.
+            In what harmonic does this standing wave oscillate?</p></li>
+            <li><p>A standing wave is generated at frequency $f$ on a string of length $L$, linear mass density $\mu$, and tension $T$.
+            To increase the frequency of the standing wave, how should each of the following parameters be changed: $L$, $\mu$, and $T$?
+            For each one, state whether it should be increased, decreased, or left unchanged, and explain why.</p></li>
           </ol>
         </div>
       </details>
@@ -264,12 +556,9 @@
       <details id="procedure">
         <summary>Procedure</summary>
         <div class="box">
-          <p>Goal.</p>
-          <ol class="list-decimal">
-            <li><strong>Step 1</strong> Text.</li>
-          </ol>
-          <p></p>
-          <p>Summary text.</p>
+          <p>
+            Measure the mass density of a string of unknown material by varying the string tension to generate standing waves and counting their antinodes.
+          </p>
         </div>
       </details>
 
