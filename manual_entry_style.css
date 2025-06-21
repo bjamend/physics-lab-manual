@@ -341,3 +341,39 @@ p code {
   width: 3.5rem;
   text-align: center;
 }
+
+.hero {
+  /* keep your bg var, sizing, etc… */
+  --hero-bg: url('../images/default-bg.jpg');
+  background-image: var(--hero-bg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+
+  position: relative;
+  overflow: hidden;
+
+  /* make it taller: either via padding or a min-height */
+  padding: 2rem 2rem;        /* up from 3rem to 4rem top/bottom */
+  min-height: 6.5rem;          /* at least 40% of the viewport height */
+
+  /* rounded corners */
+  border-radius: 0.5rem;
+}
+
+/* ensure the overlay follows the same rounding */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: rgba(0, 0, 0, 0.0);
+  border-radius: inherit;
+}
+
+.hero__back,
+.hero__title {
+  position: relative;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+  margin: 0;
+}

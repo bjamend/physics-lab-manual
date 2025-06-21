@@ -25,32 +25,23 @@
   <div class="container">
     <main class="main-box">
 
-      <!-- Back to Main Page -->
-      <div>
-        <a href="index.html">← Back to Main Page (PHYS 2240)</a>
-      </div>
-
-      <!-- Title -->
-      <header>
-        <h1>Brownian Motion</h1>
-      </header>
-
-      <!-- Quote -->
-      <p class="italic">
-        "If, in some cataclysm, all of scientific knowledge were to be destroyed, and only one sentence passed on to the next generation of creatures, what statement would contain the most information in the fewest words?  
-        I believe it is the <strong>atomic hypothesis</strong> [...] that all things are made of atoms — little particles that move around in perpetual motion, attracting each other when they are a little distance apart, but repelling upon being squeezed into one another."
-        <sup><a href="#feynman-1963">[1]</a></sup>
-      </p>
-      <p class="text-right text-gray-400">— Richard Feynman</p>
+      <section
+        class="hero"
+        style="--hero-bg: url('images/brownian-motion-background.png')"
+      >
+        <a href="index.html" class="hero__back">← Back to Main Page (PHYS 2240)</a>
+        <h1 class="hero__title">Brownian Motion</h1>
+      </section>
 
       <!-- Navigation Menu -->
-      <nav>
-        <h2>Jump to Section:</h2>
+      <nav style="margin-top: 2rem;">
+        <h2 style="margin-top: 0;">Jump to Section:</h2>
         <ul>
           <li><a href="#background">Historical Background</a></li>
           <li><a href="#theory">Theory</a></li>
           <li><a href="#pre-lab-questions">Pre-Lab Questions</a></li>
           <li><a href="#procedure">Procedure</a></li>
+          <li><a href="#brownian-motion-virtual">Virtual Lab Simulation</a></li>
         </ul>
       </nav>
 
@@ -64,15 +55,15 @@
           <p>
             In 1827, Scottish botanist Robert Brown, while investigating the structure and fertilization role of pollen grains, observed that wildflower pollen contained tiny spherical particles that moved erratically when suspended in water.
             He determined that this motion was not caused by external factors such as evaporation or fluid currents, as the motion persisted under conditions where such influences were absent.
-            Extending his observations beyond pollen, Brown discovered the same erratic motion in a wide variety of substances, including plant and animal tissues, fossilized wood, volcanic ash, and even powdered minerals like glass and obsidian<sup><a href="#brown-1828" class="text-blue-300 hover:underline">[2]</a></sup>.
+            Extending his observations beyond pollen, Brown discovered the same erratic motion in a wide variety of substances, including plant and animal tissues, fossilized wood, volcanic ash, and even powdered minerals like glass and obsidian<sup><a href="#brown-1828" class="text-blue-300 hover:underline">[1]</a></sup>.
             This seemingly spontaneous and universal motion of microscopic particles became known as <strong>Brownian motion</strong> in his honor.
           </p>
 
           <p>
-            Although the physical origin of Brownian motion remained uncertain throughout the 19th century, early developments in kinetic theory and probability—alongside mathematical formulations of random processes—laid the groundwork for Einstein’s landmark 1905 paper, “On the Movement of Small Particles Suspended in a Stationary Liquid Demanded by the Molecular-Kinetic Theory of Heat”<sup><a href="#einstein-1956" class="text-blue-300 hover:underline">[3]</a></sup>.
+            Although the physical origin of Brownian motion remained uncertain throughout the 19th century, early developments in kinetic theory and probability—alongside mathematical formulations of random processes—laid the groundwork for Einstein’s landmark 1905 paper, “On the Movement of Small Particles Suspended in a Stationary Liquid Demanded by the Molecular-Kinetic Theory of Heat”<sup><a href="#einstein-1956" class="text-blue-300 hover:underline">[2]</a></sup>.
             In this work, Einstein provided a quantitative framework linking the erratic motion of suspended particles to molecular collisions, deriving a relation between the diffusion coefficient and measurable physical quantities such as temperature, viscosity, and particle size.
             His theory not only explained the mechanism behind Brownian motion but also offered a method to estimate Avogadro’s number, lending strong support to the atomic theory of matter.
-            This theoretical advance was experimentally confirmed by Jean Perrin in the years that followed, through meticulous observations of suspended particles that matched Einstein’s predictions<sup><a href="#perrin-1910" class="text-blue-300 hover:underline">[4]</a></sup>.
+            This theoretical advance was experimentally confirmed by Jean Perrin in the years that followed, through meticulous observations of suspended particles that matched Einstein’s predictions<sup><a href="#perrin-1910" class="text-blue-300 hover:underline">[3]</a></sup>.
             Perrin’s work provided decisive empirical validation of molecular reality and earned him the Nobel Prize in Physics in 1926.
           </p>
 
@@ -397,8 +388,7 @@
 
             <!-- Control buttons -->
             <div class="flex-row" style="margin-top: 10px;">
-              <button id="startTurbulence" class="button">Start</button>
-              <button id="pauseTurbulence" class="button pause">Pause</button>
+              <button id="playPauseTurbulence" class="button">Play</button>
               <button id="resetTurbulence" class="button reset">Reset</button>
             </div>
 
@@ -420,19 +410,18 @@
 
             <!-- Script -->
             <script>
-              const turbulentCanvas = document.getElementById("turbulentCanvas");
-              const turbulentCtx = turbulentCanvas.getContext("2d");
-              const startTurbulence = document.getElementById("startTurbulence");
-              const pauseTurbulence = document.getElementById("pauseTurbulence");
-              const resetTurbulence = document.getElementById("resetTurbulence");
-
+              const canvas = document.getElementById("turbulentCanvas");
+              const ctx = canvas.getContext("2d");
+              const playPauseBtn = document.getElementById("playPauseTurbulence");
+              const resetBtn = document.getElementById("resetTurbulence");
               const diffSlider = document.getElementById("diffSlider");
               const diffValue = document.getElementById("diffValue");
 
               let particles = [];
               const nParticles = 800;
               let brownianStrength = parseFloat(diffSlider.value);
-              let paused = false;
+              let paused = true;
+              let running = false;
               let animId = null;
 
               diffSlider.addEventListener("input", () => {
@@ -451,12 +440,12 @@
               }
 
               function drawParticles() {
-                turbulentCtx.clearRect(0, 0, 500, 500);
-                turbulentCtx.fillStyle = "rgba(173,216,230,0.8)";
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "rgba(173,216,230,0.8)";
                 particles.forEach(p => {
-                  turbulentCtx.beginPath();
-                  turbulentCtx.arc(p.x, p.y, 1.5, 0, 2 * Math.PI);
-                  turbulentCtx.fill();
+                  ctx.beginPath();
+                  ctx.arc(p.x, p.y, 1.5, 0, 2 * Math.PI);
+                  ctx.fill();
                 });
               }
 
@@ -469,31 +458,36 @@
                 });
               }
 
-              function animateTurbulence() {
+              function animate() {
                 if (!paused) {
                   stepParticles();
                   drawParticles();
                 }
-                animId = requestAnimationFrame(animateTurbulence);
+                animId = requestAnimationFrame(animate);
               }
 
-              startTurbulence.addEventListener("click", () => {
-                cancelAnimationFrame(animId);
-                initParticles();
-                animateTurbulence();
+              playPauseBtn.addEventListener("click", () => {
+                if (!running) {
+                  // first-time play
+                  initParticles();
+                  paused = false;
+                  running = true;
+                  playPauseBtn.textContent = "Pause";
+                  animate();
+                } else {
+                  // toggle pause/resume
+                  paused = !paused;
+                  playPauseBtn.textContent = paused ? "Play" : "Pause";
+                }
               });
 
-              pauseTurbulence.addEventListener("click", () => {
-                paused = !paused;
-                pauseTurbulence.textContent = paused ? "Resume" : "Pause";
-              });
-
-              resetTurbulence.addEventListener("click", () => {
+              resetBtn.addEventListener("click", () => {
                 cancelAnimationFrame(animId);
-                turbulentCtx.clearRect(0, 0, 500, 500);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
                 particles = [];
-                paused = false;
-                pauseTurbulence.textContent = "Pause";
+                paused = true;
+                running = false;
+                playPauseBtn.textContent = "Play";
               });
             </script>
           </div>
@@ -1148,20 +1142,16 @@
       <!-- Section: Footnotes -->
       <footer class="mt-8 text-sm text-gray-400 space-y-1">
 
-        <p id="feynman-1963">
-          [1] Richard P. Feynman, <em>The Feynman Lectures on Physics</em>, Vol. I, Chapter 1: "Atoms in Motion", Addison-Wesley (1963).
-        </p>
-
         <p id="brown-1828">
-          [2] R. Brown, "A brief Account of Microscopical Observations...", <em>Philos. Mag.</em> 4(21), 161–173 (1828).
+          [1] R. Brown, "A brief Account of Microscopical Observations...", <em>Philos. Mag.</em> 4(21), 161–173 (1828).
         </p>
 
         <p id="einstein-1956">
-          [3] A. Einstein, <em>Investigations on the Theory of Brownian Movement</em>, translated by A. D. Cowper (Dover, New York, 1956).
+          [2] A. Einstein, <em>Investigations on the Theory of Brownian Movement</em>, translated by A. D. Cowper (Dover, New York, 1956).
         </p>
 
         <p id="perrin-1910">
-          [4] J. Perrin, "Brownian movement and molecular reality", translated by F. Soddy (Taylor and Francis, London, 1910).
+          [3] J. Perrin, "Brownian movement and molecular reality", translated by F. Soddy (Taylor and Francis, London, 1910).
         </p>
 
       </footer>
