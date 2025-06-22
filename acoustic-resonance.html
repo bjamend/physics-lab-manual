@@ -8,14 +8,28 @@
   <!-- External CSS -->
   <link rel="stylesheet" href="manual_entry_style.css" />
 
-  <!-- MathJax for LaTeX -->
-  <script src="mathjax-config.js"></script>
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        tags: 'ams',
+      },
+    };
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 </head>
+
+
+
+
 
 <body>
   <div class="container">
     <main class="main-box">
+
+
 
       <section
         class="hero"
@@ -24,6 +38,8 @@
         <a href="index.html" class="hero__back">← Back to Main Page (PHYS 2240)</a>
         <h1 class="hero__title">Acoustic Resonance</h1>
       </section>
+
+
 
       <!-- Navigation Menu -->
       <nav style="margin-top: 2rem;">
@@ -37,21 +53,185 @@
         </ul>
       </nav>
 
+
+
       <!-- Section: Historical Background -->
       <details id="background" open>
         <summary>Historical Background</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            The study of acoustic resonance has its roots in the same early investigations of vibrating systems that informed our understanding of standing waves in the previous experiment.
+            In the 17th century, Marin Mersenne showed that air columns, like strings, exhibit predictable relationships between frequency, length, and tension, laying the groundwork for understanding sound in pipes<sup><a href="#chapman-1957" class="text-blue-300 hover:underline">[1]</a></sup>.
+            In the 18th century, Joseph Sauveur introduced the term <em>acoustics</em> and studied resonances in musical instruments, including wind instruments that behave as resonant tubes<sup><a href="#rasch-1984" class="text-blue-300 hover:underline">[2]</a></sup>.
+            Like strings, these systems support standing wave patterns, though in this case the waves are longitudinal pressure oscillations in air rather than transverse displacements.
+            By the 19th century, more direct visualizations of acoustic resonance were possible.
+            In the 1860s, Rudolf Koenig constructed tuning forks and resonators to study sound frequencies and resonance effects with great precision<sup><a href="#koenig-1865" class="text-blue-300 hover:underline">[3]</a></sup>.
+            Around the same time, Hermann von Helmholtz used specially designed resonators to isolate specific frequencies in complex tones, advancing the study of auditory perception and resonance<sup><a href="#helmholtz-1885" class="text-blue-300 hover:underline">[4]</a></sup>.
+          </p>
+          <p>
+            In this lab, you will measure the speed of sound by identifying resonance points in air columns of varying length at a fixed driving frequency.
+          </p>
         </div>
       </details>
+
+
 
       <!-- Section: Theory -->
       <details id="theory">
         <summary>Theory</summary>
         <div>
-          <p>Text.</p>
+
+          <p>
+            In the standing waves lab, you learned that on a string, the allowed standing wave modes satisfied the condition
+          </p>
+
+          <div id="eq-standing-wave-modes">
+            <p>
+              $$\begin{equation}
+                k = \frac{n\pi}{L} \hspace{0.25cm} \Rightarrow \hspace{0.25cm} L = \frac{n\lambda}{2}, \hspace{0.25cm} \mathrm{where} \hspace{0.15cm} n=1,2,3,... \label{eq:standing-wave-modes}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            This same criterion applies to resonant modes in a column of air inside a closed-closed or open-open tube.
+            However, we will be working with an open-closed configuration, as shown in the interactive widget below.
+          </p>
+
+          <!-- Dropdown above widget -->
+          <div class="slider-wrapper">
+            <div class="flex-row">
+              <select id="modeSelect"></select>
+            </div>
+          </div>
+
+          <!-- Simulation canvas -->
+          <div style="margin-top:1.5rem;">
+            <div class="flex-row">
+              <canvas id="waveCanvas" width="600" height="250"></canvas>
+            </div>
+          </div>
+
+          <!-- Control button below widget -->
+          <div class="flex-row" style="margin-top:10px;">
+            <button id="playPauseBtn">Play</button>
+          </div>
+
+          <script>
+            (function(){
+              const canvas = document.getElementById('waveCanvas');
+              const ctx = canvas.getContext('2d');
+              const modeSelect = document.getElementById('modeSelect');
+              const startPauseBtn = document.getElementById('playPauseBtn');
+              const harmonics = [1, 3, 5, 7, 9];
+              const suffixMap = {1:'st', 3:'rd', 5:'th', 7:'th', 9:'th'};
+              harmonics.forEach(n => {
+                const opt = document.createElement('option');
+                opt.value = n;
+                opt.textContent = `${n}${suffixMap[n]||'th'} harmonic (n=${n})`;
+                modeSelect.appendChild(opt);
+              });
+              let harmonic = harmonics[0];
+              let t = 0;
+              let running = false;
+              let animationId;
+              const factor = 20;
+              const numParticles = 1000;
+              const particles = [];
+              function initParticles() {
+                const W = canvas.width;
+                for (let i = 0; i < numParticles; i++) {
+                  particles.push({ x0: Math.random() * W, y0: Math.random() * 2 - 1 });
+                }
+              }
+              initParticles();
+
+              modeSelect.addEventListener('change', () => { harmonic = parseInt(modeSelect.value); drawFrame(t); });
+              startPauseBtn.addEventListener('click', () => { running ? stop() : start(); });
+              function start() { running = true; startPauseBtn.textContent = 'Pause'; animate(); }
+              function stop() { running = false; startPauseBtn.textContent = 'Play'; cancelAnimationFrame(animationId); }
+              function animate() { t += 0.05; drawFrame(t); animationId = requestAnimationFrame(animate); }
+              function drawFrame(time) {
+                const W = canvas.width;
+                const H = canvas.height;
+                const amplitude = H/2 - 30;
+                ctx.clearRect(0, 0, W, H);
+                // Particles behind
+                ctx.fillStyle = '#666';
+                particles.forEach(p => {
+                  const xi = p.x0 / W * Math.PI / 2;
+                  const disp = Math.cos(harmonic * xi) * Math.cos(time);
+                  const x = p.x0 + disp * factor;
+                  const y = H/2 + p.y0 * amplitude;
+                  ctx.beginPath(); ctx.arc(x, y, 2, 0, 2*Math.PI); ctx.fill();
+                });
+                // Wave on top
+                ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
+                ctx.beginPath();
+                for (let x = 0; x <= W; x++) {
+                  const xi = x / W * Math.PI / 2;
+                  const yDisp = Math.cos(harmonic * xi) * Math.cos(time);
+                  const y = H/2 - yDisp * amplitude;
+                  x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+              }
+              drawFrame(0);
+            })();
+          </script>
+
+          <p>
+            Note that in this scenario, we are no longer counting antinodes, but <em>quarter wavelengths</em> instead.
+            Here, the criterion for permitted standing wave modes is
+          </p>
+
+          <div id="eq-standing-wave-modes-2">
+            <p>
+              $$\begin{equation}
+                L = \frac{n\lambda}{4}, \hspace{0.25cm} \mathrm{where} \hspace{0.15cm} n=1,3,5,... \label{eq:standing-wave-modes-2}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Given this, it should be clear that only odd-numbered harmonics are present here; even-numbered harmonics are <em>inaccessible</em> to air columns in an open-closed configuration.
+          </p>
+
+          <p>
+            Because the displacement antinode at the open end of a tube does not occur exactly at the physical opening, an end correction must be applied to account for the small additional length of air that vibrates just outside the tube.
+            This effectively increases the resonant length by a small amount, typically approximated as $\Delta L \approx \alpha d$, where $d$ is the inner diameter of the tube and $0.3 \lesssim \alpha \lesssim 0.4$ is a dimensionless constant.
+            The full equation is then
+          </p>
+
+          <div id="eq-corrected">
+            <p>
+              $$\begin{equation}
+                \boxed{L + \alpha d = \frac{n\lambda}{4}, \hspace{0.25cm} \mathrm{where} \hspace{0.15cm} n=1,3,5,...} \label{eq:corrected}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            In this lab, you will be measuring the speed of sound using this equation.
+            The value that you will be comparing to for error analysis can be calculated from the following temperature-dependent formula:
+          </p>
+
+          <div id="eq-sound speed">
+            <p>
+              $$\begin{equation}
+                v_s = \left( 331.3 + 0.6\,T_C \right)\,\mathrm{m/s}\,,\label{eq:sound-speed}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            where $T_C$ is the air temperature in degrees Celsius.
+          </p>
+
         </div>
       </details>
+
+
 
       <!-- Section: Pre-Lab Questions -->
       <details id="pre-lab-questions">
@@ -61,27 +241,48 @@
             Submit your responses to the following questions by the start of the relevant lab meeting.
           </p>
           <ol class="list-decimal">
-            <li><p>Question 1</p></li>
-            <li><p>Question 2</p></li>
-            <li><p>Question 3</p></li>
-            <li><p>Question 4</p></li>
-            <li><p>Question 5</p></li>
+            <li><p>
+              A speaker emits a sound wave at a frequency of $3433\,\mathrm{Hz}$ into an open-closed air column that is $30\,\mathrm{cm}$ long.
+              The air temperature is $20\,^{\circ}\mathrm{C}$.
+              Will a standing wave be produced?
+              If so, in which harmonic will it oscillate?
+              (Ignore edge effects; do not apply an end correction.)
+            </p></li>
+            <li><p>
+              An open-open tube is modified by plugging one end with a movable piston, turning it into an open-closed tube with an adjustable length.
+              A speaker emits a tone of fixed frequency, and a standing wave in the third harmonic is produced when the tube is $10\,\mathrm{cm}$ long.
+              To produce a standing wave in the fifth harmonic at the same frequency, what should the length of the tube be adjusted to?
+              (Ignore edge effects; do not apply an end correction.)
+            </p></li>
+            <li><p>
+              For a standing wave in an open-closed tube vibrating in its seventh harmonic, how many full wavelengths are present within the tube?
+              (Ignore edge effects; do not apply an end correction.)
+            </p></li>
+            <li><p>
+              Again consider the open-closed tube formed by inserting a movable piston into one end of a long open-open tube, such that the effective length of the air column can be adjusted.
+              If the tube's maximum length is $100\,\mathrm{cm}$, what would be a good choice of external driving frequency (in $\mathrm{Hz}$) to allow for the observation of multiple harmonics within that length range?
+              Show your work/reasoning.
+            </p></li>
+            <li><p>
+              Wind instruments like flutes or clarinets can sound slightly flat or sharp depending on the temperature of their environment.
+              Why is this the case?
+              Would a higher temperature result in a flatter or sharper pitch?
+            </p></li>
           </ol>
         </div>
       </details>
+
+
 
       <!-- Section: Procedure -->
       <details id="procedure">
         <summary>Procedure</summary>
         <div class="box">
-          <p>Goal.</p>
-          <ol class="list-decimal">
-            <li><strong>Step 1</strong> Text.</li>
-          </ol>
-          <p></p>
-          <p>Summary text.</p>
+          <p>Measure the speed of sound and the end correction coefficient using the principles of acoustic resonance.</p>
         </div>
       </details>
+
+
 
       <!-- Section: Virtual Lab Simulation -->
       <details id="virtual-lab-simulation">
@@ -91,9 +292,22 @@
         </div>
       </details>
 
+
+
       <!-- Section: Footnotes -->
       <footer>
-        <!-- Optional footnote content -->
+        <p id="chapman-1957">
+          [1] M. Mersenne, Harmonie universelle: The Books on Instruments, translated by Roger E. Chapman (Springer, 1957).
+        </p>
+        <p id="rasch-1984">
+          [2] J. Sauveur, Système général des intervalles des sons, in Collected Writings on Musical Acoustics: (Paris 1700–1713), edited by R. Rasch (The Diapason Press, Utrecht, 1984), p. 16.
+        </p>
+        <p id="koenig-1865">
+          [3] R. Koenig, Catalogue des appareils d’acoustique construits par Rudolph Koenig (Paris: 1865).
+        </p>
+        <p id="helmholtz-1885">
+          [4] H. von Helmholtz, On the Sensations of Tone as a Physiological Basis for the Theory of Music, 2nd English ed., translated by A. J. Ellis (Longmans, Green, and Co., London, 1885).
+        </p>
       </footer>
 
     </main>

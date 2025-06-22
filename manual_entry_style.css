@@ -313,7 +313,8 @@ p code {
 .slider-wrapper .flex-row {
   gap: 1rem;
   margin-top: 1rem;
-  justify-content: space-between;
+  justify-content: center;
+  /*justify-content: space-between;*/
 }
 
 /* 3) Make each slider-box take about half the wrapper */
@@ -376,4 +377,16 @@ p code {
   color: #fff;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
   margin: 0;
+}
+
+/* Style dropdown */
+select {
+  background-color: #1f2937;       /* match canvas background */
+  border: 1px solid #4b5563;       /* match input borders */
+  border-radius: 0.375rem;         /* same rounding as buttons */
+  padding: 0.5rem 0.5rem;            /* same padding as buttons */
+  color: #f3f4f6;                  /* page text color */
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;             /* text-sm */
+  cursor: pointer;
 }
