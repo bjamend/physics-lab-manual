@@ -287,8 +287,334 @@
       <!-- Section: Virtual Lab Simulation -->
       <details id="virtual-lab-simulation">
         <summary>Virtual Lab Simulation</summary>
-        <div>
-          <p>Text.</p>
+        <div class="mt-6 space-y-4 text-gray-100">
+          <p class="online-only-note">
+            <strong>This section is only relevant if you are doing this lab online instead of in-person.</strong>
+          </p>
+          <p>
+            The simulation below generates an audible tone and shows an oscilloscope reading of the sound inside an open-closed air column.
+            Adjust the length of the tube and/or the driving frequency to measure: (1) the speed of sound, and (2) the end correction coefficient $\alpha$ if the tube's inner diameter is $5\,\mathrm{cm}$.
+            Assume the temperature of the room is $20^{\circ}\,\mathrm{C}$.
+          </p>
+
+          <canvas
+            id="oscilloscope"
+            width="800"
+            height="300"
+            class="border border-gray-700 block mx-auto"
+          ></canvas>
+
+          <p>
+          </p>
+
+          <!-- Tube visualization -->
+          <canvas
+            id="tubeCanvas"
+            width="800"
+            height="100"
+            class="border border-gray-700 block mx-auto mt-4"
+          ></canvas>
+
+          <div class="flex-row" style="margin-top: 1rem; justify-content: center;">
+            <button id="toggleBtn" class="button">Play</button>
+          </div>
+
+          <!-- Frequency control -->
+          <div class="flex-row" style="margin-top:1.5rem; justify-content:center;">
+            <div class="slider-box">
+              <label for="frequencySlider">Frequency (Hz):</label>
+              <input
+                type="range"
+                id="frequencySlider"
+                min="100"
+                max="2000"
+                step="1"
+                value="440"
+              >
+              <input
+                type="number"
+                id="frequencyInput"
+                min="100"
+                max="2000"
+                step="1"
+                value="440"
+              >
+            </div>
+          </div>
+
+          <!-- Tube‐length control -->
+          <div class="flex-row" style="margin-top:1.5rem; justify-content:center;">
+            <div class="slider-box">
+              <label for="lengthSlider">Tube Length (cm):</label>
+              <input
+                type="range"
+                id="lengthSlider"
+                min="10"
+                max="100"
+                step="0.1"
+                value="50"
+              >
+              <input
+                type="number"
+                id="lengthInput"
+                min="10"
+                max="100"
+                step="0.1"
+                value="50"
+              >
+            </div>
+          </div>
+
+          <!-- Updated Sweep‐Speed Control -->
+          <div class="flex-row" style="margin-top:1.5rem; justify-content:center;">
+            <div class="slider-box">
+              <label for="speedSlider">Sweep Speed:</label>
+              <input
+                type="range"
+                id="speedSlider"
+                min="-100"
+                max="100"
+                step="0.1"
+                value="1"
+              >
+              <input
+                type="number"
+                id="speedInput"
+                min="-100"
+                max="100"
+                step="0.1"
+                value="0"
+              >
+            </div>
+          </div>
+
+          <script>
+            // === Setup Audio Context and Nodes ===
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            const audioContext = new AudioContext();
+            const oscillator   = audioContext.createOscillator();
+            const gainNode     = audioContext.createGain();
+            const analyser     = audioContext.createAnalyser();
+
+            oscillator.type = 'sine';
+            oscillator.frequency.value = 440;
+            oscillator
+              .connect(gainNode)
+              .connect(analyser)
+              .connect(audioContext.destination);
+
+            analyser.fftSize = 2048;
+            const bufferLength = analyser.fftSize;
+            const dataArray    = new Float32Array(bufferLength);
+
+            oscillator.start();
+
+            // === Play/Pause toggle ===
+            const toggleBtn = document.getElementById('toggleBtn');
+            toggleBtn.addEventListener('click', () => {
+              if (audioContext.state === 'suspended') {
+                audioContext.resume().then(() => {
+                  updateAmplitude();
+                  toggleBtn.textContent = 'Pause';
+                });
+              } else {
+                audioContext.suspend();
+                toggleBtn.textContent = 'Play';
+              }
+            });
+
+            // === Canvas contexts ===
+            const oscCanvas  = document.getElementById('oscilloscope');
+            const oscCtx     = oscCanvas.getContext('2d');
+            const tubeCanvas = document.getElementById('tubeCanvas');
+            const tubeCtx    = tubeCanvas.getContext('2d');
+
+            // === Sweep‐speed controls ===
+            const speedSlider = document.getElementById('speedSlider');
+            const speedInput  = document.getElementById('speedInput');
+            
+            {
+              const sr       = audioContext.sampleRate;    // e.g. 44100 or 48000
+              const fftSize  = analyser.fftSize;           // 2048
+              const minFreq  = 100;                        // Hz
+              const maxFreq  = 2000;                       // Hz
+
+              const minSpeed = fftSize / sr * minFreq;
+              const maxSpeed = fftSize / sr * maxFreq;
+
+              // apply to range slider
+              speedSlider.min   = minSpeed.toFixed(2);
+              speedSlider.max   = maxSpeed.toFixed(2);
+              speedSlider.value = (fftSize/sr * oscillator.frequency.value).toFixed(2);
+
+              // apply to numeric input
+              speedInput.min   = speedSlider.min;
+              speedInput.max   = speedSlider.max;
+              speedInput.value = speedSlider.value;
+            }
+            let sweepSpeed    = parseFloat(speedSlider.value);
+            let sweepOffset   = 0;
+
+            speedSlider.addEventListener('input', () => {
+              sweepSpeed = parseFloat(speedSlider.value);
+              speedInput.value = sweepSpeed;
+            });
+            speedInput.addEventListener('input', () => {
+              let v = Math.min(Math.max(+speedInput.value, -10), 10);
+              sweepSlider.value = v;
+              sweepSpeed = v;
+            });
+
+            // === Draw functions ===
+            function drawOscilloscope() {
+              requestAnimationFrame(drawOscilloscope);
+              analyser.getFloatTimeDomainData(dataArray);
+
+              // fill background (no ghosting)
+              oscCtx.fillStyle = '#000';
+              oscCtx.fillRect(0, 0, oscCanvas.width, oscCanvas.height);
+
+              // draw grid
+              const gridX = 50, gridY = 50;
+              oscCtx.strokeStyle = '#444';
+              oscCtx.lineWidth   = 0.5;
+              for (let x = 0; x <= oscCanvas.width; x += gridX) {
+                oscCtx.beginPath();
+                oscCtx.moveTo(x, 0);
+                oscCtx.lineTo(x, oscCanvas.height);
+                oscCtx.stroke();
+              }
+              for (let y = 0; y <= oscCanvas.height; y += gridY) {
+                oscCtx.beginPath();
+                oscCtx.moveTo(0, y);
+                oscCtx.lineTo(oscCanvas.width, y);
+                oscCtx.stroke();
+              }
+
+              // only advance sweep when running
+              if (audioContext.state === 'running') {
+                sweepOffset = (sweepOffset + sweepSpeed + bufferLength) % bufferLength;
+              }
+
+              // draw waveform
+              oscCtx.lineWidth   = 2;
+              oscCtx.strokeStyle  = '#39FF14';    // bright “neon” green
+              oscCtx.shadowColor  = '#39FF14';    // glow color
+              oscCtx.shadowBlur   = 10;
+              oscCtx.beginPath();
+              const sliceW = oscCanvas.width / bufferLength;
+              let x = 0;
+              for (let i = 0; i < bufferLength; i++) {
+                const idx = Math.floor((i + sweepOffset) % bufferLength);
+                const v   = dataArray[idx];
+                const y   = (1 - v) * oscCanvas.height / 2;
+                if (i === 0) oscCtx.moveTo(x, y);
+                else         oscCtx.lineTo(x, y);
+                x += sliceW;
+              }
+              oscCtx.stroke();
+
+              // draw tube visualization
+              drawTube();
+            }
+
+            function drawTube() {
+              const minL = +lengthSlider.min;
+              const maxL = +lengthSlider.max;
+              const curL = +lengthSlider.value;
+              // map [10,100] → [0.1,1]
+              const frac = 0.1 + ((curL - minL) / (maxL - minL)) * 0.9;
+
+              tubeCtx.clearRect(0, 0, tubeCanvas.width, tubeCanvas.height);
+
+              // tube outline
+              tubeCtx.strokeStyle = '#fff';
+              tubeCtx.lineWidth   = 2;
+              const tx = 10, ty = 20;
+              const tw = tubeCanvas.width - 20, th = tubeCanvas.height - 40;
+              tubeCtx.strokeRect(tx, ty, tw, th);
+
+              // piston
+              const pw = 10;
+              const px = tx + frac * tw - pw/2;
+              tubeCtx.fillStyle = '#888';
+              tubeCtx.fillRect(px, ty, pw, th);
+
+              // handle
+              const pr = px + pw;
+              const hy = ty + th/2;
+              tubeCtx.strokeStyle = '#666';
+              tubeCtx.lineWidth   = 6;
+              tubeCtx.beginPath();
+              tubeCtx.moveTo(pr, hy);
+              tubeCtx.lineTo(tx + tw, hy);
+              tubeCtx.stroke();
+            }
+
+            // === Resonance Logic ===
+            const vSound        = 343;
+            const D             = 0.05;
+            const endCorrection = 0.33 * D;
+
+            // === Controls ===
+            const freqSlider   = document.getElementById('frequencySlider');
+            const freqInput    = document.getElementById('frequencyInput');
+            const lengthSlider = document.getElementById('lengthSlider');
+            const lengthInput  = document.getElementById('lengthInput');
+
+            function updateAmplitude() {
+              const f      = +freqSlider.value;
+              const L_phys = +lengthSlider.value / 100;
+              const L_eff  = L_phys + endCorrection;
+              const λ      = vSound / f;
+              const factor = Math.abs(Math.sin(2*Math.PI*L_eff/λ));
+              gainNode.gain.setTargetAtTime(factor, audioContext.currentTime, 0.01);
+            }
+
+            // slider → input & amp
+            freqSlider .addEventListener('input', () => {
+              freqInput.value = freqSlider.value;
+              oscillator.frequency.setValueAtTime(+freqSlider.value, audioContext.currentTime);
+              updateAmplitude();
+            });
+            lengthSlider.addEventListener('input', () => {
+              lengthInput.value = lengthSlider.value;
+              updateAmplitude();
+            });
+
+            // input → slider & amp
+            freqInput.addEventListener('input', () => {
+              let v = Math.max(100, Math.min(2000, +freqInput.value));
+              freqSlider.value = v;
+              oscillator.frequency.setValueAtTime(v, audioContext.currentTime);
+              updateAmplitude();
+            });
+            lengthInput.addEventListener('input', () => {
+              let v = Math.max(10, Math.min(100, +lengthInput.value));
+              lengthSlider.value = v;
+              updateAmplitude();
+            });
+            speedInput.addEventListener('input', () => {
+              // parse what the user typed
+              let v = parseFloat(speedInput.value);
+              if (isNaN(v)) return;                   // ignore non-numbers
+
+              // clamp to your HTML range
+              v = Math.min(Math.max(v, -100), 100);
+
+              // update both slider and input to the clamped value
+              speedSlider.value = v;
+              speedInput.value  = v;
+
+              // store for the draw loop
+              sweepSpeed = v;
+            });
+
+            // === Initialize ===
+            updateAmplitude();
+            drawOscilloscope();
+          </script>
+
         </div>
       </details>
 
