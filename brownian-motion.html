@@ -53,18 +53,15 @@
         <div class="mt-4 space-y-6">
 
           <p>
-            In 1827, Scottish botanist Robert Brown, while investigating the structure and fertilization role of pollen grains, observed that wildflower pollen contained tiny spherical particles that moved erratically when suspended in water.
-            He determined that this motion was not caused by external factors such as evaporation or fluid currents, as the motion persisted under conditions where such influences were absent.
-            Extending his observations beyond pollen, Brown discovered the same erratic motion in a wide variety of substances, including plant and animal tissues, fossilized wood, volcanic ash, and even powdered minerals like glass and obsidian<sup><a href="#brown-1828" class="text-blue-300 hover:underline">[1]</a></sup>.
-            This seemingly spontaneous and universal motion of microscopic particles became known as <strong>Brownian motion</strong> in his honor.
+            In 1827, Scottish botanist Robert Brown observed that tiny particles within pollen grains moved erratically when suspended in water, a motion he found persisted even in the absence of external influences like currents or evaporation.
+            He later confirmed this phenomenon, now known as <strong>Brownian motion</strong>, in a wide range of substances, including plant and animal tissues, fossilized wood, volcanic ash, and powdered minerals<sup><a href="#brown-1828" class="text-blue-300 hover:underline">[1]</a></sup>.
+            While the cause of this motion remained unknown throughout the 19th century, developments in kinetic theory and probability paved the way for Albert Einstein's 1905 paper, which quantitatively linked the random movement of suspended particles to collisions with fluid molecules<sup><a href="#einstein-1956" class="text-blue-300 hover:underline">[2]</a></sup>.
+            By deriving a relationship between diffusion and measurable properties like temperature and viscosity, Einstein's work accurately characterized Brownian motion and provided strong support for the atomic theory of matter.
+            Jean Perrin later confirmed Einstein's predictions through careful experimentation, earning the 1926 Nobel Prize in Physics<sup><a href="#perrin-1910" class="text-blue-300 hover:underline">[3]</a></sup>.
           </p>
 
           <p>
-            Although the physical origin of Brownian motion remained uncertain throughout the 19th century, early developments in kinetic theory and probability—alongside mathematical formulations of random processes—laid the groundwork for Einstein’s landmark 1905 paper, “On the Movement of Small Particles Suspended in a Stationary Liquid Demanded by the Molecular-Kinetic Theory of Heat”<sup><a href="#einstein-1956" class="text-blue-300 hover:underline">[2]</a></sup>.
-            In this work, Einstein provided a quantitative framework linking the erratic motion of suspended particles to molecular collisions, deriving a relation between the diffusion coefficient and measurable physical quantities such as temperature, viscosity, and particle size.
-            His theory not only explained the mechanism behind Brownian motion but also offered a method to estimate Avogadro’s number, lending strong support to the atomic theory of matter.
-            This theoretical advance was experimentally confirmed by Jean Perrin in the years that followed, through meticulous observations of suspended particles that matched Einstein’s predictions<sup><a href="#perrin-1910" class="text-blue-300 hover:underline">[3]</a></sup>.
-            Perrin’s work provided decisive empirical validation of molecular reality and earned him the Nobel Prize in Physics in 1926.
+            In this lab, you will estimate Avogadro's number by measuring the displacements of particles undergoing Brownian motion, providing experimental evidence for the existence of molecules.
           </p>
 
         </div>
@@ -81,7 +78,7 @@
 
           <p>
             Before diving into the physics behind Brownian motion, it’s helpful to first consider the mathematical framework used to describe it.
-            In most of your previous motion problems—such as those involving constant acceleration—you learned how to determine an object’s trajectory using deterministic equations.
+            In most of your previous motion problems involving constant acceleration, you learned how to determine an object’s trajectory using deterministic equations.
             These equations, like the one below, describe an object’s position as a function of time:
           </p>
 
@@ -99,7 +96,7 @@
           </p>
 
           <p>
-            Brownian motion, however, is fundamentally different. It is not deterministic—instead, it is random.
+            Brownian motion, however, is fundamentally different. It is not deterministic, but <em>random</em>.
             A particle undergoing Brownian motion doesn’t follow a predictable path.
             At any given instant, it is equally likely to move in any direction.
             As a result, there’s no single equation, like <a href="#eq-kinematics" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:kinematics}$</a>, that can describe its position over time.
@@ -122,7 +119,7 @@
           </figure>
 
           <p>
-            Although the motion of a particle undergoing Brownian motion is entirely unpredictable, this does not mean it is beyond description — it simply requires a shift in perspective.
+            Although the motion of a particle undergoing Brownian motion is entirely unpredictable, this does not mean it is beyond description; it simply requires a shift in perspective.
             Rather than attempting to write an equation that deterministically describes the path of a single particle (which is not possible due to the inherently random nature of its motion), we focus instead on the statistical behavior that emerges across many particles or repeated trials.
           </p>
 
@@ -306,7 +303,7 @@
           </p>
 
           <p>
-            Note that the 2D displacements of the particles above can be characterized by two 1D distributions - one for $\Delta x$ and one for $\Delta y$.
+            Note that the 2D displacements of the particles above can be characterized by two 1D distributions: one for $\Delta x$ and one for $\Delta y$.
             The general form of the Gaussian distribution for 1D particle displacements $\Delta x$ (and similarly for $\Delta y$) is
           </p>
 
@@ -361,7 +358,7 @@
           </div>
 
           <p>
-            While this is all useful for describing the statistical behavior of particles undergoing Brownian motion, it is ultimately just a mathematical outcome—it tells us how the particles tend to move, but not why they move that way.
+            While this is all useful for describing the statistical behavior of particles undergoing Brownian motion, it is ultimately just a mathematical outcome, telling us how the particles tend to move, but not why they move that way.
             To uncover the physical origin of this motion, we must look beyond the statistics and follow Einstein’s approach: we turn to the underlying physics of microscopic collisions and thermal agitation.
           </p>
 
@@ -496,7 +493,7 @@
           </p>
 
           <p>
-            Einstein formalized the connection between Brownian motion and diffusion by showing that the number density $n(x,t)$ of Brownian particles—i.e., the number of particles per unit length at position $x$ and time $t$—satisfies the diffusion equation,
+            Einstein formalized the connection between Brownian motion and diffusion by showing that the number density $n(x,t)$ of Brownian particles satisfies the diffusion equation,
 
           <div id="eq-diffusion">
             <p>
@@ -519,7 +516,7 @@
           </div>
 
           <p>
-            This is a Gaussian distribution in $x$ that grows broader with time—just like the empirical distribution of displacements $\Delta x$ observed in the random walks from the interactive widget above.
+            This is a Gaussian distribution in $x$ that grows broader with time, just like the empirical distribution of displacements $\Delta x$ observed in the random walks from the interactive widget above.
             Comparing this result to <a href="#eq-gaussian" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:gaussian}$</a> and using the definition of standard deviation from <a href="#eq-sd-short" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:sd-short}$</a>, we find
           </p>
 
@@ -533,14 +530,14 @@
 
           <p>
             This relationship reveals that the mean-square displacement of Brownian particles grows linearly with time.
-            That is, although the average displacement $\langle \Delta x \rangle$ remains zero (since motion is equally likely in all directions), the average of $\Delta x^2$ increases—reflecting the overall spread of the particle ensemble.
+            That is, although the average displacement $\langle \Delta x \rangle$ remains zero (since motion is equally likely in all directions), the average of $\Delta x^2$ increases, reflecting the overall spread of the particle ensemble.
             Notably, this scaling with time differed from the expectations of classical mechanics at the time, in which <em>displacement</em> (not the mean-square displacement) was often assumed to grow linearly with time under uniform motion.
           </p>
 
           <p>
             Not stopping at this statistical connection, Einstein attributed the erratic particle motions of Brownian motion to the random impacts of fast-moving fluid molecules.
             These impacts impart kinetic energy to the suspended particle, converting the thermal energy of the fluid into directed motion.
-            However, as the particle moves through the fluid, it encounters resistance—drag forces from the surrounding molecules—which act to slow it down and return that kinetic energy to the fluid as heat.
+            However, as the particle moves through the fluid, it encounters resistance in the form of drag forces from the surrounding molecules which act to slow it down and return that kinetic energy to the fluid as heat.
             This continual two-way exchange of energy—thermal to kinetic via molecular kicks, and kinetic to thermal via drag—is encapsulated in the Einstein relation
           </p>
 
@@ -564,7 +561,7 @@
 
             <div>
               <p>
-                The proper derivation of the Einstein relation is quite complicated, and involves application of the <strong>fluctuation-dissipation theorem</strong>—a relation that connects a system's equilibrium fluctuations to how it dissipates energy assuming detailed balance.
+                The proper derivation of the Einstein relation is quite complicated, and involves application of the <strong>fluctuation-dissipation theorem</strong> (a relation that connects a system's equilibrium fluctuations to how it dissipates energy assuming detailed balance).
                 To build intuition, we will instead present an approximate derivation that, while not fully rigorous, captures the essential physics and leads to the correct final result.
               </p>
 
@@ -642,7 +639,7 @@
           </div>
 
           <p>
-            This equation links the microscopic dynamics of Brownian motion—random collisions between fluid molecules and suspended particles—to macroscopic, measurable quantities: temperature, fluid viscosity, and particle size.
+            This equation links the microscopic dynamics of Brownian motion to macroscopic, measurable quantities like temperature and fluid viscosity.
             The diffusion coefficient is then effectively a ratio of the thermal energy of the surrounding fluid to the drag coefficient of particles moving through the fluid.
             Higher thermal energy (i.e., higher temperature $T$) increases the strength of molecular agitation, leading to a larger $D$ and faster spreading of particles.
             In contrast, more viscous fluids exert greater drag on the particles, hindering their motion and reducing $D$, resulting in slower diffusion.
@@ -662,7 +659,7 @@
 
           <p>
             This expression provided one of the earliest methods for experimentally estimating Avogadro’s number, by measuring how thermal energy, viscous resistance, and particle diffusion are interrelated at microscopic scales.
-            The ability to experimentally determine $N_A$—and thereby confirm the existence of a specific, countable number of molecules per mole—provided compelling quantitative evidence for the reality of atoms and molecules.
+            The ability to experimentally determine $N_A$ provided compelling quantitative evidence for the reality of atoms and molecules, as it indicated the existence of a specific, countable number of molecules per mole.
           </p>
 
         </div>
@@ -691,7 +688,7 @@
             </li>
           </ol>
           <p class="mt-6">
-            The following questions pertain to <a href="data/lab1/brownian_motion_data.csv" download class="text-blue-300 font-bold hover:underline">this CSV file</a> — please download it before continuing.
+            The following questions pertain to <a href="data/lab1/brownian_motion_data.csv" download class="text-blue-300 font-bold hover:underline">this CSV file</a>; please download it before continuing.
             Python will be used throughout this course for data analysis and plotting, and you are expected to use it to answer the questions below.
             If you're new to Python, you may find <a href="python-primer.html" class="text-blue-300 hover:underline font-semibold">this primer</a> helpful as you work through the assignment.
           </p>
@@ -714,7 +711,7 @@
             </li>
           </ol>
           <p class="mt-6">
-            The final question pertains to <a href="data/lab1/brownian_motion_data_2.csv" download class="text-blue-300 font-bold hover:underline">this other CSV file</a> — please download it before continuing.
+            The final question pertains to <a href="data/lab1/brownian_motion_data_2.csv" download class="text-blue-300 font-bold hover:underline">this other CSV file</a>; please download it before continuing.
             (The <a href="python-primer.html" class="text-blue-300 hover:underline font-semibold">Python primer</a> may be helpful here, as well.)
           </p>
           <ol class="list-decimal space-y-4 pl-6" start="5">
