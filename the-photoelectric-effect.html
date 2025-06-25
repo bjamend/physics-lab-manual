@@ -9,7 +9,15 @@
   <link rel="stylesheet" href="manual_entry_style.css" />
 
   <!-- MathJax -->
-  <script src="mathjax-config.js"></script>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        tags: 'ams',
+      },
+    };
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
 </head>
 
@@ -17,28 +25,23 @@
   <div class="container">
     <main class="main-box">
 
-      <!-- Back to Main Page -->
-      <div>
-        <a href="index.html">← Back to Main Page (PHYS 2240)</a>
-      </div>
-
-      <!-- Title -->
-      <header>
-        <h1>The Photoelectric Effect</h1>
-      </header>
-
-      <!-- Quote -->
-      <p class="italic">"Text."</p>
-      <p class="attribution">— Attribution</p>
+      <section
+        class="hero"
+        style="--hero-bg: url('images/the-photoelectric-effect-background.png')"
+      >
+        <a href="index.html" class="hero__back">← Back to Main Page (PHYS 2240)</a>
+        <h1 class="hero__title">The Photoelectric Effect</h1>
+      </section>
 
       <!-- Navigation Menu -->
-      <nav>
-        <h2>Jump to Section:</h2>
+      <nav style="margin-top: 2rem;">
+        <h2 style="margin-top: 0;">Jump to Section:</h2>
         <ul>
           <li><a href="#background">Historical Background</a></li>
           <li><a href="#theory">Theory</a></li>
           <li><a href="#pre-lab-questions">Pre-Lab Questions</a></li>
           <li><a href="#procedure">Procedure</a></li>
+          <li><a href="#virtual-lab-simulation">Virtual Lab Simulation</a></li>
         </ul>
       </nav>
 
