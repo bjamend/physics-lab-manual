@@ -66,7 +66,56 @@
       <details id="theory">
         <summary>Theory</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            Consider a source emitting sound wave crests at a steady rate $f_s$ into a medium where waves travel at sound speed $v$.
+            By definition, the source's emission period is $T_s = 1/f_s$.
+            If this source were at rest, the spacing between the wave crests would be
+          </p>
+          <div id="eq-wave-spacing">
+            <p>
+              $$\begin{equation}
+                \Delta \lambda = vT_s\,. \label{eq:wave-spacing}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Now suppose the source moves at speed $v_s$ relative to the stationary medium.
+            The quantity $v_s$ can be positive or negative depending on the direction of motion.
+            In the time $T_s$ between two successive 'emissions', it advances a distance $v_sT_s$, so the spacing of crests observed by a stationary observer becomes
+          </p>
+          <div id="eq-wave-spacing-2">
+            <p>
+              $$\begin{equation}
+                \Delta \lambda' = \Delta\lambda - v_sT_s = (v-v_s)T_s = \frac{v-v_s}{f_s}\,. \label{eq:wave-spacing-2}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Note that if $v_s$ is <em>positive</em>, the spacing between wave crests <em>decreases</em>, and if $v_s$ is <em>negative</em>, this spacing <em>increases</em>.
+          </p>
+          <p>
+            Now consider an observer who moves through the medium at speed $v_o$.
+            As was the case with the source speed $v_s$, $v_o$ can be positive (indicating motion <em>towards</em> the source) or negative (indicating motion <em>away</em> from the source).
+            From the observer's point of view, the speed of the crests is simply the sum of the wave speed in the medium $v$ with the observer's speed $v_o$.
+            The observed frequency $f_o$ is the rate at which the crests pass by,
+          </p>
+          <div id="eq-observed-frequency">
+            <p>
+              $$\begin{equation}
+                f_o = \frac{v + v_o}{\Delta \lambda'}\,. \label{eq:observed-frequency}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Substituting in <a href="#eq-wave-spacing-2" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:wave-spacing-2}$</a>, we obtain the general formulation for the Doppler shift—the shift in frequency associated with motion of the source and/or the observer relative to some stationary medium:
+          </p>
+          <div id="eq-doppler-shift">
+            <p>
+              $$\begin{equation}
+                \boxed{f_o = f_s \frac{v+v_o}{v-v_s}}\,. \label{eq:doppler-shift}
+              \end{equation}$$
+            </p>
+          </div>
         </div>
       </details>
 
@@ -78,11 +127,19 @@
             Submit your responses to the following questions by the start of the relevant lab meeting.
           </p>
           <ol class="list-decimal">
-            <li><p>Question 1</p></li>
-            <li><p>Question 2</p></li>
-            <li><p>Question 3</p></li>
-            <li><p>Question 4</p></li>
-            <li><p>Question 5</p></li>
+            <li><p>What is the fractional shift in frequency ($f_o/f_s$) heard by a stationary observer from a source moving away at $1/10^{\mathrm{th}}$ the speed of sound?</p></li>
+            <li><p>What is the fractional shift in frequency heard by an observer moving at $1/10^{\mathrm{th}}$ the speed of sound away from a stationary source?</p></li>
+            <li><p>Compare your answers from questions 1 and 2.
+            Are they the same, or different?
+            If they are different, explain why.</p></li>
+            <li><p>Consider a small speaker attached to a string spinning in a circle of radius $R$ at a rotational frequency $\omega$.
+            The speaker emits a tone at frequency $f_s$.
+            The plane of rotation is horizontally oriented (think of spinning pizza dough).
+            You are standing a distance $d \gg R$ away from the center of rotation, with your ears at the same height as the speaker.
+            Taking the sound speed in air to be $v$, write an expression for the frequency you will hear, to within a phase constant.
+            Your answer should be a function of $t$, and in terms of $R$, $\omega$, $f_s$, and $v$.
+            <strong>Hint:</strong> $d$ should not be included in this expression given the limit that $d \gg R$.</p></li>
+            <li><p>Why does the expression you obtained in question 4 break down when you get close to the spinning speaker?</p></li>
           </ol>
         </div>
       </details>
@@ -91,12 +148,25 @@
       <details id="procedure">
         <summary>Procedure</summary>
         <div class="box">
-          <p>Goal.</p>
+          <p>
+          Your goal in this lab is to obtain as accurate a measure of the speed of sound as possible.
+          An audio analysis tool of some sort will be required in order to accomplish this, and Audacity is recommended since it is free and easy to use. There are two particular features you may find useful upon loading in (or recording) an audio track:
+          </p>
           <ol class="list-decimal">
-            <li><strong>Step 1</strong> Text.</li>
+            <li>
+              <strong>The Spectrogram View</strong> - This is an alternate view of the sound signal on any given track, showing a color map of the intensities of different frequencies.
+              This view can be useful as you can, in some cases, pick out by eye where certain frequency shifts are occurring.
+              This view can be enabled by clicking on the three little dots next to the track name and selecting 'Spectrogram'.
+            </li>
+            <li>
+              <strong>The Plot Spectrum Tool</strong> - This generates a histogram of all frequencies over the selected window of time.
+              This can be useful for averaging out noisy frequencies, as well as providing a more quantitative measure of what is shown in the spectrogram view.
+              This is an analysis tool that can be applied to the entire track or a section of a track; once a selection has been made, it can be found under Analyze -> Plot Spectrum.
+              Note that you can also export this histogram data to do further analysis in Python if needed.
+            </li>
           </ol>
           <p></p>
-          <p>Summary text.</p>
+          <p>To generate the audio that you will be analyzed, you are encourage to try a few different techniques, including moving sources, moving observers, rotating objects (e.g. pre-lab questions 4 and 5), etc.</p>
         </div>
       </details>
 
