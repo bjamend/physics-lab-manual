@@ -170,6 +170,262 @@
         </div>
       </details>
 
+      <details id="virtual-lab-simulation" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Virtual Lab Simulation
+        </summary>
+        <div class="mt-6 space-y-4 text-gray-100">
+          <p class="online-only-note">
+            <strong>This section is only relevant if you are doing this lab online instead of in-person.</strong>
+          </p>
+          <p>
+            The simulation below allows you to set the positions (in m) and velocities (in m/s) of an observer (blue, bottom) and a source (red, top).
+            You can also set the emitted frequency of the source in Hz, as well as the simulation end time in seconds.
+            Set up a configuration where you can measure the speed of sound using the tips provided in the procedure above, and compare to a value of $343\,\mathrm{m/s}$ for error analysis purposes.
+          </p>
+          <div id="simulation" class="p-4 bg-gray-900 rounded-lg shadow-lg mx-auto" style="max-width:920px;">
+            <div class="flex-row" style="margin-top: 1rem; justify-content: center;">
+              <div id="timeDisplay">Time: <span id="timeCounter">0.00</span> s</div>
+            </div>
+
+            <canvas
+              id="simCanvas"
+              width="900"
+              height="60"
+              class="border border-gray-700 block mx-auto bg-black"
+            ></canvas>
+
+            <!-- Two-column controls -->
+            <div class="flex-row" style="margin-top: 1rem; justify-content: center; gap: 2rem;">
+              <!-- Left column -->
+              <div class="flex flex-col space-y-4">
+                <div class="slider-box">
+                  <label for="obsPosX" class="inline-block w-32">$x_o$ (m):</label>
+                  <input type="number" id="obsPosX" value="0" step="0.1" class="ml-2">
+                </div>
+                <div class="slider-box">
+                  <label for="obsVelX" class="inline-block w-32">$v_o$ (m/s):</label>
+                  <input type="number" id="obsVelX" value="0" step="0.1" class="ml-2">
+                </div>
+                <div class="slider-box">
+                  <label for="duration" class="inline-block w-32">$t_{\mathrm{max}}$ (s):</label>
+                  <input type="number" id="duration" value="5" step="0.1" class="ml-2">
+                </div>
+              </div>
+
+              <!-- Right column -->
+              <div class="flex flex-col space-y-4">
+                <div class="slider-box">
+                  <label for="srcPosX" class="inline-block w-32">$x_s$ (m):</label>
+                  <input type="number" id="srcPosX" value="-2" step="0.1" class="ml-2">
+                </div>
+                <div class="slider-box">
+                  <label for="srcVelX" class="inline-block w-32">$v_s$ (m/s):</label>
+                  <input type="number" id="srcVelX" value="1" step="0.1" class="ml-2">
+                </div>
+                <div class="slider-box">
+                  <label for="srcFreq" class="inline-block w-32">$f_s$ (Hz):</label>
+                  <input type="number" id="srcFreq" value="440" step="1" class="ml-2">
+                </div>
+              </div>
+            </div>
+
+            <div class="flex-row" style="margin-top: 1.5rem; justify-content: center; gap: 1rem;">
+              <button id="playPauseBtn" class="button" disabled>Play</button>
+              <button id="resetBtn" class="button" disabled>Reset</button>
+              <button id="downloadBtn" class="button" disabled>Download WAV</button>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <script>
+        const c = 343, dt = 0.01;
+        // 20 m wide, 1 m tall window centered on origin
+        const world = { xMin: -10, xMax: 10, yMin: -0.5, yMax: 0.5 };
+        const ext   = { xMin: -10.5, xMax: 10.5, yMin: -1.0, yMax: 1.0 };
+        const yObs = -0.25, ySrc = 0.25; // fixed y positions
+
+        const canvas = document.getElementById('simCanvas'), ctx = canvas.getContext('2d');
+        const playBtn = document.getElementById('playPauseBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const timeSpan = document.getElementById('timeCounter');
+
+        let audioCtx, osc;
+        let obsX0, obsVx, srcX0, srcVx, fSrc, duration;
+        let startTime = 0, pausedAt = 0, animReq;
+        let isStarted = false, isPaused = false;
+
+        function readInputs() {
+          obsX0  = parseFloat(document.getElementById('obsPosX').value);
+          obsVx  = parseFloat(document.getElementById('obsVelX').value);
+          srcX0  = parseFloat(document.getElementById('srcPosX').value);
+          srcVx  = parseFloat(document.getElementById('srcVelX').value);
+          fSrc   = parseFloat(document.getElementById('srcFreq').value);
+          duration = parseFloat(document.getElementById('duration').value);
+        }
+
+        function within(bounds, x, y) {
+          return x >= bounds.xMin && x <= bounds.xMax && y >= bounds.yMin && y <= bounds.yMax;
+        }
+
+        function updateButtons() {
+          readInputs();
+          const okObs = obsX0 >= world.xMin && obsX0 <= world.xMax;
+          const okSrc = srcX0 >= world.xMin && srcX0 <= world.xMax;
+          const ok = okObs && okSrc;
+          playBtn.disabled = !ok;
+          downloadBtn.disabled = !ok;
+        }
+
+        function drawStatic() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          ctx.strokeStyle = '#888'; ctx.lineWidth = 1;
+          ctx.strokeRect(0, 0, canvas.width, canvas.height);
+          readInputs(); timeSpan.textContent = '0.00';
+          drawPoint(obsX0, yObs, 'blue'); drawArrow(obsX0, obsVx, 'blue');
+          drawPoint(srcX0, ySrc, 'red'); drawArrow(srcX0, srcVx, 'red');
+          updateButtons();
+        }
+
+        function drawPoint(x, y, color) {
+          const cx = (x - world.xMin) / (world.xMax - world.xMin) * canvas.width;
+          const cy = canvas.height - ((y - world.yMin) / (world.yMax - world.yMin) * canvas.height);
+          ctx.fillStyle = color;
+          ctx.beginPath(); ctx.arc(cx, cy, 5, 0, 2*Math.PI); ctx.fill();
+        }
+
+        function drawArrow(x, vx, color) {
+          const y = (color === 'blue' ? yObs : ySrc);
+          const length = vx * 0.2;
+          const x2 = x + length;
+          const cx1 = (x - world.xMin) / (world.xMax - world.xMin) * canvas.width;
+          const cx2 = (x2 - world.xMin) / (world.xMax - world.xMin) * canvas.width;
+          const cy1 = canvas.height - ((y - world.yMin) / (world.yMax - world.yMin) * canvas.height);
+          const head = 6;
+          ctx.strokeStyle = color; ctx.fillStyle = color; ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(cx1, cy1); ctx.lineTo(cx2, cy1); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(cx2, cy1);
+            ctx.lineTo(cx2 - head, cy1 - head/2);
+            ctx.lineTo(cx2 - head, cy1 + head/2);
+          ctx.closePath(); ctx.fill();
+        }
+
+        function drawFrame() {
+          const t = audioCtx.currentTime - startTime;
+          if (t <= duration) {
+            const ox = obsX0 + obsVx * t;
+            const sx = srcX0 + srcVx * t;
+            const dx = ox - sx;
+            const dy = yObs - ySrc;
+            const dist = Math.hypot(dx, dy);
+            const ux = dx / dist;
+            if (!within(ext, ox, yObs) || !within(ext, sx, ySrc)) {
+              osc.stop(); audioCtx.close(); isStarted = false; isPaused = false; playBtn.textContent = 'Play'; return;
+            }
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            ctx.strokeStyle='#888';ctx.lineWidth=1;ctx.strokeRect(0,0,canvas.width,canvas.height);
+            drawPoint(ox, yObs, 'blue'); drawArrow(ox, obsVx, 'blue');
+            drawPoint(sx, ySrc, 'red'); drawArrow(sx, srcVx, 'red');
+            timeSpan.textContent = t.toFixed(2);
+            animReq = requestAnimationFrame(drawFrame);
+          } else {
+            isStarted = false; isPaused = false; playBtn.textContent = 'Play';
+          }
+        }
+
+        function scheduleAudioOffline(cb) {
+          readInputs(); let endT = duration;
+          for (let t = 0; t <= duration; t += dt) {
+            const ox = obsX0 + obsVx*t;
+            const sx = srcX0 + srcVx*t;
+            if (!within(ext, ox, yObs) || !within(ext, sx, ySrc)) { endT = t; break; }
+          }
+          const sr = 44100, length = Math.ceil(endT*sr);
+          const offCtx = new OfflineAudioContext(1, length, sr);
+          const oscillator = offCtx.createOscillator(); oscillator.type = 'sine';
+          const gain = offCtx.createGain(); gain.gain.value = 0.1;
+          oscillator.connect(gain).connect(offCtx.destination);
+          for (let t = 0; t <= endT; t += dt) {
+            const ox = obsX0 + obsVx*t;
+            const sx = srcX0 + srcVx*t;
+            const dx = ox - sx, dy = yObs - ySrc;
+            const dist = Math.hypot(dx, dy);
+            const ux = dx / dist;
+            const v_src = srcVx * ux;
+            const v_obs = -obsVx * ux;
+            const fObs = fSrc * (c + v_obs) / (c - v_src);
+            oscillator.frequency.setValueAtTime(fObs, t);
+          }
+          oscillator.start(0); oscillator.stop(endT);
+          offCtx.startRendering().then(buf => {
+            const wav = bufferToWave(buf, buf.length);
+            const blob = new Blob([wav], { type: 'audio/wav' });
+            cb(URL.createObjectURL(blob));
+          });
+        }
+
+        function bufferToWave(ab, len) {
+          const chs = ab.numberOfChannels, size = len*chs*2+44;
+          const buffer = new ArrayBuffer(size), view = new DataView(buffer);
+          function w(s,o){for(let i=0;i<s.length;i++)view.setUint8(o+i,s.charCodeAt(i));}
+          w('RIFF',0); view.setUint32(4,size-8,true);
+          w('WAVE',8); w('fmt ',12); view.setUint32(16,16,true);
+          view.setUint16(20,1,true); view.setUint16(22,chs,true);
+          view.setUint32(24,ab.sampleRate,true);
+          view.setUint32(28,ab.sampleRate*chs*2,true);
+          view.setUint16(32,chs*2,true); view.setUint16(34,16,true);
+          w('data',36); view.setUint32(40,size-44,true);
+          let offset=44; const cd=[];
+          for(let c=0;c<chs;c++) cd.push(ab.getChannelData(c));
+          for(let i=0;i<len;i++){ let s=cd[0][i]; view.setInt16(offset, s<0?s*0x8000:s*0x7FFF, true); offset+=2; }
+          return view;
+        }
+
+        playBtn.addEventListener('click', ()=>{
+          if(!isStarted){
+            readInputs();
+            audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+            osc = audioCtx.createOscillator(); osc.type='sine';
+            const gain = audioCtx.createGain(); gain.gain.value=0.1;
+            osc.connect(gain).connect(audioCtx.destination);
+            startTime = audioCtx.currentTime;
+            for(let t=0;t<=duration;t+=dt){
+              const ox=obsX0+obsVx*t, sx=srcX0+srcVx*t;
+              const dx=ox-sx, dy=yObs-ySrc;
+              const dist=Math.hypot(dx,dy);
+              const ux=dx/dist;
+              const v_src=srcVx*ux;
+              const v_obs=-obsVx*ux;
+              const fObs=fSrc*(c+v_obs)/(c-v_src);
+              osc.frequency.setValueAtTime(fObs, startTime+t);
+            }
+            osc.start(startTime); osc.stop(startTime+duration+dt);
+            isStarted=true; isPaused=false;
+            drawFrame(); playBtn.textContent='Pause'; resetBtn.disabled=false;
+          } else if(!isPaused){
+            audioCtx.suspend().then(()=>{ pausedAt=audioCtx.currentTime-startTime; cancelAnimationFrame(animReq); isPaused=true; playBtn.textContent='Play'; });
+          } else {
+            audioCtx.resume().then(()=>{ startTime=audioCtx.currentTime-pausedAt; isPaused=false; drawFrame(); playBtn.textContent='Pause'; });
+          }
+        });
+
+        downloadBtn.addEventListener('click', ()=>{
+          scheduleAudioOffline(url=>{ const a=document.createElement('a'); a.href=url; a.download='doppler.wav'; document.body.appendChild(a); a.click(); document.body.removeChild(a); });
+        });
+
+        resetBtn.addEventListener('click', ()=>{
+          if(isStarted||isPaused){ osc.stop(); audioCtx.close(); }
+          cancelAnimationFrame(animReq);
+          isStarted=false; isPaused=false; pausedAt=0;
+          playBtn.textContent='Play'; resetBtn.disabled=true;
+          drawStatic();
+        });
+
+        drawStatic(); document.querySelectorAll('input').forEach(i=>i.addEventListener('input', drawStatic));
+      </script>
+
       <!-- Section: Footnotes -->
       <footer>
         <p id="eden-1992">
