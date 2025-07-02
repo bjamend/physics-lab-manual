@@ -51,7 +51,18 @@
       <details id="background" open>
         <summary>Historical Background</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            The law of reflection traces back to ancient Greek geometry, where Euclid<sup><a href="#burton-1945" class="text-blue-300 hover:underline">[1]</a></sup> and later Ptolemy<sup><a href="#smith-1996" class="text-blue-300 hover:underline">[2]</a></sup> described mirror behavior in purely geometric terms.
+            Both thinkers supported the "extramission" theory of vision, which held that sight occurs when beams are emitted from the eyes and strike external objects.
+            In the early eleventh century, the Arab scholar Ibn al-Haytham conducted the first rigorous experimental studies of reflection in his <em>Book of Optics</em>.
+            He demonstrated that light travels in straight lines and reflects predictably from smooth surfaces<sup><a href="#sabra-2023" class="text-blue-300 hover:underline">[3]</a></sup>.
+            His experiments also challenged the extramission theory of vision, offering support instead for the intromission theory, which holds that vision occurs when light enters the eyes from external sources<sup><a href="#sabra-1989" class="text-blue-300 hover:underline">[4]</a></sup>.
+            During the Renaissance, European thinkers such as Leonardo da Vinci and Rene Descartes refined these ideas: Descartes derived the law from his analytic geometry and linked it to his broader mechanistic philosophy of light<sup><a href="#sabra-1981" class="text-blue-300 hover:underline">[5]</a></sup>.
+            Pierre de Fermat's principle of least time later offered a variational foundation, showing that the equal-angle rule follows from light's tendency to minimize travel time.
+          </p>
+          <p>
+            In this lab, you will use the law of reflection to measure the radii of curvature of different curved mirrors.
+          </p>
         </div>
       </details>
 
@@ -59,7 +70,227 @@
       <details id="theory">
         <summary>Theory</summary>
         <div>
-          <p>Text.</p>
+          <p>
+          <strong>Fermat's Principle</strong> states that light propagates along the path that minimizes its travel time.
+          In the absence of interfaces between different mediums, this path trivially corresponds to a straight line.
+          As such, the <strong>Law of Rectilinear Propagation</strong> is a natural consequence of Fermat's Principle.
+          To obtain the <strong>Law of Reflection</strong>, however, we'll have to put in a bit more work.
+        </p>
+        <p>
+          We begin by characterizing the process of reflection with two rays—an incident and a reflected ray—on an interface between two mediums, as shown in <a href="#fig-1" class="text-blue-300 hover:underline">Figure 1</a> below.
+          We want to determine a relationship between the angle of incidence $\theta_i$ and the angle of reflection $\theta_r$ such that the light will take the smallest amount of time to travel from point A to point B.
+        </p>
+        <figure id="fig-1" class="my-8 text-center">
+            <img
+              src="figures/lab5/figure1.png"
+              alt="Incident and reflected rays"
+              class="mx-auto rounded"
+            >
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 1:</strong> A light ray reflects off an interface between two mediums.
+            </figcaption>
+          </figure>
+          <p>
+            The distance traveled by each ray can be calculated via the Pythagorean theorem.
+            Using the distances denoted in the figure above, we obtain
+          </p>
+          <div id="eq-distance">
+            <p>
+              $$\begin{equation}
+                d = \sqrt{h_A^2 + x^2} + \sqrt{h_B^2 + (L - x)^2}\,. \label{eq:distance}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            To obtain the travel time, we simply divide both sides of <a href="#eq-distance" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:distance}$</a> by the speed of light $v$ in the relevant medium.
+            The travel time is then given by
+          </p>
+          <div id="eq-travel-time">
+            <p>
+              $$\begin{equation}
+                t = \frac{\sqrt{h_A^2 + x^2}}{v} + \frac{\sqrt{h_B^2 + (L - x)^2}}{v}\,. \label{eq:travel-time}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            To minimize this, we differentiate it with respect to $x$—the variable we've used to parameterize the paths—and equate it to zero.
+          </p>
+          <div id="eq-derivative">
+            <p>
+              $$\begin{equation}
+                \frac{dt}{dx} = \frac{1}{v}\left[ \frac{x}{\sqrt{h_A^2 + x^2}} - \frac{(L-x)}{\sqrt{h_B^2 + (L-x)^2}} \right] \,. \label{eq:derivative}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Equating this to zero, we obtain
+          </p>
+          <div id="eq-path-relation">
+            <p>
+              $$\begin{equation}
+                \frac{x}{\sqrt{h_A^2 + x^2}} = \frac{(L-x)}{\sqrt{h_B^2+(L-x)^2}} \,, \label{eq:path-relation}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            which is equivalent to
+          </p>
+          <div id="eq-geometric-relation">
+            <p>
+              $$\begin{equation}
+                \sin{\theta_i} = \sin{\theta_r} \,. \label{eq:geometric-relation}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Thus, since the angles are measured relative to the surface normal,
+          </p>
+          <div id="eq-law-of-reflection">
+            <p>
+              $$\begin{equation}
+                \boxed{\theta_i = \theta_r} \,. \label{eq:law-of-reflection}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            This is, of course, the Law of Reflection: the angle of incidence equals the angle of reflection.
+            But how is this applied in practice?
+            In this lab, we'll be studying image formation with concave mirrors, so we'll start there.
+          </p>
+          <p>
+            Concave mirrors are spherical mirrors that curve inward, like the inside surface of a bowl.
+            These mirrors have the useful property of causing incoming parallel rays of light to reflect and converge to a point in front of the mirror, known as the focal point $F$.
+            However, this convergence is only approximate; rays farther from the principal axis do not meet exactly at the same point, leading to a phenomenon known as spherical aberration.
+            This phenomenon is more pronounced when the mirror has a smaller radius of curvature $R$, as can be seen in the interactive widget below.
+          </p>
+
+          <div style="margin-top: 1.5rem;">
+            <!-- Mirror simulation canvas -->
+            <div class="flex-row">
+              <canvas id="mirrorCanvas" width="600" height="400"></canvas>
+            </div>
+            <!-- Radius of curvature slider -->
+            <div class="flex-row" style="margin-top: 1.5rem;">
+              <div class="slider-box">
+                <label for="radiusSlider">Radius of Curvature:</label>
+                <input
+                  type="range"
+                  id="radiusSlider"
+                  min="215"
+                  max="800"
+                  value="215"
+                />
+                <span id="radiusValue">215</span>
+              </div>
+            </div>
+          </div>
+          <script>
+            const canvas = document.getElementById('mirrorCanvas');
+            const ctx = canvas.getContext('2d');
+            const slider = document.getElementById('radiusSlider');
+            const radiusValue = document.getElementById('radiusValue');
+            let R = parseInt(slider.value, 10);
+
+            function drawSegment(sx, sy, ex, ey) {
+              const headLen = 12;
+              const arrowScale = 0.6;
+              const arrowLen = headLen * arrowScale;
+              const arrowCount = 3;
+              const segLen = Math.hypot(ex - sx, ey - sy);
+              if (segLen < 0.0001) return;
+              const ux = (ex - sx) / segLen;
+              const uy = (ey - sy) / segLen;
+              ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(ex, ey); ctx.stroke();
+              for (let i = 1; i <= arrowCount; i++) {
+                const t = i / (arrowCount + 1);
+                const xa = sx + ux * segLen * t;
+                const ya = sy + uy * segLen * t;
+                const ang = Math.atan2(uy, ux);
+                ctx.beginPath();
+                ctx.moveTo(xa, ya);
+                ctx.lineTo(xa - arrowLen * Math.cos(ang - Math.PI/6), ya - arrowLen * Math.sin(ang - Math.PI/6));
+                ctx.lineTo(xa - arrowLen * Math.cos(ang + Math.PI/6), ya - arrowLen * Math.sin(ang + Math.PI/6));
+                ctx.closePath(); ctx.fill();
+              }
+              const angEnd = Math.atan2(ey - sy, ex - sx);
+              ctx.beginPath();
+              ctx.moveTo(ex, ey);
+              ctx.lineTo(ex - arrowLen * Math.cos(angEnd - Math.PI/6), ey - arrowLen * Math.sin(angEnd - Math.PI/6));
+              ctx.lineTo(ex - arrowLen * Math.cos(angEnd + Math.PI/6), ey - arrowLen * Math.sin(angEnd + Math.PI/6));
+              ctx.closePath(); ctx.fill();
+            }
+
+            function draw() {
+              const w = canvas.width, h = canvas.height;
+              const rayLength = w * 1.5;
+              ctx.clearRect(0, 0, w, h);
+              const cx = R + 100;
+              const cy = h / 2;
+              const theta = R >= h/2 ? Math.asin((h/2) / R) : Math.PI/2;
+
+              // draw mirror arc
+              ctx.strokeStyle = 'dodgerblue'; ctx.lineWidth = 2;
+              ctx.beginPath(); ctx.arc(cx, cy, R, Math.PI - theta, Math.PI + theta); ctx.stroke();
+
+              // draw principal axis
+              ctx.strokeStyle = '#aaa'; ctx.lineWidth = 1;
+              ctx.beginPath(); ctx.moveTo(0, cy); ctx.lineTo(w, cy); ctx.stroke();
+
+              // draw rays
+              ctx.strokeStyle = 'crimson'; ctx.fillStyle = 'crimson'; ctx.lineWidth = 1;
+              const offsets = [-180, -120, -60, 0, 60, 120, 180];
+              offsets.forEach(offset => {
+                const y0 = cy + offset;
+                const dy0 = y0 - cy;
+                const hit1 = Math.abs(dy0) <= R;
+                const xHit1 = hit1 ? cx - Math.sqrt(R*R - dy0*dy0) : 0;
+                drawSegment(w, y0, xHit1, y0);
+                if (!hit1) return;
+                const inc = {x: -1, y: 0};
+                const norm1 = {x: (xHit1 - cx)/R, y: (y0 - cy)/R};
+                const dot1 = inc.x * norm1.x + inc.y * norm1.y;
+                const refl1 = {x: inc.x - 2 * dot1 * norm1.x, y: inc.y - 2 * dot1 * norm1.y};
+                const t2 = -2 * ((xHit1 - cx) * refl1.x + (y0 - cy) * refl1.y);
+                let didSecond = false;
+                if (t2 > 0 && t2 < rayLength) {
+                  const xHit2 = xHit1 + refl1.x * t2;
+                  const yHit2 = y0 + refl1.y * t2;
+                  const onArc = xHit2 <= cx && Math.abs(yHit2 - cy) <= R * Math.sin(theta);
+                  if (onArc) {
+                    drawSegment(xHit1, y0, xHit2, yHit2);
+                    const norm2 = {x: (xHit2 - cx)/R, y: (yHit2 - cy)/R};
+                    const dot2 = refl1.x * norm2.x + refl1.y * norm2.y;
+                    const refl2 = {x: refl1.x - 2 * dot2 * norm2.x, y: refl1.y - 2 * dot2 * norm2.y};
+                    const rem = rayLength - t2;
+                    const xEnd = xHit2 + refl2.x * rem;
+                    const yEnd = yHit2 + refl2.y * rem;
+                    drawSegment(xHit2, yHit2, xEnd, yEnd);
+                    didSecond = true;
+                  }
+                }
+                if (!didSecond) {
+                  const xEnd1 = xHit1 + refl1.x * rayLength;
+                  const yEnd1 = y0 + refl1.y * rayLength;
+                  drawSegment(xHit1, y0, xEnd1, yEnd1);
+                }
+              });
+
+              // draw center of curvature on top
+              ctx.fillStyle = 'white';
+              ctx.beginPath(); ctx.arc(cx, cy, 5, 0, 2*Math.PI); ctx.fill();
+              ctx.fillStyle = 'white'; ctx.font = 'bold 14px sans-serif'; ctx.fillText('C', cx + 6, cy + 4);
+
+              // draw focal point on top
+              const f = R/2;
+              const fx = cx - f;
+              ctx.fillStyle = 'white'; ctx.beginPath(); ctx.arc(fx, cy, 5, 0, 2*Math.PI); ctx.fill();
+              ctx.fillStyle = 'white'; ctx.font = 'bold 14px sans-serif'; ctx.fillText('F', fx + 6, cy + 4);
+            }
+
+            slider.addEventListener('input', () => { R = +slider.value; radiusValue.textContent = R; draw(); });
+            draw();
+          </script>
+
         </div>
       </details>
 
@@ -71,11 +302,7 @@
             Submit your responses to the following questions by the start of the relevant lab meeting.
           </p>
           <ol class="list-decimal">
-            <li><p>Question 1</p></li>
-            <li><p>Question 2</p></li>
-            <li><p>Question 3</p></li>
-            <li><p>Question 4</p></li>
-            <li><p>Question 5</p></li>
+            <li><p>Suppose you have access to a 1D optical bench (so everything can be arranged neatly in a line and moved back and forth as needed), a concave mirror, a screen, and an image source (like an LED or a candle). Design an experiment that would allow someone to measure the radius of curvature of the mirror.</p></li>
           </ol>
         </div>
       </details>
@@ -84,18 +311,27 @@
       <details id="procedure">
         <summary>Procedure</summary>
         <div class="box">
-          <p>Goal.</p>
-          <ol class="list-decimal">
-            <li><strong>Step 1</strong> Text.</li>
-          </ol>
-          <p></p>
-          <p>Summary text.</p>
+          <p>Determine the radii of curvature of three different spherical mirrors.</p>
         </div>
       </details>
 
       <!-- Section: Footnotes -->
       <footer>
-        <!-- Optional footnotes -->
+        <p id="burton-1945">
+          [1] Burton, Harry Edwin. "The Optics of Euclid." Journal of the Optical Society of America 35, no. 5 (May 1945): 357–372. doi:10.1364/JOSA.35.000357.
+        </p>
+        <p id="smith-1996">
+          [2] Smith, A. Mark. Ptolemy’s Theory of Visual Perception: An English Translation of the Optics. The American Philosophical Society, 1996. ISBN-10 871698625.
+        </p>
+        <p id="sabra-2023">
+          [3] Ibn al‑Haytham. The Optics of Ibn al‑Haytham: Books IV–V: On Reflection and Images Seen by Reflection. Translated and edited by A. I. Sabra; revised by Jan P. Hogendijk. 2 vol. Warburg Institute Studies & Texts. Chicago: University of Chicago Press (distributed for the Warburg Institute), 2023. ISBN 978‑1908590589.
+        </p>
+        <p id="sabra-1989">
+          [4] Ibn al-Haytham. The Optics of Ibn al-Haytham: Books I–III: On Direct Vision. Translated and edited by A. I. Sabra. London: The Warburg Institute, 1989.
+        </p>
+        <p id="sabra-1981">
+          [5] Sabra, A. I. Theories of Light: From Descartes to Newton. Cambridge University Press, 1981.
+        </p>
       </footer>
 
     </main>

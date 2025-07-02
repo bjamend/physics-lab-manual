@@ -181,13 +181,12 @@
           <p>
             The simulation below allows you to set the positions (in m) and velocities (in m/s) of an observer (blue, bottom) and a source (red, top).
             You can also set the emitted frequency of the source in Hz, as well as the simulation end time in seconds.
-            Set up a configuration where you can measure the speed of sound using the tips provided in the procedure above, and compare to a value of $343\,\mathrm{m/s}$ for error analysis purposes.
+            Set up a configuration where you can measure the speed of sound using the tips provided in the procedure above, and compare to a value of $343\,\textrm{m/s}$ for error analysis purposes.
           </p>
           <div id="simulation" class="p-4 bg-gray-900 rounded-lg shadow-lg mx-auto" style="max-width:920px;">
             <div class="flex-row" style="margin-top: 1rem; justify-content: center;">
               <div id="timeDisplay">Time: <span id="timeCounter">0.00</span> s</div>
             </div>
-
             <canvas
               id="simCanvas"
               width="900"
@@ -200,15 +199,15 @@
               <!-- Left column -->
               <div class="flex flex-col space-y-4">
                 <div class="slider-box">
-                  <label for="obsPosX" class="inline-block w-32">$x_o$ (m):</label>
+                  <label for="obsPosX">$x_o$ (m):</label>
                   <input type="number" id="obsPosX" value="0" step="0.1" class="ml-2">
                 </div>
                 <div class="slider-box">
-                  <label for="obsVelX" class="inline-block w-32">$v_o$ (m/s):</label>
+                  <label for="obsVelX">$v_o$ (m/s):</label>
                   <input type="number" id="obsVelX" value="0" step="0.1" class="ml-2">
                 </div>
                 <div class="slider-box">
-                  <label for="duration" class="inline-block w-32">$t_{\mathrm{max}}$ (s):</label>
+                  <label for="duration">$t_{\mathrm{max}}$ (s):</label>
                   <input type="number" id="duration" value="5" step="0.1" class="ml-2">
                 </div>
               </div>
@@ -216,15 +215,15 @@
               <!-- Right column -->
               <div class="flex flex-col space-y-4">
                 <div class="slider-box">
-                  <label for="srcPosX" class="inline-block w-32">$x_s$ (m):</label>
+                  <label for="srcPosX">$x_s$ (m):</label>
                   <input type="number" id="srcPosX" value="-2" step="0.1" class="ml-2">
                 </div>
                 <div class="slider-box">
-                  <label for="srcVelX" class="inline-block w-32">$v_s$ (m/s):</label>
+                  <label for="srcVelX">$v_s$ (m/s):</label>
                   <input type="number" id="srcVelX" value="1" step="0.1" class="ml-2">
                 </div>
                 <div class="slider-box">
-                  <label for="srcFreq" class="inline-block w-32">$f_s$ (Hz):</label>
+                  <label for="srcFreq">$f_s$ (Hz):</label>
                   <input type="number" id="srcFreq" value="440" step="1" class="ml-2">
                 </div>
               </div>
@@ -284,8 +283,8 @@
           ctx.strokeStyle = '#888'; ctx.lineWidth = 1;
           ctx.strokeRect(0, 0, canvas.width, canvas.height);
           readInputs(); timeSpan.textContent = '0.00';
-          drawPoint(obsX0, yObs, 'blue'); drawArrow(obsX0, obsVx, 'blue');
-          drawPoint(srcX0, ySrc, 'red'); drawArrow(srcX0, srcVx, 'red');
+          drawPoint(obsX0, yObs, 'dodgerblue'); drawArrow(obsX0, obsVx, 'dodgerblue');
+          drawPoint(srcX0, ySrc, 'crimson'); drawArrow(srcX0, srcVx, 'red');
           updateButtons();
         }
 
@@ -297,7 +296,7 @@
         }
 
         function drawArrow(x, vx, color) {
-          const y = (color === 'blue' ? yObs : ySrc);
+          const y = (color === 'dodgerblue' ? yObs : ySrc);
           const length = vx * 0.2;
           const x2 = x + length;
           const cx1 = (x - world.xMin) / (world.xMax - world.xMin) * canvas.width;
@@ -326,8 +325,8 @@
             }
             ctx.clearRect(0,0,canvas.width,canvas.height);
             ctx.strokeStyle='#888';ctx.lineWidth=1;ctx.strokeRect(0,0,canvas.width,canvas.height);
-            drawPoint(ox, yObs, 'blue'); drawArrow(ox, obsVx, 'blue');
-            drawPoint(sx, ySrc, 'red'); drawArrow(sx, srcVx, 'red');
+            drawPoint(ox, yObs, 'dodgerblue'); drawArrow(ox, obsVx, 'dodgerblue');
+            drawPoint(sx, ySrc, 'crimson'); drawArrow(sx, srcVx, 'crimson');
             timeSpan.textContent = t.toFixed(2);
             animReq = requestAnimationFrame(drawFrame);
           } else {
