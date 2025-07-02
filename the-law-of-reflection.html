@@ -57,7 +57,7 @@
             In the early eleventh century, the Arab scholar Ibn al-Haytham conducted the first rigorous experimental studies of reflection in his <em>Book of Optics</em>.
             He demonstrated that light travels in straight lines and reflects predictably from smooth surfaces<sup><a href="#sabra-2023" class="text-blue-300 hover:underline">[3]</a></sup>.
             His experiments also challenged the extramission theory of vision, offering support instead for the intromission theory, which holds that vision occurs when light enters the eyes from external sources<sup><a href="#sabra-1989" class="text-blue-300 hover:underline">[4]</a></sup>.
-            During the Renaissance, European thinkers such as Leonardo da Vinci and Rene Descartes refined these ideas: Descartes derived the law from his analytic geometry and linked it to his broader mechanistic philosophy of light<sup><a href="#sabra-1981" class="text-blue-300 hover:underline">[5]</a></sup>.
+            During the Renaissance, European thinkers such as Renee Descartes refined these ideas, deriving the law from analytic geometry and linked it to broader mechanistic philosophies of light<sup><a href="#sabra-1981" class="text-blue-300 hover:underline">[5]</a></sup>.
             Pierre de Fermat's principle of least time later offered a variational foundation, showing that the equal-angle rule follows from light's tendency to minimize travel time.
           </p>
           <p>
@@ -158,10 +158,15 @@
             In this lab, we'll be studying image formation with concave mirrors, so we'll start there.
           </p>
           <p>
-            Concave mirrors are spherical mirrors that curve inward, like the inside surface of a bowl.
-            These mirrors have the useful property of causing incoming parallel rays of light to reflect and converge to a point in front of the mirror, known as the focal point $F$.
-            However, this convergence is only approximate; rays farther from the principal axis do not meet exactly at the same point, leading to a phenomenon known as spherical aberration.
-            This phenomenon is more pronounced when the mirror has a smaller radius of curvature $R$, as can be seen in the interactive widget below.
+            A concave mirror is a portion of a sphere, and the geometric center of that sphere is called the center of curvature $C$.
+            The distance from the mirror's surface to this center is known as the radius of curvature, denoted $R$.
+            The focal point lies halfway between the mirror's surface and the center of curvature, so the focal length $f$ is related to the radius by $f=R/2$.
+            Both $R$ and $f$ are measured from the mirror along the principal axis, which is the straight line that runs through the mirror’s center and the center of curvature.
+            For concave mirrors, we take both the focal length and radius of curvature to be positive, because the focal point lies in front of the mirror—the same side as the incoming light.
+          </p>
+          <p>
+            The convergence of light rays to the focal point $f$ is only approximate; rays farther from the principal axis do not meet exactly at the same point, leading to a phenomenon known as <strong>spherical aberration</strong>.
+            This phenomenon is more pronounced when the mirror has a smaller radius of curvature, as can be seen in the interactive widget below.
           </p>
 
           <div style="margin-top: 1.5rem;">
@@ -284,12 +289,243 @@
               const f = R/2;
               const fx = cx - f;
               ctx.fillStyle = 'white'; ctx.beginPath(); ctx.arc(fx, cy, 5, 0, 2*Math.PI); ctx.fill();
-              ctx.fillStyle = 'white'; ctx.font = 'bold 14px sans-serif'; ctx.fillText('F', fx + 6, cy + 4);
+              ctx.fillStyle = 'white'; ctx.font = 'bold 14px sans-serif'; ctx.fillText('f', fx + 6, cy + 4);
             }
 
             slider.addEventListener('input', () => { R = +slider.value; radiusValue.textContent = R; draw(); });
             draw();
           </script>
+
+          <p>
+            To understand how a mirror forms an image of an object, we use a graphical method called <strong>ray tracing</strong>.
+            The idea is to draw just a few specific light rays coming from the top of the object, which reflect in predictable ways, allowing us to find the location where the reflected rays intersect.
+            We will not be accounting for the effects of spherical aberration in this procedure, but it is worth keeping in mind as a source of error, particularly for mirrors with smaller $R$.
+          </p>
+
+          <p>
+            The interactive widget below illustrates the three principal rays commonly used in ray-tracing diagrams for concave mirrors.
+            The first ray travels parallel to the principal axis and reflects through the focal point.
+            The second ray strikes the vertex of the mirror (where the mirror meets the principal axis) and reflects symmetrically with respect to the principal axis.
+            The third ray passes through the focal point before reaching the mirror and reflects parallel to the principal axis.
+          </p>
+
+          <div style="margin-top: 1.5rem;">
+            <div class="flex-row">
+              <canvas id="diagram" width="600" height="400"></canvas>
+            </div>
+            <div class="flex-row" style="margin-top: 1.5rem;">
+              <div class="slider-box">
+                <label for="objectDist">Object Distance:</label>
+                <input type="range" id="objectDist" min="150" max="400" value="200" />
+                <span id="distVal">200</span>
+              </div>
+            </div>
+          </div>
+          <script>
+            (function() {
+              const diagCanvas = document.getElementById('diagram');
+              const diagCtx    = diagCanvas.getContext('2d');
+              const centerX    = diagCanvas.width * 0.7;
+              const centerY    = diagCanvas.height / 2;
+              const focalLen   = 100;
+              const mirrorH    = 185;
+              const R          = 2 * focalLen;
+              const baseH      = mirrorH * 0.457;
+
+              function drawArrow(x1,y1,x2,y2,col,w){
+                const headlen = w>2 ? 20*(Math.abs(y2-y1)/baseH) : 8;
+                const halfW   = w>2 ? 10 : 4;
+                const ang     = Math.atan2(y2-y1,x2-x1);
+                const bx      = x2 - headlen * Math.cos(ang);
+                const by      = y2 - headlen * Math.sin(ang);
+                const sx      = bx + Math.cos(ang);
+                const sy      = by + Math.sin(ang);
+                diagCtx.strokeStyle = col;
+                diagCtx.fillStyle   = col;
+                diagCtx.lineWidth   = w;
+                diagCtx.beginPath(); diagCtx.moveTo(x1,y1); diagCtx.lineTo(sx,sy); diagCtx.stroke();
+                diagCtx.beginPath();
+                diagCtx.moveTo(x2,y2);
+                diagCtx.lineTo(sx - halfW * Math.sin(ang), sy + halfW * Math.cos(ang));
+                diagCtx.lineTo(sx + halfW * Math.sin(ang), sy - halfW * Math.cos(ang));
+                diagCtx.closePath(); diagCtx.fill();
+              }
+
+              function drawHead(x,y,ang,col,w){
+                const headlen = 8;
+                diagCtx.fillStyle   = col;
+                diagCtx.strokeStyle = col;
+                diagCtx.lineWidth   = w;
+                diagCtx.beginPath();
+                diagCtx.moveTo(x,y);
+                diagCtx.lineTo(x - headlen * Math.cos(ang - Math.PI/6), y - headlen * Math.sin(ang - Math.PI/6));
+                diagCtx.lineTo(x - headlen * Math.cos(ang + Math.PI/6), y - headlen * Math.sin(ang + Math.PI/6));
+                diagCtx.closePath(); diagCtx.fill();
+              }
+
+              const slider     = document.getElementById('objectDist');
+              const valDisplay = document.getElementById('distVal');
+              valDisplay.textContent = slider.value;
+              slider.addEventListener('input', () => { valDisplay.textContent = slider.value; drawRays(); });
+
+              function drawRays() {
+                diagCtx.clearRect(0,0,diagCanvas.width,diagCanvas.height);
+                diagCtx.lineWidth = 1;
+                diagCtx.font      = '12px sans-serif';
+
+                // Principal axis
+                diagCtx.strokeStyle = '#fff';
+                diagCtx.beginPath(); diagCtx.moveTo(0,centerY); diagCtx.lineTo(diagCanvas.width,centerY); diagCtx.stroke();
+
+                // Mirror shape
+                const cxArc = centerX - R;
+                const phi   = Math.asin(mirrorH / R);
+                diagCtx.strokeStyle = 'dodgerblue'; diagCtx.lineWidth = 2;
+                diagCtx.beginPath(); diagCtx.arc(cxArc,centerY,R,-phi,phi); diagCtx.stroke();
+                diagCtx.beginPath(); diagCtx.moveTo(centerX,centerY-mirrorH); diagCtx.lineTo(centerX,centerY+mirrorH); diagCtx.stroke();
+                const arcX = cxArc + R * Math.cos(phi);
+                diagCtx.beginPath();
+                diagCtx.moveTo(arcX,centerY-mirrorH); diagCtx.lineTo(centerX,centerY-mirrorH);
+                diagCtx.moveTo(arcX,centerY+mirrorH); diagCtx.lineTo(centerX,centerY+mirrorH);
+                diagCtx.stroke();
+
+                // Compute object
+                const d_o  = parseFloat(slider.value);
+                const objX = centerX - d_o;
+                const objY = centerY - baseH;
+                const fx   = centerX - focalLen;
+                const dy2  = centerY - objY;
+                const dx2  = centerX - objX;
+
+                // Ray segments
+                const yHitMirror = objY + dx2 * dy2 / (fx - objX);
+                const r1_endY    = objY + dy2 * ((0 - centerX) / (fx - centerX));
+
+                const segments = [
+                  // Ray 1
+                  [{x:objX,y:objY},{x:centerX,y:objY}],
+                  [{x:centerX,y:objY},{x:0,y:r1_endY}],
+                  // Ray 2
+                  [{x:objX,y:objY},{x:centerX,y:centerY}],
+                  [{x:centerX,y:centerY},{x:-50,y:centerY - dy2 * ((-50 - centerX)/dx2)}],
+                  // Ray 3
+                  [{x:objX,y:objY},{x:centerX,y:yHitMirror}],
+                  [{x:centerX,y:yHitMirror},{x:0,y:yHitMirror}]
+                ];
+
+                segments.forEach(([p1,p2]) => {
+                  const ang = Math.atan2(p2.y-p1.y,p2.x-p1.x);
+                  drawArrow(p1.x,p1.y,p2.x,p2.y,'crimson',1.25);
+                  const hx = p1.x + (p2.x-p1.x)*0.5;
+                  const hy = p1.y + (p2.y-p1.y)*0.5;
+                  drawHead(hx,hy,ang,'crimson',1.5);
+                });
+
+                // Object arrow
+                drawArrow(objX,centerY,objX,objY,'white',5);
+                diagCtx.font      = 'bold 14px sans-serif'; diagCtx.fillStyle = 'white';
+                diagCtx.fillText('O', objX - 15, objY - 6);
+
+                // Image arrow
+                const dx1   = fx - centerX;
+                const dy1   = centerY - objY;
+                const yImg  = yHitMirror;
+                const xImg  = centerX + dx1 * ((yImg - objY)/dy1);
+                drawArrow(xImg,centerY,xImg,yImg,'white',5);
+                diagCtx.fillText('I', xImg - 15, yImg + 6);
+
+                // C and F
+                diagCtx.beginPath(); diagCtx.arc(cxArc,centerY,5,0,2*Math.PI); diagCtx.fill(); diagCtx.fillText('C',cxArc+6,centerY-6);
+                diagCtx.beginPath(); diagCtx.arc(fx,centerY,5,0,2*Math.PI); diagCtx.fill(); diagCtx.fillText('f',fx+6,centerY-6);
+              }
+
+              drawRays();
+            })();
+          </script>
+
+          <p>
+            Note how the properties of the reflected image change based on whether the object is interior or exterior to $C$ relative to the mirror vertex.
+            Additionally, note that the reflected rays are shown as if they reflect off a flat surface positioned at the mirror's vertex, rather than the actual curved surface.
+            This simplification avoids spherical aberration in the converging rays, though such aberration will still exist as a source of error in reality.
+          </p>
+
+          <p>
+            The relationship between the object distance $d_o$, image distance $d_i$, and focal length $f$ is given by the mirror equation,
+          </p>
+
+          <div id="eq-mirror-equation">
+            <p>
+              $$\begin{equation}
+                \boxed{\frac{1}{f} = \frac{1}{d_o} + \frac{1}{d_i}} \,. \label{eq:mirror-equation}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Note that the distances are relative to the mirror vertex.
+          </p>
+
+          <!-- Collapsible Derivation Frame -->
+          <details class="derivation-box">
+            <summary>
+              Derivation 1
+            </summary>
+
+            <div>
+              <figure id="fig-d1" class="my-8 text-center">
+                <img
+                  src="figures/lab5/figure2.png"
+                  alt="Principal rays"
+                  class="mx-auto rounded"
+                >
+                <figcaption class="mt-2 text-sm text-gray-400">
+                  <strong>Figure D1.1:</strong> Two principal rays used to derive the mirror equation.
+                </figcaption>
+              </figure>
+
+              <p>
+                The mirror equation can be derived in a geometrical framework using similar triangles.
+                From the figure above,
+              </p>
+
+              <div id="eq-tangent-theta">
+                <p>
+                  $$\tan{\theta} = \frac{h_o}{d_o}\,, \hspace{0.5cm} \tan{\theta'} = \frac{h_i}{d_i}\,, \tag{D1.1}$$
+                </p>
+              </div>
+
+              <p>
+                and
+              </p>
+
+              <div id="eq-tangent-phi">
+                <p>
+                  $$\tan{\phi} = \frac{h_o}{d_o - f}\,, \hspace{0.5cm} \tan{\phi'} = \frac{h_i}{f}\,. \tag{D1.2}$$
+                </p>
+              </div>
+
+              <p>
+                Since $\theta=-\theta'$ and $\phi=-\phi'$,
+              </p>
+
+              <div id="eq-tangent-equality">
+                <p>
+                  $$ \frac{h_o}{d_o} = -\frac{h_i}{d_i}\,, \hspace{0.5cm} \frac{h_o}{d_o - f} = \frac{h_i}{f}\,. \tag{D1.3}$$
+                </p>
+              </div>
+
+              <p>
+                Solving this system of equations, both $h_i$ and $h_o$ are eliminated simultaneously, and we end up with the mirror equation,
+              </p>
+
+              <div id="eq-result">
+                <p>
+                  $$ \boxed{\frac{1}{f} = \frac{1}{d_o} + \frac{1}{d_i}} \,. \tag{D1.4}$$
+                </p>
+              </div>
+
+            </div>
+          </details>
 
         </div>
       </details>
@@ -302,7 +538,35 @@
             Submit your responses to the following questions by the start of the relevant lab meeting.
           </p>
           <ol class="list-decimal">
-            <li><p>Suppose you have access to a 1D optical bench (so everything can be arranged neatly in a line and moved back and forth as needed), a concave mirror, a screen, and an image source (like an LED or a candle). Design an experiment that would allow someone to measure the radius of curvature of the mirror.</p></li>
+            <li>
+              <p>
+                When the object lies between the focal point and the center of curvature ($f < d_o < C$), the concave mirror produces a real image larger than the object.
+                By contrast, if the object is placed beyond the center of curvature ($d_o > C$), the real image formed is smaller in height than the object.
+                What do you expect will happen to the image if the object is placed within the focal point ($d_o < f$)?
+              </p>
+            </li>
+            <li>
+              <p>
+                Look up the story on the mirror flaw in the Hubble Space Telescope.
+                What went wrong, and how was it fixed?
+              </p>
+            </li>
+            <li>
+              <p>
+                What are parabolic mirrors, and why might they be preferred over spherical mirrors?
+              </p>
+            </li>
+            <li>
+              <p>
+                Why might we be opting to work solely with concave mirrors in this lab instead of convex mirrors?
+              </p>
+            </li>
+            <li>
+              <p>
+                An object is placed $30\,\mathrm{cm}$ from the vertex of a concave mirror, and a corresponding image is produced, located $15\,\mathrm{cm}$ from the vertex.
+                What is the mirror's radius of curvature $R$?
+              </p>
+            </li>
           </ol>
         </div>
       </details>
