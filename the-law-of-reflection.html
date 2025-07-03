@@ -579,6 +579,170 @@
         </div>
       </details>
 
+      <!-- Section: Virtual Lab Simulation -->
+      <details id="virtual-lab-simulation" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Virtual Lab Simulation
+        </summary>
+        <div class="mt-6 space-y-4 text-gray-100">
+          <p class="online-only-note">
+            <strong>This section is only relevant if you are doing this lab online instead of in-person.</strong>
+          </p>
+          <p>
+            Use the setup in the interactive widget below to determine the focal length (and radius of curvature) of a concave mirror by adjusting object and screen positions.
+          </p>
+          <div id="optical-bench-widget"
+               class="p-4 bg-gray-900 rounded-lg shadow-lg mx-auto"
+               style="width:100%; max-width:820px;">
+            <!-- canvas now fills the container up to 820px, keeps 3:2 aspect ratio -->
+            <canvas id="benchCanvas"
+                    class="border border-gray-700 block bg-black"
+                    style="width:100%; height:auto; aspect-ratio:3/2;">
+            </canvas>
+
+            <div class="flex-row" style="margin-top: 1rem; justify-content: center;">
+              <div class="slider-box mx-4">
+                <label for="doSlider" class="block text-gray-200">Object Distance ($d_o$):</label>
+                <input type="range" id="doSlider" min="0" max="100" value="50" step="0.1" class="w-full">
+                <input type="number" id="doInput" min="0" max="100" step="0.1" value="50"
+                       class="mt-1 w-20 text-gray-900"/>
+                <span class="text-gray-200 ml-1">cm</span>
+              </div>
+              <div class="slider-box mx-4">
+                <label for="dsSlider" class="block text-gray-200">Screen Distance ($d_s$):</label>
+                <input type="range" id="dsSlider" min="0" max="100" value="50" step="0.1" class="w-full">
+                <input type="number" id="dsInput" min="0" max="100" step="0.1" value="50"
+                       class="mt-1 w-20 text-gray-900"/>
+                <span class="text-gray-200 ml-1">cm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <script>
+      (function(){
+        const benchCanvas = document.getElementById('benchCanvas');
+        const benchCtx    = benchCanvas.getContext('2d');
+        const img         = new Image();
+        img.src = 'images/candle.png';
+
+        // optical parameters
+        const axisCm         = 100;
+        const R              = 0.2 * axisCm; // 20 cm
+        const f              = R / 2;        // 10 cm
+        const objectHeightCm = 10;
+
+        const doSlider = document.getElementById('doSlider');
+        const dsSlider = document.getElementById('dsSlider');
+        const doInput  = document.getElementById('doInput');
+        const dsInput  = document.getElementById('dsInput');
+
+        function syncDo(val) {
+          const v = Math.max(0, Math.min(axisCm, parseFloat(val) || 0));
+          doSlider.value = v;
+          doInput.value  = v.toFixed(1);
+          draw();
+        }
+        function syncDs(val) {
+          const v = Math.max(0, Math.min(axisCm, parseFloat(val) || 0));
+          dsSlider.value = v;
+          dsInput.value  = v.toFixed(1);
+          draw();
+        }
+        doSlider.addEventListener('input', () => syncDo(doSlider.value));
+        doInput.addEventListener('change', () => syncDo(doInput.value));
+        dsSlider.addEventListener('input', () => syncDs(dsSlider.value));
+        dsInput.addEventListener('change', () => syncDs(dsInput.value));
+
+        const baselineY  = () => benchCanvas.height / 2;
+        const lineHeight = () => benchCanvas.height * 0.4;
+
+        // resize the internal drawing buffer to match CSS-rendered size
+        function resizeCanvas() {
+          const rect = benchCanvas.getBoundingClientRect();
+          const w = rect.width;
+          const h = w * (400 / 600);  // preserve 600×400 → aspect 3:2
+          benchCanvas.width  = Math.floor(w);
+          benchCanvas.height = Math.floor(h);
+        }
+
+        // redraw whenever the window resizes
+        window.addEventListener('resize', () => {
+          resizeCanvas();
+          draw();
+        });
+
+        function draw() {
+          // on first call, ensure canvas is sized
+          if (benchCanvas.width === 0) resizeCanvas();
+
+          const scale   = benchCanvas.width / axisCm; // px per cm
+          const d_o     = parseFloat(doSlider.value);
+          const d_s     = parseFloat(dsSlider.value);
+          const d_i     = 1 / ((1 / f) - (1 / d_o));
+          const defocus = Math.abs(d_s - d_i);
+
+          const mirrorPx = benchCanvas.width;
+          const xO       = mirrorPx - d_o * scale;
+          const xS       = mirrorPx - d_s * scale;
+
+          benchCtx.clearRect(0, 0, benchCanvas.width, benchCanvas.height);
+
+          // principal axis (semi-transparent gray)
+          benchCtx.strokeStyle = 'rgba(128,128,128,0.5)';
+          benchCtx.lineWidth   = 1;
+          benchCtx.beginPath();
+          benchCtx.moveTo(0, baselineY());
+          benchCtx.lineTo(benchCanvas.width, baselineY());
+          benchCtx.stroke();
+
+          // blurred inverted image
+          const imageHeightPx = objectHeightCm * (d_i / d_o) * scale;
+          benchCtx.save();
+          benchCtx.filter    = `blur(${defocus * 1.5}px)`;
+          benchCtx.translate(0, baselineY());
+          benchCtx.scale(1, -1);
+          const imgW = imageHeightPx * (img.width / img.height);
+          benchCtx.drawImage(img, xS - imgW/2, -imageHeightPx, imgW, imageHeightPx);
+          benchCtx.restore();
+
+          // mirror arc
+          const radiusPx     = R * scale;
+          const circleCenter = mirrorPx - radiusPx;
+          benchCtx.strokeStyle = 'dodgerblue';
+          benchCtx.lineWidth   = 2;
+          benchCtx.beginPath();
+          benchCtx.arc(circleCenter, baselineY(), radiusPx, -Math.PI/3, Math.PI/3);
+          benchCtx.stroke();
+
+          // upright object image
+          const objHeightPx = objectHeightCm * scale;
+          const objW        = objHeightPx * (img.width / img.height);
+          benchCtx.drawImage(img, xO - objW/2, baselineY() - objHeightPx, objW, objHeightPx);
+
+          // crosses at object & screen
+          const crossSize = 6;
+          benchCtx.strokeStyle = '#fff';
+          benchCtx.lineWidth   = 2;
+          [xS, xO].forEach(x => {
+            benchCtx.beginPath();
+            benchCtx.moveTo(x - crossSize, baselineY());
+            benchCtx.lineTo(x + crossSize, baselineY());
+            benchCtx.moveTo(x, baselineY() - crossSize);
+            benchCtx.lineTo(x, baselineY() + crossSize);
+            benchCtx.stroke();
+          });
+        }
+
+        // wait for the image to load, then size & draw
+        img.onload = () => {
+          resizeCanvas();
+          draw();
+        };
+      })();
+      </script>
+
       <!-- Section: Footnotes -->
       <footer>
         <p id="burton-1945">
