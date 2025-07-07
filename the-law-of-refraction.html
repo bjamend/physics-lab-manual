@@ -49,7 +49,15 @@
       <details id="background" open>
         <summary>Historical Background</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            Full discovery of the law of refraction can be traced back to the tenth-century work of the Iraqi mathematician Ibn Sahl, who described the relationship between angles of incidence and refraction in his work <em>On Burning Mirrors and Lenses</em><sup><a href="#rashed-1990" class="text-blue-300 hover:underline">[1]</a></sup>.
+            In the early seventeenth century, the Dutch scholar Willebrord Snellius (Snell) rediscovered and popularized that same sine‐law relationship in 1621<sup><a href="#hentschel-2001" class="text-blue-300 hover:underline">[2]</a></sup>, and Pierre de Fermat later provided an independent derivation using the principle of least time.
+            Parallel to these advances in theory, the practical art of lensmaking evolved from the simple burning-glass spheres of the ancient world (used by the Greeks and Romans) to the precision-ground spectacles first produced in Italy in the thirteenth century<sup><a href="#glick-2005" class="text-blue-300 hover:underline">[3]</a></sup>.
+            By the early 1600s, instrument-makers such as Galileo and Kepler were combining convex and concave elements to build telescopes and microscopes, laying the foundations for modern optics.
+          </p>
+          <p>
+            In this lab, you will use the law of refraction to measure the focal lengths of different lenses.
+          </p>
         </div>
       </details>
 
@@ -57,7 +65,233 @@
       <details id="theory">
         <summary>Theory</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            The law of refraction can be derived using Fermat's principle of least time, analogous to the derivation of the law of reflection from the previous lab.
+            Rather than showing this derivation here, it is left as an exercise in one of the pre-lab questions.
+            Simply stated, the law of refraction (or Snell's law) is
+          </p>
+          <div id="eq-snells-law">
+            <p>
+              $$\begin{equation}
+                \boxed{n_1\sin{\theta_1} = n_2\sin{\theta_2}}\,, \label{eq:snells-law}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            where $n=v/c$ is the <strong>index of refraction</strong> of the medium through which the light is propagating, and the subscripts $1$ and $2$ represent the incident and refractive mediums, respectively.
+          </p>
+          <p>
+            Without loss of generality, for $n_1 > n_2$ there exists a critical angle $\theta_c$ beyond which no light will be refracted.
+            In this regime, light is only reflected in a phenomenon known as <strong>total internal reflection</strong>.
+            The critical angle that acts as the threshold for this regime is
+          </p>
+          <div id="eq-critical-angle">
+            <p>
+              $$\begin{equation}
+                \theta_c = \sin^{-1}{\left( \frac{n_2}{n_1} \right)}\,. \label{eq:critical-angle}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Refraction is the key principle in lens optics, which is the primary focus of this lab.
+            Specifically, we will be working with convex lenses since these produce real images.
+            As was the case with concave mirrors, <strong>spherical aberration</strong> is also present in convex lenses, and as before, we will largely neglect its effects when performing calculations.
+            Lenses also have an additional type of aberration known as <strong>chromatic aberration</strong>, arising from the wavelength-dependence in refractive angle.
+            We will neglect the effects of this type of aberration as well, but it is nevertheless important to recognize it as a potential source of error.
+          </p>
+          <figure id="fig-1" class="my-8 text-center">
+            <img
+              src="figures/lab6/figure1.png"
+              alt="Chromatic aberration"
+              class="mx-auto rounded"
+            >
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 1:</strong> Effects of chromatic aberration—different wavelengths of light are refracted by different amounts.
+            </figcaption>
+          </figure>
+          <p>
+            The position of an image produced by a convex lens is characterized by the thin lens equation,
+          </p>
+          <div id="eq-thin-lens">
+            <p>
+              $$\begin{equation}
+                \boxed{\frac{1}{f} = \frac{1}{d_o} + \frac{1}{d_i}}\,. \label{eq:thin-lens}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Note that conveniently, this is identical to the mirror equation used in the previous lab.
+            The ray diagrams are also similar, including the behavior of the image formation and magnification relative to the points $f$ and $2f$.
+            The interactive widget below shows the three principal rays commonly used in ray diagrams.
+            Note that these rays are nearly identical to the ones in mirror diagrams—the only difference is that the secondary segments for each are reflected across the vertical axis.
+          </p>
+
+          <div style="margin-top: 1.5rem;">
+            <div class="flex-row">
+              <canvas id="diagram" width="600" height="400"></canvas>
+            </div>
+            <div class="flex-row" style="margin-top: 1.5rem;">
+              <div class="slider-box">
+                <label for="objectDist">Object Distance:</label>
+                <input type="range" id="objectDist" min="155" max="285" value="200" />
+                <span id="distVal">200</span>
+              </div>
+            </div>
+          </div>
+          <script>
+            (function() {
+              const diagCanvas = document.getElementById('diagram');
+              const diagCtx    = diagCanvas.getContext('2d');
+              const centerX    = diagCanvas.width / 2;
+              const centerY    = diagCanvas.height / 2;
+              const focalLen   = 100;
+              const mirrorH    = 185;
+              const baseH      = mirrorH * 0.457;
+
+              const fxLeft     = centerX - focalLen;
+              const fxRight    = centerX + focalLen;
+              const twoFxLeft  = centerX - 2 * focalLen;
+              const twoFxRight = centerX + 2 * focalLen;
+
+              function drawArrow(x1, y1, x2, y2, col, w) {
+                const headlen = w > 2 ? 20 * (Math.abs(y2 - y1) / baseH) : 8;
+                const halfW   = w > 2 ? 10 : 4;
+                const ang     = Math.atan2(y2 - y1, x2 - x1);
+                const bx      = x2 - headlen * Math.cos(ang);
+                const by      = y2 - headlen * Math.sin(ang);
+                const sx      = bx + Math.cos(ang);
+                const sy      = by + Math.sin(ang);
+                diagCtx.strokeStyle = col;
+                diagCtx.fillStyle   = col;
+                diagCtx.lineWidth   = w;
+                diagCtx.beginPath();
+                diagCtx.moveTo(x1, y1);
+                diagCtx.lineTo(sx, sy);
+                diagCtx.stroke();
+                diagCtx.beginPath();
+                diagCtx.moveTo(x2, y2);
+                diagCtx.lineTo(sx - halfW * Math.sin(ang), sy + halfW * Math.cos(ang));
+                diagCtx.lineTo(sx + halfW * Math.sin(ang), sy - halfW * Math.cos(ang));
+                diagCtx.closePath();
+                diagCtx.fill();
+              }
+
+              function drawHead(x, y, ang, col, w) {
+                const headlen = 8;
+                diagCtx.fillStyle   = col;
+                diagCtx.strokeStyle = col;
+                diagCtx.lineWidth   = w;
+                diagCtx.beginPath();
+                diagCtx.moveTo(x, y);
+                diagCtx.lineTo(x - headlen * Math.cos(ang - Math.PI / 6), y - headlen * Math.sin(ang - Math.PI / 6));
+                diagCtx.lineTo(x - headlen * Math.cos(ang + Math.PI / 6), y - headlen * Math.sin(ang + Math.PI / 6));
+                diagCtx.closePath();
+                diagCtx.fill();
+              }
+
+              const slider     = document.getElementById('objectDist');
+              const valDisplay = document.getElementById('distVal');
+              valDisplay.textContent = slider.value;
+              slider.addEventListener('input', () => { valDisplay.textContent = slider.value; drawRays(); });
+
+              function drawRays() {
+                diagCtx.clearRect(0, 0, diagCanvas.width, diagCanvas.height);
+                diagCtx.lineWidth = 1;
+                diagCtx.font      = '12px sans-serif';
+
+                // Principal axis
+                diagCtx.strokeStyle = '#fff';
+                diagCtx.beginPath();
+                diagCtx.moveTo(0, centerY);
+                diagCtx.lineTo(diagCanvas.width, centerY);
+                diagCtx.stroke();
+
+                // Lens shape: biconvex surfaces
+                diagCtx.strokeStyle = 'dodgerblue';
+                diagCtx.lineWidth   = 2;
+                // Left curved surface
+                diagCtx.beginPath();
+                diagCtx.moveTo(centerX, centerY - mirrorH);
+                diagCtx.bezierCurveTo(
+                  centerX - 40, centerY - mirrorH,
+                  centerX - 40, centerY + mirrorH,
+                  centerX,       centerY + mirrorH
+                );
+                diagCtx.stroke();
+                // Right curved surface
+                diagCtx.beginPath();
+                diagCtx.moveTo(centerX, centerY - mirrorH);
+                diagCtx.bezierCurveTo(
+                  centerX + 40, centerY - mirrorH,
+                  centerX + 40, centerY + mirrorH,
+                  centerX,       centerY + mirrorH
+                );
+                diagCtx.stroke();
+                // Central lens plane
+                diagCtx.beginPath();
+                diagCtx.moveTo(centerX, centerY - mirrorH);
+                diagCtx.lineTo(centerX, centerY + mirrorH);
+                diagCtx.stroke();
+
+                // Compute object & image
+                const d_o  = parseFloat(slider.value);
+                const objX = centerX - d_o;
+                const objY = centerY - baseH;
+                const d_i  = (focalLen * d_o) / (d_o - focalLen);
+                const imgX = centerX + d_i;
+                const imgY = centerY + (baseH * d_i / d_o);
+
+                // Ray calculations
+                const m1    = (centerY - objY) / (fxRight - centerX);
+                const y1_end= objY + m1 * (diagCanvas.width - centerX);
+                const m2    = (centerY - objY) / (centerX - objX);
+                const y2_end= objY + m2 * (diagCanvas.width - objX);
+                const m3    = (centerY - objY) / (fxLeft - objX);
+                const yHit  = objY + m3 * (centerX - objX);
+
+                const segments = [
+                  [{x: objX, y: objY}, {x: centerX, y: objY}],
+                  [{x: centerX, y: objY}, {x: diagCanvas.width, y: y1_end}],
+                  [{x: objX, y: objY}, {x: centerX, y: centerY}],
+                  [{x: centerX, y: centerY}, {x: diagCanvas.width, y: y2_end}],
+                  [{x: objX, y: objY}, {x: centerX, y: yHit}],
+                  [{x: centerX, y: yHit}, {x: diagCanvas.width, y: yHit}]
+                ];
+
+                segments.forEach(([p1, p2]) => {
+                  const ang = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+                  drawArrow(p1.x, p1.y, p2.x, p2.y, 'crimson', 1.25);
+                  const hx  = p1.x + (p2.x - p1.x) * 0.5;
+                  const hy  = p1.y + (p2.y - p1.y) * 0.5;
+                  drawHead(hx, hy, ang, 'crimson', 1.5);
+                });
+
+                // Object arrow
+                drawArrow(objX, centerY, objX, objY, 'white', 5);
+                diagCtx.font      = 'bold 14px sans-serif';
+                diagCtx.fillStyle = 'white';
+                diagCtx.fillText('O', objX - 15, objY - 6);
+
+                // Image arrow
+                drawArrow(imgX, centerY, imgX, imgY, 'white', 5);
+                diagCtx.fillText('I', imgX - 15, imgY + 6);
+
+                // F & 2F markers
+                diagCtx.fillStyle = 'white';
+                [twoFxLeft, fxLeft, fxRight, twoFxRight].forEach(x => {
+                  diagCtx.beginPath();
+                  diagCtx.arc(x, centerY, 5, 0, 2 * Math.PI);
+                  diagCtx.fill();
+                });
+                diagCtx.fillText('2f', twoFxLeft + 6, centerY - 6);
+                diagCtx.fillText('f',  fxLeft   + 6, centerY - 6);
+                diagCtx.fillText('f',  fxRight  + 6, centerY - 6);
+                diagCtx.fillText('2f', twoFxRight+ 6, centerY - 6);
+              }
+
+              drawRays();
+            })();
+          </script>
         </div>
       </details>
 
@@ -69,11 +303,38 @@
             Submit your responses to the following questions by the start of the relevant lab meeting.
           </p>
           <ol class="list-decimal">
-            <li><p>Question 1</p></li>
-            <li><p>Question 2</p></li>
-            <li><p>Question 3</p></li>
-            <li><p>Question 4</p></li>
-            <li><p>Question 5</p></li>
+            <li>
+              <p>
+                Using the principle of least time, derive Snell's law.
+              </p>
+            </li>
+            <li>
+              <p>
+                Starting with Snell's law, derive the expression for the critical angle $\theta_c$ in <a href="#eq-critical-angle" class="text-blue-300 font-bold hover:underline"> Equation $\ref{eq:critical-angle}$</a>.
+              </p>
+            </li>
+            <li>
+              <p>
+                Suppose a ray of light passes from one medium with a refractive index $n_1$ into a second medium with a refractive index $n_2$, where $n_1 > n_2$.
+                Which angle is larger, the angle of incidence or the angle of refraction?
+                Explain.
+                Does the light ray speed up or slow down upon entering the second medium?
+              </p>
+            </li>
+            <li>
+              <p>
+                Suppose light travels through air before intercepting a clear plastic barrier.
+                It passes through this plastic barrier into water on the other side.
+                Prove that the angle of refraction is unaffected by the presence of the intermediate plastic boundary (although the refracted beam may shift in space).
+              </p>
+            </li>
+            <li>
+              <p>
+                Crown glass has an index of refraction of $1.52$.
+                Suppose light is transmitted through an interface between crown glass and vacuum (index of refraction of $1$), such that the light is moving from the glass to the vacuum.
+                If the incident angle is $50^{\circ}$, what will the refractive angle be?
+              </p>
+            </li>
           </ol>
         </div>
       </details>
@@ -82,18 +343,186 @@
       <details id="procedure">
         <summary>Procedure</summary>
         <div>
-          <p>Goal.</p>
-          <ol class="list-decimal">
-            <li><strong>Step 1</strong> Text.</li>
-          </ol>
-          <p></p>
-          <p>Summary text.</p>
+          <p>Measure the focal lengths of three different lenses.</p>
         </div>
       </details>
 
+      <!-- Section: Virtual Lab Simulation -->
+      <details id="virtual-lab-simulation" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Virtual Lab Simulation
+        </summary>
+        <div class="mt-6 space-y-4 text-gray-100">
+          <p class="online-only-note">
+            <strong>This section is only relevant if you are doing this lab online instead of in-person.</strong>
+          </p>
+          <p>
+            Use the setup in the interactive widget below to determine the focal length of a convex lens by adjusting object and screen positions.
+          </p>
+          <div id="optical-bench-widget"
+               class="p-4 bg-gray-900 rounded-lg shadow-lg mx-auto"
+               style="width:100%; max-width:820px;">
+            <canvas id="benchCanvas"
+                    class="border border-gray-700 block bg-black"
+                    style="width:100%; height:auto; aspect-ratio:3/2;">
+            </canvas>
+
+            <div class="flex-row" style="margin-top: 1rem; justify-content: center;">
+              <div class="slider-box mx-4">
+                <label for="doSlider" class="block text-gray-200">Object Distance ($d_o$):</label>
+                <input type="range" id="doSlider" min="0" max="50" value="25" step="0.1" class="w-full">
+                <input type="number" id="doInput" min="0" max="50" step="0.1" value="25"
+                       class="mt-1 w-20 text-gray-900"/>
+                <span class="text-gray-200 ml-1">cm</span>
+              </div>
+              <div class="slider-box mx-4">
+                <label for="dsSlider" class="block text-gray-200">Screen Distance ($d_s$):</label>
+                <input type="range" id="dsSlider" min="0" max="50" value="30" step="0.1" class="w-full">
+                <input type="number" id="dsInput" min="0" max="50" step="0.1" value="30"
+                       class="mt-1 w-20 text-gray-900"/>
+                <span class="text-gray-200 ml-1">cm</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <script>
+      (function(){
+        const benchCanvas = document.getElementById('benchCanvas');
+        const benchCtx    = benchCanvas.getContext('2d');
+        const img         = new Image();
+        img.src = 'images/candle.png';
+
+        // optical parameters
+        const axisCm         = 100;
+        const f              = 12;          // focal length 12 cm
+        const objectHeightCm = 10;
+
+        const doSlider = document.getElementById('doSlider');
+        const dsSlider = document.getElementById('dsSlider');
+        const doInput  = document.getElementById('doInput');
+        const dsInput  = document.getElementById('dsInput');
+
+        function syncDo(val) {
+          const v = Math.max(0, Math.min(axisCm, parseFloat(val) || 0));
+          doSlider.value = v;
+          doInput.value  = v.toFixed(1);
+          draw();
+        }
+        function syncDs(val) {
+          const v = Math.max(0, Math.min(axisCm, parseFloat(val) || 0));
+          dsSlider.value = v;
+          dsInput.value  = v.toFixed(1);
+          draw();
+        }
+        doSlider.addEventListener('input', () => syncDo(doSlider.value));
+        doInput.addEventListener('change', () => syncDo(doInput.value));
+        dsSlider.addEventListener('input', () => syncDs(dsSlider.value));
+        dsInput.addEventListener('change', () => syncDs(dsInput.value));
+
+        const baselineY  = () => benchCanvas.height / 2;
+        const lineHeight = () => benchCanvas.height * 0.4;
+
+        function resizeCanvas() {
+          const rect = benchCanvas.getBoundingClientRect();
+          const w = rect.width;
+          const h = w * (2/3);  // preserve 3:2 aspect ratio
+          benchCanvas.width  = Math.floor(w);
+          benchCanvas.height = Math.floor(h);
+        }
+        window.addEventListener('resize', () => { resizeCanvas(); draw(); });
+
+        function draw() {
+          if (benchCanvas.width === 0) resizeCanvas();
+
+          const scale   = benchCanvas.width / axisCm;
+          const d_o     = parseFloat(doSlider.value);
+          const d_s     = parseFloat(dsSlider.value);
+          const d_i     = 1/((1/f) - (1/d_o));
+          const defocus = Math.abs(d_s - d_i);
+
+          const planeX = benchCanvas.width / 2;
+          const xO     = planeX - d_o * scale;
+          const xS     = planeX + d_s * scale;
+
+          benchCtx.clearRect(0, 0, benchCanvas.width, benchCanvas.height);
+
+          benchCtx.strokeStyle = 'rgba(128,128,128,0.5)';
+          benchCtx.lineWidth   = 1;
+          benchCtx.beginPath();
+          benchCtx.moveTo(0, baselineY());
+          benchCtx.lineTo(benchCanvas.width, baselineY());
+          benchCtx.stroke();
+
+          const imageHeightPx = objectHeightCm * (d_i / d_o) * scale;
+          benchCtx.save();
+          benchCtx.filter    = `blur(${defocus * 1.5}px)`;
+          benchCtx.translate(0, baselineY());
+          benchCtx.scale(1, -1);
+          const imgW = imageHeightPx * (img.width / img.height);
+          benchCtx.drawImage(img, xS - imgW/2, -imageHeightPx, imgW, imageHeightPx);
+          benchCtx.restore();
+
+          const lensH  = lineHeight();
+          const topY   = baselineY() - lensH;
+          const botY   = baselineY() + lensH;
+          const thicknessPx = f * scale;
+          benchCtx.strokeStyle = 'dodgerblue';
+          benchCtx.lineWidth   = 2;
+          benchCtx.beginPath();
+          benchCtx.moveTo(planeX, topY);
+          benchCtx.bezierCurveTo(
+            planeX - thicknessPx/2, topY,
+            planeX - thicknessPx/2, botY,
+            planeX,               botY
+          );
+          benchCtx.stroke();
+          benchCtx.beginPath();
+          benchCtx.moveTo(planeX, topY);
+          benchCtx.bezierCurveTo(
+            planeX + thicknessPx/2, topY,
+            planeX + thicknessPx/2, botY,
+            planeX,                 botY
+          );
+          benchCtx.stroke();
+          benchCtx.beginPath();
+          benchCtx.moveTo(planeX, topY);
+          benchCtx.lineTo(planeX, botY);
+          benchCtx.stroke();
+
+          const objHeightPx = objectHeightCm * scale;
+          const objW        = objHeightPx * (img.width / img.height);
+          benchCtx.drawImage(img, xO - objW/2, baselineY() - objHeightPx, objW, objHeightPx);
+
+          const crossSize = 6;
+          benchCtx.strokeStyle = '#fff';
+          benchCtx.lineWidth   = 2;
+          [xO, xS].forEach(x => {
+            benchCtx.beginPath();
+            benchCtx.moveTo(x - crossSize, baselineY());
+            benchCtx.lineTo(x + crossSize, baselineY());
+            benchCtx.moveTo(x, baselineY() - crossSize);
+            benchCtx.lineTo(x, baselineY() + crossSize);
+            benchCtx.stroke();
+          });
+        }
+
+        img.onload = () => { resizeCanvas(); draw(); };
+      })();
+      </script>
+
       <!-- Section: Footnotes -->
       <footer>
-        <!-- Optional footer content -->
+        <p id="rashed-1990">
+          [1] R. Rashed, “A Pioneer in Anaclastics: Ibn Sahl on Burning Mirrors and Lenses,” Isis 81(3), 464–491 (1990).
+        </p>
+        <p id="hentschel-2001">
+          [2] K. Hentschel, “Das Brechungsgesetz in der Fassung von Snellius,” Arch. Hist. Exact Sci. 55, (2001).
+        </p>
+        <p id="glick-2005">
+          [3] T. F. Glick, S. J. Livesey, and F. Wallis, Medieval Science, Technology, and Medicine: An Encyclopedia (Routledge, 2005), p. 167.
+        </p>
       </footer>
 
     </main>
