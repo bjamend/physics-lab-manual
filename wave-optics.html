@@ -49,7 +49,15 @@
       <details id="background" open>
         <summary>Historical Background</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            Between the mid-17th and mid-19th centuries, two competing models of light emerged: the particle, or "corpuscular", model treated light as a stream of particles, while the wave model suggested that light is instead comprised of waves propagating through an invisible medium termed the "aether".
+            The particle model was first articulated by René Descartes in 1637, and later refined by Isaac Newton in the early 18th century<sup><a href="#newton-1704" class="text-blue-300 hover:underline">[1]</a></sup>.
+            In contrast, English scientist Robert Hooke posited that light behaves like a wave, and Dutch physicist and mathematician Christiaan Huygens subsequently developed this concept in more detail.
+            Conclusive support for the wave arrived in the early 19th century with Thomas Young's interference experiment, which produced characteristic patterns of bright and dark fringes, definitely demonstrating light's wave nature<sup><a href="#young-1802" class="text-blue-300 hover:underline">[2]</a></sup>.
+          </p>
+          <p>
+            In this lab, you will reproduce Young's experiment to observe the wave behavior of light for yourselves.
+          </p>
         </div>
       </details>
 
@@ -57,7 +65,193 @@
       <details id="theory">
         <summary>Theory</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            To explain why light passing through one or more narrow slits produces an interference pattern, we'll start with the Huygens-Fresnel principle.
+            Established by the aforementioned Christiaan Huygens and French physicist Augustin-Jean Fresnel, this principle states that any wavefront can be deconstructed into multiple sources that each produce their own spherical wavelets, illustrated in the interactive widget below.
+          </p>
+
+          <p>
+            A natural consequence of this is the phenomenon known as <strong>diffraction</strong>: the spreading of waves after passing through an opening.
+            This is a concept with which you are likely already familiar in one way or another.
+            Flashlights wouldn't be useful without diffraction, as they would only be able to light up areas the same size as the opening, regardless of how far the light travels.
+            You couldn't hear someone talking to you unless they were directly facing your ear if it weren't for diffraction, neglecting the reflection of sound waves off nearby surfaces.
+            And we wouldn't observe interference patterns in light passing through roughly wavelength-sized apertures if diffraction didn't occur.
+            Clearly, diffraction is a fundamental property of waves, and it underpins this experiment.
+          </p>
+
+          <p>
+            When light is shone through a small aperture of some width $b$ that is comparable to the wavelength $\lambda$ of the incident light, the light's constituent wavelets interfere with each other as they diffract through the opening.
+            We want to quantify the resultant interference pattern as it emerges on a screen a distance $L \gg b$ away.
+            This will be much easier to do if we work in terms of rays pointing normal to the wavefronts rather than the wavefronts themselves, as shown in the figure below.
+          </p>
+
+          <figure id="fig-1" class="my-8 text-center">
+            <img
+              src="figures/lab7/figure1.png"
+              alt="Rays from a wavelet"
+              class="mx-auto rounded"
+            >
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 1:</strong> A single 'source' generating rays normal to the wavefront of its spherical wavelet.
+            </figcaption>
+          </figure>
+
+          <p>
+            We can break up the light passing through a small slit into a set of these point sources as per the Huygens-Fresnel principle, as shown below.
+          </p>
+
+          <figure id="fig-2" class="my-8 text-center">
+            <img
+              src="figures/lab7/figure2.png"
+              alt="Multiple wavelet sources"
+              class="mx-auto rounded"
+            >
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 2:</strong> A light source positioned on the left shines light through a thin slit towards a screen on the right. We can treat the light passing through the slit as a series of small wavelet-producing point sources, and draw rays normal to the wavefronts.
+            </figcaption>
+          </figure>
+
+          <p>
+            The rays are drawn quite short in these figures, but they are only meant to indicate directionality, not any sort of physical length scale.
+            As such, you can determine where various parts of a given wavefront will intercept the screen on the right by tracing these rays all the way to the screen.
+            Naturally, any single point on the screen will be intercepted by multiple rays from different sources, all pointing slightly different directions.
+            An example of this is shown in the figure below.
+          </p>
+
+          <figure id="fig-3" class="my-8 text-center">
+            <img
+              src="figures/lab7/figure3.png"
+              alt="Two rays converging on a single point"
+              class="mx-auto rounded"
+            >
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 3:</strong> Two rays of slightly different angles from two different sources converge on the same point on the screen.
+            </figcaption>
+          </figure>
+
+          <p>
+            Of course, the distances between the sources that emit these rays and the screen are not the same; in the figure above, light traveling along the lower ray has to travel farther to reach the screen than the light traveling along the upper ray.
+            As such, since the speed of light in vacuum is constant, it takes more time for light traveling along the bottom ray to reach the screen.
+            Since these rays are tracking the motion of the wavefronts, this means that the wavelets from these two sources will not necessarily be in phase when they meet on the screen.
+            This phase difference is determined by the difference in path lengths between the two rays.
+          </p>
+
+          <p>
+            Quantifying this seems a bit tricky at first, since each of the rays that contribute to the interference at any given point on the screen are all oriented in slightly different directions.
+            Fortunately, if you configure your system such that the distance $L$ between the slit and the screen is substantially larger than the width $b$ of the slit (clearly Figures 3 and 4 are not drawn to scale), these rays become approximately parallel to each other.
+            With this picture in mind, let's look at a set of rays that all converge on roughly the same point on the screen.
+            The figure below shows the same configuration at two different scales: one that encapsulates the entire system, including both the slit and the screen, and one that is much further zoomed-in to tease out the distinct rays from each secondary wave source.
+            Of course, there are still plenty of other rays oriented at other angles, but none of them contribute to the interference taking place at this specific point on the screen.
+            As such, we're singling out a few representative rays here that point in roughly the same direction to simplify the picture.
+          </p>
+
+          <figure id="fig-4" class="my-8 text-center">
+            <img
+              src="figures/lab7/figure4.png"
+              alt="Path differences between rays"
+              class="mx-auto rounded"
+            >
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 4:</strong> (Left) A close-up of the aperture with individual rays clearly discernable. The blue segments represent the path differences between each lower ray and the top ray. (Right) The setup as seen on a larger scale.
+            </figcaption>
+          </figure>
+
+          <p>
+            We've already established that two rays with a path difference of half a wavelength result in perfectly destructive interference between their corresponding waves, so you might be tempted to think that if we pick an angle theta such that the path difference between the bottom ray and the top ray is equal to half a wavelength, we will see an associated dark fringe on the screen.
+            While it's true that if we select such an angle, the bottom and top rays will completely cancel each other, none of the intermediate rays will cancel.
+            The figure below illustrates this a bit more clearly.
+          </p>
+
+          <figure id="fig-5" class="my-8 text-center">
+            <img
+              src="figures/lab7/figure5.png"
+              alt="Destructive wave superpositions"
+              class="mx-auto rounded"
+            >
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 5:</strong> Perfect cancellation occurs when combining phases across an entire wavelength.
+            </figcaption>
+          </figure>
+
+          <p>
+            To ensure perfect cancellation for a true dark fringe on the screen, the path length difference between the top and bottom rays must be a full wavelength, not a half wavelength.
+            Adopting an angle $\theta$ such that the maximum path difference is $\lambda$ rather than $\lambda/2$ causes the secondary waves associated with each ray to perfectly cancel, as shown in the figure below.
+            This means that we observe dark fringes on the screen whenever $\theta$ is set such that the opposite side of the right triangle (the maximum path difference) in the left panel of <a href="#fig-4" class="text-blue-300 hover:underline">Figure 4</a> is equal to lambda.
+          </p>
+
+          <figure id="fig-6" class="my-8 text-center">
+            <img
+              src="figures/lab7/figure6.png"
+              alt="Wave superpositions"
+              class="mx-auto rounded"
+            >
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 6:</strong> The red curves are sine functions with phase differences analogous to the path differences of different rays, and the white curve represents their sum. Even though two of the rays cancel, the others interfere constructively at varying degrees.
+            </figcaption>
+          </figure>
+
+          <p>
+            From simple trigonometry, we then obtain
+          </p>
+
+          <div id="eq-path-difference-1">
+            <p>
+              $$\begin{equation}
+                b\sin{\theta} = \lambda \,.\label{eq:path-difference-1}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            As you might expect, if a maximum path difference of a full wavelength results in perfect cancellation, a maximum path difference of two full wavelengths does the same.
+            Three full wavelengths also produces dark fringes, as does four, and five, etc.
+            Thus, a more general version of this relation is
+          </p>
+
+          <div id="eq-path-difference-2">
+            <p>
+              $$\begin{equation}
+                b\sin{\theta} = n\lambda,\hspace{0.5cm} n=1,2,3,... \,\label{eq:path-difference-2}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            While this is a strikingly simple equation, it's much easier to measure distances than tiny angles in an experimental setting.
+            As such, we can relate $\theta$ to the dark fringe position $y$ (measured relative to the center of the screen) via the distance $L$ between the slit and the screen.
+            This can be done by returning to our view of the configuration on a bigger scale as shown in the right panel of Figure 5.
+          </p>
+
+          <p>
+            The fringe separations are much smaller than $L$; as such, $\theta$ is a very small angle.
+            For small angles, $\sin{\theta} \approx \tan{\theta}$, so we can take $\sin{\theta}$ to be approximately equal to $y/L$ (again referring back to Figure 5).
+            The interference pattern is symmetric across the center of the screen, so $y$ can be positive or negative, with the sign simply indicating on which half of the screen the dark fringe exists.
+            The positions of the dark fringes on the screen for single slit diffraction are then given by
+          </p>
+
+          <div id="eq-single-slit">
+            <p>
+              $$\begin{equation}
+                \boxed{y_|=\pm \frac{nL\lambda}{b},\hspace{0.5cm} n=1,2,3,...} \,.\label{eq:single-slit}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            For a double slit aperture, the process is very similar; the main difference is that we take the slit thicknesses of each slit to be much smaller than the slit <em>separation</em> $d$.
+            As such, rather than treating each slit as a series of rays, we treat each slit as a single ray.
+            Because we are only concerning ourselves with two rays at a time, rather than a spectrum of rays between two extremes, for the double slit experiment, we are looking for maximum path length differences of half-wavelengths rather than full wavelengths.
+            This introduces an extra factor of $2$ in the denominator of our final expression, and also places restrictions on the possible integer values of $n$, which we relabel as $m$ to reflect these differences.
+            We find that for the double slit setup, the positions of the dark fringes are given by
+          </p>
+
+          <div id="eq-double-slit">
+            <p>
+              $$\begin{equation}
+                \boxed{y_{||}=\pm \frac{mL\lambda}{2d},\hspace{0.5cm} m=1,3,5,...} \,.\label{eq:double-slit}
+              \end{equation}$$
+            </p>
+          </div>
         </div>
       </details>
 
@@ -67,11 +261,41 @@
         <div class="box">
           <p>Submit your responses to the following questions by the start of the relevant lab meeting.</p>
           <ol class="list-decimal">
-            <li><p>Question 1</p></li>
-            <li><p>Question 2</p></li>
-            <li><p>Question 3</p></li>
-            <li><p>Question 4</p></li>
-            <li><p>Question 5</p></li>
+            <li>
+              <p>
+                The width of a single slit must be at least the size of the wavelength of the light passing through it in order to observe complete interference patterns.
+                However, if the slit is too large, no interference will be visible, either. Why is this the case?
+              </p>
+            </li>
+            <li>
+              <p>
+                A laser shines through a single $0.1\,\mathrm{mm}$-wide slit towards a screen that is $1\,\mathrm{m}$ away.
+                Two consecutive dark fringes are produced on the screen at positions of $y=2.675\,\mathrm{mm}$ and $y=5.350\,\mathrm{mm}$.
+                What is the wavelength of the light produced by the laser?
+                If it is within the visible spectrum (roughly $380-700\,\mathrm{mm}$), what color does this correspond to?
+              </p>
+            </li>
+            <li>
+              <p>
+                The theory presented above deals with slits that are taken to be effectively 1D lines.
+                Can small circular apertures also produce interference effects?
+                If so, what do they look like?
+                You can either draw this/attach a picture or describe it in words.
+              </p>
+            </li>
+            <li>
+              <p>
+                The theory presented abovev dealt solely with monochromatic light sources (light of a single wavelength); what would happen if you were to shine white light through a small slit?
+                Again, you can either try to draw this out/attach a picture, or describe it in words.
+              </p>
+            </li>
+            <li>
+              <p>
+                It was historically believed that light traveled through a medium referred to as the “aether”.
+                Has this medium been detected?
+                Does it exist at all?
+              </p>
+            </li>
           </ol>
         </div>
       </details>
@@ -80,18 +304,18 @@
       <details id="procedure">
         <summary>Procedure</summary>
         <div class="box">
-          <p>Goal.</p>
-          <ol class="list-decimal">
-            <li><strong>Step 1</strong> Text.</li>
-          </ol>
-          <p></p>
-          <p>Summary text.</p>
+          <p>Measure the wavelength of a red laser using single-slit diffraction, and measure the wavelength of a green laser using double-slit diffraction.</p>
         </div>
       </details>
 
       <!-- Section: Footnotes -->
       <footer>
-        <!-- Optional footnotes -->
+        <p id="newton-1704">
+          [1] I. Newton, "Opticks", Printed for Sam. Smith, and Benj. Walford, London, 1704.
+        </p>
+        <p id="young-1802">
+          [2] T. Young, "The Bakerian Lecture: On the theory of light and colours", Philos. Trans. R. Soc. 92, 12-48 (1802).
+        </p>
       </footer>
 
     </main>
