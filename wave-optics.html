@@ -70,6 +70,94 @@
             Established by the aforementioned Christiaan Huygens and French physicist Augustin-Jean Fresnel, this principle states that any wavefront can be deconstructed into multiple sources that each produce their own spherical wavelets, illustrated in the interactive widget below.
           </p>
 
+          <div style="margin-top: 1.5rem;">
+            <div class="flex-row">
+              <canvas id="canvas" width="400" height="400"></canvas>
+            </div>
+            <div class="flex-row" style="margin-top: 1.5rem; gap: 2rem;">
+              <div class="slider-box">
+                <label for="numSources">Number of Sources:</label>
+                <input type="range" id="numSources" min="1" max="30" value="10" />
+                <span id="numSourcesValue">10</span>
+              </div>
+              <div class="slider-box">
+                <label for="wavelength">Wavelength (px):</label>
+                <input type="range" id="wavelength" min="20" max="200" value="60" />
+                <span id="wavelengthValue">60</span>
+              </div>
+            </div>
+          </div>
+          <script>
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const width = canvas.width;
+            const height = canvas.height;
+            let numSources = 10;
+            let wavelength = 60;
+            const y0 = height * 0.25;
+
+            document.getElementById('numSources').addEventListener('input', e => {
+              numSources = +e.target.value;
+              document.getElementById('numSourcesValue').textContent = numSources;
+              draw();
+            });
+            document.getElementById('wavelength').addEventListener('input', e => {
+              wavelength = +e.target.value;
+              document.getElementById('wavelengthValue').textContent = wavelength;
+              draw();
+            });
+
+            function draw() {
+              const k = 2 * Math.PI / wavelength;
+              const totalPixels = width * height;
+              const amps = new Float32Array(totalPixels);
+              let minAmp = Infinity;
+              let maxAmp = -Infinity;
+
+              for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                  let re = 0, im = 0;
+                  for (let i = 0; i < numSources; i++) {
+                    const x0 = (i + 1) * width / (numSources + 1);
+                    const dx = x - x0;
+                    const dy = y - y0;
+                    const r = Math.hypot(dx, dy) + 1e-6;
+                    const phase = k * r;
+                    re += Math.cos(phase);
+                    im += Math.sin(phase);
+                  }
+                  const amp = Math.sqrt(re*re + im*im);
+                  const idx = y * width + x;
+                  amps[idx] = amp;
+                  if (amp < minAmp) minAmp = amp;
+                  if (amp > maxAmp) maxAmp = amp;
+                }
+              }
+
+              const range = maxAmp - minAmp;
+              const image = ctx.createImageData(width, height);
+              const data = image.data;
+              for (let i = 0; i < totalPixels; i++) {
+                const v = range > 0 ? (amps[i] - minAmp) / range : 0;
+                const c = Math.floor(v * 255);
+                const idx = i * 4;
+                data[idx] = data[idx+1] = data[idx+2] = c;
+                data[idx+3] = 255;
+              }
+              ctx.putImageData(image, 0, 0);
+
+              ctx.fillStyle = 'dodgerblue';
+              for (let i = 0; i < numSources; i++) {
+                const x0 = (i + 1) * width / (numSources + 1);
+                ctx.beginPath();
+                ctx.arc(x0, y0, 4, 0, Math.PI * 2);
+                ctx.fill();
+              }
+            }
+
+            draw();
+          </script>
+
           <p>
             A natural consequence of this is the phenomenon known as <strong>diffraction</strong>: the spreading of waves after passing through an opening.
             This is a concept with which you are likely already familiar in one way or another.
