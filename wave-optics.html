@@ -392,9 +392,152 @@
       <details id="procedure">
         <summary>Procedure</summary>
         <div class="box">
-          <p>Measure the wavelength of a red laser using single-slit diffraction, and measure the wavelength of a green laser using double-slit diffraction.</p>
+          <p>Measure the wavelength of a green laser using single and double-slit diffraction.</p>
         </div>
       </details>
+
+      <!-- Section: Virtual Lab Simulation -->
+      <details id="virtual-lab-simulation" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">Virtual Lab Simulation</summary>
+        <div class="mt-6 space-y-4 text-gray-100">
+          <p class="online-only-note">
+            <strong>This section is only relevant if you are doing this lab online instead of in-person.</strong>
+          </p>
+          <p>
+            Use the controls below to explore double-slit interference with a single-slit envelope and determine the laser’s wavelength.
+          </p>
+          <canvas
+            id="diffractionCanvas"
+            width="640"
+            height="260"
+            class="border border-gray-700 block mx-auto"
+          ></canvas>
+          <div class="flex-row" style="margin-top:1.5rem; justify-content:center;">
+            <div class="slider-box">
+              <label for="slitSlider">Slit Width (µm):</label>
+              <input
+                type="range"
+                id="slitSlider"
+                min="10"
+                max="100"
+                value="50"
+              />
+              <input
+                type="number"
+                id="slitInput"
+                min="10"
+                max="100"
+                value="50"
+              />
+            </div>
+            <div class="slider-box">
+              <label for="spacingSlider">Slit Spacing (µm):</label>
+              <input
+                type="range"
+                id="spacingSlider"
+                min="10"
+                max="200"
+                value="200"
+              />
+              <input
+                type="number"
+                id="spacingInput"
+                min="10"
+                max="200"
+                value="200"
+              />
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+          // Apply background styles
+          document.body.style.background = '#000';
+          const canvasEl = document.getElementById('diffractionCanvas');
+          canvasEl.style.backgroundColor = '#000';
+
+          const ctx = canvasEl.getContext('2d');
+          const slitSlider = document.getElementById('slitSlider');
+          const spacingSlider = document.getElementById('spacingSlider');
+          const slitInput = document.getElementById('slitInput');
+          const spacingInput = document.getElementById('spacingInput');
+
+          const lambda = 530e-9;       // 530 nm
+          const L = 1.0;               // 1 m
+          const patternHeight = 200;   // px
+          const rulerHeight = canvasEl.height - patternHeight;
+          const centerX = canvasEl.width / 2;
+          const inset = 20;            // px inside 0 cm
+          const margin = 20;           // px beyond 15 cm
+          const maxCm = 15;
+
+          function syncInputs(range, number) {
+            range.addEventListener('input', () => {
+              number.value = range.value;
+              drawPattern();
+            });
+            number.addEventListener('input', () => {
+              let v = Math.max(+number.min, Math.min(+number.max, +number.value));
+              range.value = v;
+              drawPattern();
+            });
+          }
+
+          function drawPattern() {
+            const a = +slitSlider.value * 1e-6;
+            const d = +spacingSlider.value * 1e-6;
+            ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+
+            const endTickX = canvasEl.width - margin;
+            const usableHalf = endTickX - centerX;
+            const cmToM = 0.01;
+
+            for (let i = 0; i < canvasEl.width; i++) {
+              const xPx = i - centerX;
+              const x = (xPx / usableHalf) * (maxCm * cmToM);
+              const sinT = x / Math.hypot(L, x);
+              const beta = Math.PI * a * sinT / lambda;
+              const delta = Math.PI * d * sinT / lambda;
+              const env = beta === 0 ? 1 : (Math.sin(beta) / beta) ** 2;
+              const intf = Math.cos(delta) ** 2;
+              // smoother envelope fall-off: lower gamma exponent
+              const disp = (env * intf) ** 0.5;
+              ctx.fillStyle = `rgba(0,255,0,${disp})`;
+              ctx.fillRect(i, 0, 1, patternHeight);
+            }
+
+            const startX = centerX - inset;
+            ctx.fillStyle = '#333';
+            ctx.fillRect(startX, patternHeight, canvasEl.width - startX, rulerHeight);
+
+            ctx.font = '14px sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillStyle = '#ddd';
+            ctx.fillText('cm', startX + 5, patternHeight + rulerHeight - 5);
+
+            ctx.strokeStyle = '#ddd'; ctx.fillStyle = '#ddd'; ctx.lineWidth = 1;
+            for (let t = 0; t <= maxCm * 10; t += 5) {
+              const cm = t / 10;
+              const xPx = centerX + (cm / maxCm) * usableHalf;
+              const h = (t % 10 === 0 ? 15 : 10);
+              ctx.beginPath();
+              ctx.moveTo(xPx, patternHeight);
+              ctx.lineTo(xPx, patternHeight + h);
+              ctx.stroke();
+              if (t % 10 === 0) {
+                ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
+                ctx.fillText(`${cm}`, xPx, patternHeight + h + 12);
+              }
+            }
+          }
+
+          syncInputs(slitSlider, slitInput);
+          syncInputs(spacingSlider, spacingInput);
+          drawPattern();
+        });
+      </script>
 
       <!-- Section: Footnotes -->
       <footer>
