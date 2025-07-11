@@ -49,7 +49,16 @@
       <details id="background" open>
         <summary>Historical Background</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            As discussed in the classical Doppler effect lab, Christian Doppler first proposed in 1842 that the observed frequency of a wave depends on the relative motion of source and observer, laying the groundwork for what became known as the Doppler effect<sup><a href="#eden-1992" class="text-blue-300 hover:underline">[1]</a></sup>.
+            His idea as written initially applied to stars, and it was tested shortly thereafter by astronomers such as Armand Fizeau<sup><a href="#houdas-1991" class="text-blue-300 hover:underline">[2]</a></sup> and William Huggins<sup><a href="#huggins-1868" class="text-blue-300 hover:underline">[3]</a></sup>, who attempted to detect wavelength shifts in stellar spectra.
+            With the advent of the Lorentz transformation in the 1890s and Einstein’s formulation of special relativity in 1905, the classical Doppler formula was revised to include time dilation, yielding the relativistic Doppler shift that predicts asymmetric changes in frequencies between approaching and receding sources.
+            Experimental confirmation of the relativistic effect came in the late 1930s with the Ives–Stilwell experiment, which measured the Doppler shift of positive ion beams in charged gases, and directly verified time dilation’s role in these spectral shifts<sup><a href="#ives-1938" class="text-blue-300 hover:underline">[4]</a></sup>.
+          </p>
+
+          <p>
+            In this lab, you will use the relativistic Doppler shift to measure Hubble's constant—a parameter that characterizes the expansion rate of the universe.
+          </p>
         </div>
       </details>
 
@@ -57,7 +66,95 @@
       <details id="theory">
         <summary>Theory</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            As was the case with the theory behind the classical Doppler shift, there's not much more to the relativistic shift outside of a derivation, as you'll be exploring its behavior yourself.
+            Consider a plane electromagnetic wave propagating in the positive $x$‐direction in an inertial frame $S$ with angular frequency $\omega$ and wavenumber $k=\omega/c$.
+            In a second frame $S'$ moving at velocity $v=\beta c$ along the positive $x$ direction relative to $S$, the spacetime coordinates are related by the Lorentz transformation
+          </p>
+          <div id="eq-lorentz-transformation">
+            <p>
+              $$\begin{equation}
+                t' = \gamma\left(t - \frac{vx}{c^2}\right), \hspace{0.5cm} x' = \gamma(x - vt)\,, \label{eq:lorentz-transformation}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            where $\gamma = (1-\beta^2)^{-1/2}. The phase of the wave,
+          </p>
+          <div id="eq-wave-phase">
+            <p>
+              $$\begin{equation}
+                \phi = \omega t - kx\,, \label{eq:wave-phase}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            is an invariant scalar, so $\phi = \omega t - kx = \omega't' - k'x'$. Substituting the Lorentz transforms and collecting terms in $t$ and $x$ gives
+          </p>
+          <div id="eq-substitution">
+            <p>
+              $$\begin{equation}
+                \omega t - kx = (\gamma\omega' + \gamma \omega'\beta)t - (\gamma k' + \gamma k'\beta)x\,. \label{eq:substitution}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Equating coefficients of $t$ and $x$ yields two simultaneous relations, but using $k'=\omega'/c$ in the $x$ coefficient equation reduces to the same condition as the $t$ coefficient, namely
+          </p>
+          <div id="eq-condition">
+            <p>
+              $$\begin{equation}
+                \omega = \gamma \omega' (1 + \beta)\,. \label{eq:condition}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Solving this for $\omega'$ then yields
+          </p>
+          <div id="eq-omega-prime">
+            <p>
+              $$\begin{equation}
+                \omega' = \omega\gamma(1 - \beta)\,. \label{eq:omega-prime}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Since $\omega = 2\pi\nu$ and $\gamma=(1-\beta^2)^{-1/2}$,
+          </p>
+          <div id="eq-relativistic-doppler">
+            <p>
+              $$\begin{equation}
+                \boxed{\nu' = \nu\sqrt{\frac{1-\beta}{1+\beta}}}\,. \label{eq:relativistic-doppler}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            In this formula, positive $\beta$ corresponds to the source moving <em>away</em> from the observer.
+          </p>
+          <p>
+            In the context of astronomy, observers frequently refer to a quantity $z$ known as 'redshift'.
+            This is defined as
+          </p>
+          <div id="eq-redshift-1">
+            <p>
+              $$\begin{equation}
+                z = \frac{\nu - \nu'}{\nu'}\,, \label{eq:redshift-1}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            or more commonly,
+          </p>
+          <div id="eq-redshift-2">
+            <p>
+              $$\begin{equation}
+                \boxed{1 + z = \frac{\nu}{\nu'}}\,. \label{eq:redshift-2}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            This parameter is ubiquitous throughout astronomy, and will be relevant in this lab.
+          </p>
         </div>
       </details>
 
@@ -67,11 +164,35 @@
         <div class="box">
           <p>Submit your responses to the following questions by the start of the relevant lab meeting.</p>
           <ol class="list-decimal">
-            <li><p>Question 1</p></li>
-            <li><p>Question 2</p></li>
-            <li><p>Question 3</p></li>
-            <li><p>Question 4</p></li>
-            <li><p>Question 5</p></li>
+            <li>
+              <p>
+                Why is the classical Doppler effect insufficient to describe the frequency shift of light at relativistic speeds?
+              </p>
+            </li>
+            <li>
+              <p>
+                Explain the physical meaning of a 'redshift' and a 'blueshift'.
+              </p>
+            </li>
+            <li>
+              <p>
+                A distant star is moving away from Earth at $0.3c$.
+                If the star emits light with a rest-frame frequency of $6\times10^{14}\,\mathrm{Hz}$, calculate the frequency observed on Earth.
+                Is this light redshifted or blueshifted?
+              </p>
+            </li>
+            <li>
+              <p>
+                Andromeda, a nearby galaxy, has an observed $z=-0.001004$ (the minus sign indicates a blueshift).
+                What is the speed of Andromeda relative to the Milky Way in $\mathrm{km/s}$?
+                Is it approaching or receding?
+              </p>
+            </li>
+            <li>
+              <p>
+                What is the connection between Hubble's Law and raisin bread?
+              </p>
+            </li>
           </ol>
         </div>
       </details>
@@ -80,18 +201,71 @@
       <details id="procedure">
         <summary>Procedure</summary>
         <div class="box">
-          <p>Goal.</p>
+          <p>
+            This lab is entirely data analysis, so there is no physical, hands-on component.
+            You will obtain the data yourself via the NASA/IPAC Extragalactic Database.
+          </p>
           <ol class="list-decimal">
-            <li><strong>Step 1</strong> Text.</li>
+            <li>
+              <strong>Identify Source</strong> Search the <a href="https://ned.ipac.caltech.edu/" class="text-blue-300 hover:underline font-semibold">NASA/IPAC Extragalactic Database</a> for NGC ####, where #### is any number between $1$ and $7840$. NGC stands for 'New General Catalog', consisting primarily of galaxies and star clusters. Some of these objects have spectra, some do not, so you are to repeat this step until you find an object that does (you will know because the 'Spectra' tab under the search results will have entries listed).
+            </li>
+            <li>
+              <strong>Record Distance</strong> Once you have identified a suitable candidate, record its mean distance (included in the 'Overview' tab).
+            </li>
+            <li>
+              <strong>Identify H$\alpha$ Line</strong> By looking at the different spectra graphs, find a spectrum (some measure of flux vs. wavelength) with a sharp line that peaks somewhere in the vicinity of $660\,\mathrm{nm}$.
+              This is the H-$\alpha$ line, which has a known rest-frame wavelength of $656.28\,\mathrm{nm}$.
+            </li>
+            <li>
+              <strong>Download Data</strong> Download one of the ASCII files associated with this spectrum.
+            </li>
+            <li>
+              <strong>Measure Doppler Shift</strong> Measure the wavelength shift between the rest-frame wavelength and the observed wavelength from the spectrum data, and use this to calculate the redshift of the galaxy/star cluster.
+            </li>
+            <li>
+              <strong>Calculate Velocity</strong> From the wavelength shift, calculate the corresponding velocity.
+            </li>
+            <li>
+              <strong>Repeat Multiple Times</strong> Repeat steps $1-6$ until you have multiple recorded distances and velocities.
+            </li>
+            <li>
+              <strong>Fit Trendline</strong> Finally, fit a trendline to the velocity vs. distance data to estimate Hubble's constant $H_0$ via $v=H_0D$.
+            </li>
           </ol>
           <p></p>
-          <p>Summary text.</p>
+          <p>The Hubble constant is technically just the zero-redshift (effectively present-day) value of the Hubble <em>parameter</em>, which has evolved throughout the history of the universe.</p>
+        </div>
+      </details>
+
+      <details id="virtual-lab-simulation" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Virtual Lab Simulation
+        </summary>
+        <div class="mt-6 space-y-4 text-gray-100">
+          <p class="online-only-note">
+            <strong>This section is only relevant if you are doing this lab online instead of in-person.</strong>
+          </p>
+          <p>
+            Because this experiment is entirely virtual as-is, there is no special virtual lab simulation here.
+            Just follow the exact same steps from the procedure above as the in-person students would.
+          </p>
         </div>
       </details>
 
       <!-- Section: Footnotes -->
       <footer>
-        <!-- Optional footnotes -->
+        <p id="eden-1992">
+          [1] Doppler, Christian. On the Coloured Light of the Double Stars and Certain Other Stars of the Heavens. In: Alec Eden, Christian Doppler: Life and Work, translated by Alec Eden and Peter Eden, facsimile edition with English translation. Springer-Verlag, 1992, pp. 99–115.
+        </p>
+        <p id="houdas-1991">
+          [2] Houdas, Y. [Doppler, Buys-Ballot, Fizeau. Historical note on the discovery of the Doppler’s effect]. Annales de Cardiologie et d’Angeiologie (Paris), 40(4), 209–213 (April 1991).
+        </p>
+        <p id="huggins-1868">
+          [3] Huggins, William. Further observations on the spectra of some of the stars and nebulae, with an attempt to determine therefrom whether these bodies are moving towards or from the Earth, also observations on the spectra of the Sun and of Comet II. Philosophical Transactions of the Royal Society of London, 158, 529–564 (1868).
+        </p>
+        <p id="ives-1938">
+          [4] Herbert E. Ives and G. R. Stilwell, "An Experimental Study of the Rate of a Moving Atomic Clock," J. Opt. Soc. Am. 28, 215-226 (1938)
+        </p>
       </footer>
 
     </main>
