@@ -49,7 +49,15 @@
       <details id="background" open>
         <summary>Historical Background</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            In 1905, Albert Einstein replaced the Newtonian forms of energy and momentum in his special theory of relativity<sup><a href="#einstein-1905" class="text-blue-300 hover:underline">[1]</a></sup>, but it was Max Planck who first showed that energy and momentum together comprise a relativistic invariant<sup><a href="#planck-1906" class="text-blue-300 hover:underline">[2]</a></sup>.
+            The relevance of this invariant to quantum mechanics was emphasized by Paul Dirac in 1928<sup><a href="#dirac-1928" class="text-blue-300 hover:underline">[3]</a></sup>, and has been a foundational principle in particle physics ever since.
+            The lingering question of why different particles carry different invariant masses was answered by the Higgs mechanism—first proposed in a non-relativistic framework in 1963 by Philip Anderson<sup><a href="#anderson-1963" class="text-blue-300 hover:underline">[4]</a></sup>, then independently in 1964 by multiple people<sup><a href="#englert-1964" class="text-blue-300 hover:underline">[5]</a></sup><sup><a href="#higgs-1964" class="text-blue-300 hover:underline">[6]</a></sup><sup><a href="#guralnik-1964" class="text-blue-300 hover:underline">[7]</a></sup>—which gives masses to the W and Z bosons and to fermions via a pervading scalar field.
+            This idea was confirmed in 2012, when the ATLAS and CMS experiments at CERN’s Large Hadron Collider (LHC) reported a new $\sim 125\,\mathrm{GeV}$ scalar with the properties expected of the Higgs boson<sup><a href="#aad-2012" class="text-blue-300 hover:underline">[8]</a></sup>.
+          </p>
+          <p>
+            In this lab, you will re-discover the Higgs boson by analyzing data from CERN's LHC.
+          </p>
         </div>
       </details>
 
@@ -57,7 +65,135 @@
       <details id="theory">
         <summary>Theory</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            The Standard Model (SM) of particle physics is the theoretical framework describing the
+            fundamental particles and their interactions, excluding gravity.
+            It successfully explains a vast range of physical phenomena and has been tested extensively in experiments such as those conducted at the Large Hadron Collider (LHC).
+            The SM is built on quantum field theory, incorporating principles from quantum mechanics and special relativity.
+          </p>
+          <p>
+            The SM categorizes particles into fermions and bosons, as indicated in the figure below.
+          </p>
+          <figure id="fig-1" class="my-8 text-center">
+            <img
+              src="figures/lab9/figure1.png"
+              alt="The standard model"
+              class="mx-auto rounded"
+            >
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 1:</strong> A visual categorization of the particles comprising the standard model. Source: <a href="https://commons.wikimedia.org/wiki/File:Standard_Model_of_Elementary_Particles.svg" class="text-blue-300 hover:underline font-semibold">Cush</a>, Public domain, via Wikimedia Commons.
+            </figcaption>
+          </figure>
+          <p>
+            <strong>Fermions</strong>, which obey the Pauli exclusion principle and have half-integer spin, are further divided into quarks and leptons.
+            Quarks experience all four fundamental forces and come in six flavors: up ("u"), down ("d"), charm ("c"), strange ("s"), top ("t"), and bottom ("b").
+            They combine to form hadrons, such as protons and neutrons.
+            Leptons do not experience the strong nuclear force.
+            The six types include the electron ($e^-$), muon ($\mu^-$), tau ($\tau^-$), and their corresponding neutrinos ($\nu_e, \nu_{\mu}, \nu_{\tau}$).
+            Quarks and leptons are organized into three generations, with increasing mass and decreasing stability from the first to the third.
+          </p>
+          <p>
+            <strong>Bosons</strong> mediate the fundamental forces of nature and have integer spin.
+            The photon ($\gamma$) is the force carrier of electromagnetism.
+            The W and Z bosons (W$\pm$, Z$^0$) mediate the weak nuclear force, responsible for processes like beta decay.
+            The gluon (g) is the mediator of the strong nuclear force, binding quarks together in protons and neutrons.
+            The Higgs boson (H) is responsible for giving mass to fundamental particles via the Higgs mechanism.
+          </p>
+          <p>
+            The SM incorporates three of the four fundamental interactions.
+            The electromagnetic force, governed by quantum electrodynamics (QED), acts on electrically charged particles and is mediated by the photon.
+            The weak nuclear force is responsible for processes such as beta decay; it affects all fermions and is mediated by the W and Z bosons.
+            The strong nuclear force, described by quantum chromodynamics (QCD), binds quarks inside protons and neutrons via gluon exchange.
+            The gravitational force is not included in the SM, as it currently lacks a quantum description.
+          </p>
+          <p>
+            Several conservation laws play fundamental roles in particle physics.
+            <strong>Charge conservation</strong> ensures that electric charge remains unchanged in interactions.
+            <strong>Energy and momentum conservation</strong> apply universally across all interactions.
+            <strong>Baryon number conservation</strong> dictates that the total number of baryons (such as protons and neutrons) remains constant in known interactions.
+            <strong>Lepton number conservation</strong> ensures that each lepton family (electron, muon, tau) maintains a separate lepton number in interactions.
+            <strong>Color charge conservation</strong> applies in QCD, ensuring that quarks always interact in a way that maintains overall color neutrality.
+            While several of these conservation laws will play a role in our lab, the most important here is the conservation of energy and momentum.
+          </p>
+          <p>
+            Energy and momentum are linked in special relativity, unified through the energy-momentum invariant,
+          </p>
+          <div id="eq-energy-momentum-invariant">
+            <p>
+              $$\begin{equation}
+                E^2 = p^2c^2 + m_0^2c^4 \,.\label{eq:energy-momentum-invariant}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Here, $E$ is the particle's energy, $p$ its momentum, $m_0$ its <strong>rest mass</strong>, and $c$ the speed of light.
+            This relationship is called an invariant because it is valid in any inertial reference frame.
+          </p>
+          <p>
+            In high-energy particle physics, there are types of particles that are too short-lived to detect directly.
+            Fortunately, these particles decay into other particles that can be detected, and we can work backwards to determine the invariant masses of the parent particles, obtained by solving the energy-momentum invariant for the rest-mass energy term,
+          </p>
+          <div id="eq-rest-mass-energy">
+            <p>
+              $$\begin{equation}
+                m_0c^2 = \sqrt{E^2 - p^2c^2} \,.\label{eq:rest-mass-energy}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Then, for particles that have multiple decay products,
+          </p>
+          <div id="eq-multiple-particles">
+            <p>
+              $$\begin{equation}
+                \boxed{m_0c^2 = \sqrt{E_{\mathrm{tot}}^2 - c^2 \vec{p}_{\mathrm{tot}} \cdot \vec{p}_{\mathrm{tot}}}} \,,\label{eq:multiple-particles}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            where the subscript indicates total energy or total momentum, summed across all decay products.
+            Thus, measuring the energies and momenta of all decay products of some initial parent particle, the invariant mass of this parent particle can be calculated without having to detect it directly.
+          </p>
+          <p>
+            Note that particle momenta are not typically measured in $x$, $y$, and $z$ components.
+            Rather, they are measured in terms of their direction relative to the particle beam that produced them, and these directions are termed $t$ for transverse, $\phi$ for azimuthal, and $\eta$ for pseudorapidity.
+            Momenta can be converted from these components to Cartesian coordinates via
+          </p>
+          <div id="eq-conversions">
+            <p>
+              $$\begin{equation}
+                p_x = p_t\cos{\phi}\,, \hspace{0.5cm} p_y = p_t\sin{\phi}\,, \hspace{0.5cm} p_z = p_t \sinh{\eta} \,.\label{eq:conversions}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            The goal of this lab is to detect the Higgs boson, a particle that mediates the Higgs mechanism, responsible for endowing mass to massive particles.
+            The Higgs boson (H) decays through a variety of different channels, but one of its most common is
+          </p>
+          <div id="eq-higgs-decay">
+            <p>
+              $$\begin{equation}
+                H \rightarrow ZZ^* \rightarrow \ell\ell\ell\ell \,.\label{eq:higgs-decay}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            In this process, the Higgs boson first decays into two Z bosons, one of which (Z*) is off-shell (meaning its mass differs from the typical value for a Z boson).
+            Each of these Z bosons then further decay into two oppositely-charged leptons of the same flavor (e.g. both must be electrons or muons; taus are not included here).
+            It's these groupings of leptons that we can use to infer the existence of the Higgs boson; however, there are also other particles and other decay channels that produce these lepton combinations.
+            As such, we will ultimately end up with a distribution of invariant masses.
+            The key then will be to explain the existance of as many of these masses as possible with <em>known</em> particles, and any left unexplained can be attributed to novel particles (e.g. the Higgs boson).
+          </p>
+          <figure id="fig-2" class="my-8 text-center">
+            <img
+              src="figures/lab9/figure2.png"
+              alt="The standard model"
+              class="mx-auto rounded"
+            >
+            <figcaption class="mt-2 text-sm text-gray-400">
+              <strong>Figure 2:</strong> A Feynman diagram of the Higgs decay channel relevant for this lab. Source: <a href="https://github.com/atlas-outreach-data-tools/notebooks-collection-opendata/blob/master/13-TeV-examples/uproot_python/HZZAnalysis.ipynb" class="text-blue-300 hover:underline font-semibold">ATLAS Outreach Python Notebook</a>.
+            </figcaption>
+          </figure>
         </div>
       </details>
 
@@ -67,11 +203,36 @@
         <div class="box">
           <p>Submit your responses to the following questions by the start of the relevant lab meeting.</p>
           <ol class="list-decimal">
-            <li><p>Question 1</p></li>
-            <li><p>Question 2</p></li>
-            <li><p>Question 3</p></li>
-            <li><p>Question 4</p></li>
-            <li><p>Question 5</p></li>
+            <li>
+              <p>
+                Does the standard energy-momentum relationship as presented here account for potential energy contributions?
+              </p>
+            </li>
+            <li>
+              <p>
+                Using $E=\gamma m_0 c^2$ and $p=\gamma m_0v$, verify that $E^2 = p^2c^2 + m_0^2c^4$.
+                Note that $\gamma=(1-v^2/c^2)^{-1/2}$.
+              </p>
+            </li>
+            <li>
+              <p>
+                Show that the total energy, $E=\gamma m_0c^2$, reduces to a sum of rest-mass energy and Newonian kinetic energy terms ($E = m_0c^2 + m_0v^2/2$) when $v \ll c$.
+              </p>
+            </li>
+            <li>
+              <p>
+                A mystery particle decays into an electron and a positron.
+                The energy and momentum components of the electron are $(E, p_t, \phi, \eta) = (136.56\,\mathrm{GeV}, 51.14\,\mathrm{GeV/c}, 1.05, -1.66)$, and the energy and momentum components of the positron are $(E, p_t, \phi, \eta) = (67.61\,\mathrm{GeV}, 44.15\,\mathrm{GeV/c}, -2.20, -1.01)$.
+                What is the invariant mass of the parent particle, in $\mathrm{GeV/c}^2$?
+              </p>
+            </li>
+            <li>
+              <p>
+                You determine that the mass of the particle you found in the previous problem is consistent with either that of a W or a Z boson.
+                Which of these is more likely?
+                (Hint: think about other conservation laws.)
+              </p>
+            </li>
           </ol>
         </div>
       </details>
@@ -80,18 +241,54 @@
       <details id="procedure">
         <summary>Procedure</summary>
         <div class="box">
-          <p>Goal.</p>
-          <ol class="list-decimal">
-            <li><strong>Step 1</strong> Text.</li>
-          </ol>
-          <p></p>
-          <p>Summary text.</p>
+          <p>
+            Download <a href="data/lab9/lepton_data_angles.csv" download class="text-blue-300 font-bold hover:underline">this CSV file</a> (derived from CERN LHC data), and use it to identify the masses of the relevant particles.
+            Any prominent contributions that have masses different from the masses of the known particles (e.g. W bosons) should be seen as 'candidates' for a new particle.
+          </p>
+        </div>
+      </details>
+
+      <details id="virtual-lab-simulation" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Virtual Lab Simulation
+        </summary>
+        <div class="mt-6 space-y-4 text-gray-100">
+          <p class="online-only-note">
+            <strong>This section is only relevant if you are doing this lab online instead of in-person.</strong>
+          </p>
+          <p>
+            Because this experiment is entirely virtual as-is, there is no special virtual lab simulation here.
+            Just follow the exact same steps from the procedure above as the in-person students would.
+          </p>
         </div>
       </details>
 
       <!-- Section: Footnotes -->
       <footer>
-        <!-- Optional footnotes here -->
+        <p id="einstein-1905">
+          [1] A. Einstein, “Ist die Trägheit eines Körpers von seinem Energieinhalt abhängig?”, Annalen der Physik 18, 639–641 (1905).
+        </p>
+        <p id="planck-1906">
+          [2] M. Planck, “Das Prinzip der Relativität und die Grundgleichungen der Mechanik,” Verhandlungen der Deutschen Physikalischen Gesellschaft 8(7), 136–141 (1906).
+        </p>
+        <p id="dirac-1928">
+          [3] P. A. M. Dirac, “The quantum theory of the electron,” Proc. R. Soc. Lond. A 117, 610–624 (1928).
+        </p>
+        <p id="anderson-1963">
+          [4] P. W. Anderson, “Plasmons, Gauge Invariance, and Mass,” Phys. Rev. 130, 439–442 (1963).
+        </p>
+        <p id="englert-1964">
+          [5] F. Englert and R. Brout, “Broken Symmetry and the Mass of Gauge Vector Mesons,” Phys. Rev. Lett. 13, 321–323 (1964).
+        </p>
+        <p id="higgs-1964">
+          [6] P. W. Higgs, “Broken Symmetries and the Masses of Gauge Bosons,” Phys. Rev. Lett. 13, 508–509 (1964).
+        </p>
+        <p id="guralnik-1964">
+          [7] G. S. Guralnik, C. R. Hagen, and T. W. B. Kibble, “Global Conservation Laws and Massless Particles,” Phys. Rev. Lett. 13, 585–587 (1964).
+        </p>
+        <p id="aad-2012">
+          [8] G. Aad et al. (ATLAS Collaboration), “Observation of a new particle in the search for the Standard Model Higgs boson with the ATLAS detector at the LHC,” Phys. Lett. B 716, 1–29 (2012).
+        </p>
       </footer>
 
     </main>
