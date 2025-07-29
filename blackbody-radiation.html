@@ -49,7 +49,15 @@
       <details id="background" open>
         <summary>Historical Background</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            In the late 19th century, physicists grappled with modeling thermal radiation from idealized "blackbodies", objects that absorb all incident light and, in thermal equilibrium, emit a characteristic spectrum.
+            Although experiments around 1860 yielded the first quantitative measurements of blackbody spectra<sup><a href="#stewart-1861" class="text-blue-300 hover:underline">[1]</a></sup>, a theoretical description did not emerge until Lord Rayleigh and James Jeans derived the Rayleigh–Jeans law at the start of the 20th century.
+            While this law matched observations at long wavelengths, it predicted an unphysical divergence in the ultraviolet, and this divergence was later dubbed the "ultraviolet catastrophe."
+            In 1900, Max Planck resolved this discrepancy by postulating that energy is emitted in discrete quanta proportional to frequency, yielding Planck’s law<sup><a href="#planck-1900" class="text-blue-300 hover:underline">[2]</a></sup>, which reproduced the Rayleigh–Jeans behavior at long wavelengths while also resolving the ultraviolet catastrophe.
+          </p>
+          <p>
+            In this lab, you will fit Planck's Law to the solar spectrum to calculate the surface temperature of the sun.
+          </p>
         </div>
       </details>
 
@@ -57,7 +65,136 @@
       <details id="theory">
         <summary>Theory</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            An ideal <strong>blackbody</strong> is an object that absorbs all incident electromagnetic radiation, regardless of frequency or angle of incidence, and re-emits energy in a characteristic spectrum that depends only on its temperature.
+            In thermal equilibrium, the power per unit area per unit wavelength, often called the spectral radiance $B_{\lambda}(T)$, was derived from classical arguments to be
+          </p>
+          <div id="eq-rayleigh-jeans">
+            <p>
+              $$\begin{equation}
+                B_{\lambda}(T) = \frac{2ck_BT}{\lambda^4} \,.\label{eq:rayleigh-jeans}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            This is the <strong>Rayleigh-Jeans Law</strong> discussed in the historical background above.
+            Note, however, that this radiated power diverges in the limit $\lambda \rightarrow 0$—the aforementioned <strong>ultraviolet catastrophe</strong>.
+            This was in complete contradiction with experimental measurements, which showed that emission actually <em>falls off</em> at short wavelengths.
+          </p>
+          <p>
+            Planck resolved this discrepancy by introducing the hypothesis that each electromagnetic mode of frequency $\nu$ can only exchange energy in discrete quanta of magnitude $h\nu$, where $h$ is now known as <strong>Planck's constant</strong>.
+            This approach led to what we now call <strong>Planck's Law</strong>:
+          </p>
+          <div id="eq-planck-law">
+            <p>
+              $$\begin{equation}
+                B_{\lambda}(T) = \frac{2hc^2}{\lambda^5}\left[\exp{\left( \frac{hc}{\lambda k_B T} \right)} - 1\right]^{-1} \,.\label{eq:planck-law}
+              \end{equation}$$
+            </p>
+          </div>
+          <p>
+            Here, $k_B$ is <strong>Boltzmann's constant</strong>.
+            At long wavelengths, this equation reduces to the Rayleigh-Jeans law, while at short wavelengths the exponential in the denominator enforces a rapid decay of emitted intensity.
+          </p>
+
+          <!-- Collapsible Derivation Frame -->
+          <details class="derivation-box">
+            <summary>
+              Derivation 1
+            </summary>
+
+            <div>
+              <p>
+                An ideal blackbody is a body that absorbs all incident radiation and emits a characteristic spectrum that depends only on its temperature at thermal equilibrium.
+                A convenient way to realize this is via <strong>cavity radiation</strong>: imagine a perfectly reflecting box of volume $V$ maintained at temperature $T$ with only a tiny hole in one wall.
+                Any light entering that hole undergoes so many internal reflections that it is effectively trapped and fully absorbed, making the interior radiation come into equilibrium with the walls.
+                To derive the Planck function, we consider the electromagnetic field inside that cavity.
+                The boundary conditions enforce standing-wave patterns, which can be viewed as a large collection of independent harmonic oscillators (one for each allowed wavelength $\lambda$).
+                Planck's novel contribution here was to postulate that each oscillator can exchange energy only in discrete 'quanta' of size $h\nu=hc/\lambda$.
+              </p>
+
+              <p>
+                Consider such a box (cavity) of side length $L$.
+                In this box, the standing-wave solutions have wave vectors
+              </p>
+
+              <div id="eq-wave-vectors">
+                <p>
+                  $$\vec{k} = (k_x, k_y, k_z)\,, \tag{D1.1}$$
+                </p>
+              </div>
+
+              <p>
+                with each component an integer multiple of $\pi/L$.
+                In $k$-space, these allowed points form a cubic lattice of spacing $\pi/L$, so the total number of modes with magnitude between $k$ and $k + dk$ is
+              </p>
+
+              <div id="eq-modes">
+                <p>
+                  $$dN_k = \frac{2}{8}\times \frac{(\textrm{volume of shell of radius }k)}{(\textrm{volume per lattice point})} = \frac{2}{8}\times\frac{4\pi k^2\,dk}{(\pi/L)^3} = \frac{\pi V}{\pi^3}k^2\,dk = \frac{V}{\pi^2}k^2\,dk \,. \tag{D1.2}$$
+                </p>
+              </div>
+
+              <p>
+                Here, the factor of $2$ comes from accounting for both polarizations of light, and the factor of $1/8$ comes from only taking the octant where all wave numbers $k$ are positive.
+                Since $k=2\pi/\lambda$, we can change variables using $dk = -2\pi/\lambda^2\,d\lambda$, so that in magnitude:
+              </p>
+
+              <div id="eq-change-variables">
+                <p>
+                  $$ \frac{dN_{\lambda}}{V} = \frac{8\pi}{\lambda^4}\,d\lambda \,. \tag{D1.3}$$
+                </p>
+              </div>
+
+              <p>
+                Next, we take each mode of wavelength $\lambda$ to be a quantum harmonic oscillator with energy levels
+              </p>
+
+              <div id="eq-energy-levels">
+                <p>
+                  $$ E_n = n\frac{hc}{\lambda}\,, \hspace{0.5cm} n=0,1,2,... \,, \tag{D1.4}$$
+                </p>
+              </div>
+
+              <p>
+                and the probability of level $n$ is proportional to $\exp{\left[ -E_n / (k_BT) \right]}$ (this is something you'll learn in statistical mechanics).
+                We can then take effectively a weighted or ensemble average to find the mean energy of such an oscillator to be (using properties of geometric series)
+              </p>
+
+              <div id="eq-mean-energy">
+                <p>
+                  $$ \langle E \rangle = \frac{\displaystyle\sum_{n=0}^{\infty}n\frac{hc}{\lambda}e^{-nhc/(\lambda k_BT)}}{\displaystyle\sum_{n=0}^{\infty}e^{-nhc/(\lambda k_BT)}} = \frac{hc/\lambda}{e^{hc/(\lambda k_BT)}-1} \,. \tag{D1.5}$$
+                </p>
+              </div>
+
+              <p>
+                Multiplying this average energy per mode by the modes per volume per $d\lambda$ (e.g. $dN_{\lambda}/V$) gives the energy per volume for wavelengths between $\lambda$ and $\lambda + d\lambda$
+              </p>
+
+              <div id="eq-energy">
+                <p>
+                  $$ u(\lambda,T)\,d\lambda = \frac{dN_{\lambda}}{V}\times \langle E \rangle = \frac{8\pi h c}{\lambda^5} \frac{1}{e^{hc/(\lambda k_BT)}-1}\,d\lambda \,. \tag{D1.6}$$
+                </p>
+              </div>
+
+              <p>
+                Finally, the spectral radiance $B_{\lambda}(T)$ (power per unit area per unit solid angle per unit wavelength) follows by noting that an isotropic energy density $u$ streams out at speed $c$ over solid angle $4\pi$ steradians, so
+              </p>
+
+              <div id="eq-planck">
+                <p>
+                  $$\boxed{B_{\lambda}(T) = \frac{c}{4\pi}u(\lambda,T) = \frac{2hc^2}{\lambda^5}\frac{1}{e^{hc/(\lambda k_BT)}-1}} \,. \tag{D1.7}$$
+                </p>
+              </div>
+
+            </div>
+          </details>
+
+          <p>
+            Planck's law perfectly captures the spectrum of blackbody radiation, which is produced by a variety of different objects to varying degrees.
+            Examples of near-perfect blackbodies include stars, tungsten filaments in incandescent light bulbs, and electric stove burners.
+            Note that blackbody radiation usually arises in combination with other processes that further modify the observed spectrum; however, in this lab, we will only be working with Planck's Law.
+          </p>
         </div>
       </details>
 
@@ -67,11 +204,40 @@
         <div class="box">
           <p>Submit your responses to the following questions by the start of the relevant lab meeting.</p>
           <ol class="list-decimal">
-            <li><p>Question 1</p></li>
-            <li><p>Question 2</p></li>
-            <li><p>Question 3</p></li>
-            <li><p>Question 4</p></li>
-            <li><p>Question 5</p></li>
+            <li>
+              <p>
+                The solar spectrum looks very close to that of a perfect blackbody but with some modifications, the most pronounced of which are sharp lines that dip below the blackbody curve.
+                What is the source of these dips?
+              </p>
+            </li>
+            <li>
+              <p>
+                Just by visual inspection of the solar spectrum, around what wavelength does the sun's emission peak?
+                In what region of the EM spectrum does this wavelength sit (e.g. ultraviolet, visible, infrared, radio, etc.)?
+                If it is visible, what color does this correspond to?
+              </p>
+            </li>
+            <li>
+              <p>
+                Show that for large wavelengths, Planck's Law approximates the Rayleigh-Jeans Law.
+                Note that, for small $x$, $e^x \sim (1+x)$.
+              </p>
+            </li>
+            <li>
+              <p>
+                The wavelength at which the blackbody spectrum peaks is given by Wien's Displacement Law, $\lambda_{\mathrm{peak}} = b/T$, where $b$ is a constant, and $T$ is the temperature in $K$.
+                Derive this law by finding the wavelength at which the spectrum is maximized, and find the value of the constant $b$.
+                This can be done by differentiating Planck's Law and equating it to zero, although you will ultimately need to numerically solve the resultant equation.
+              </p>
+            </li>
+            <li>
+              <p>
+                The Stefan-Boltzmann Law $P=\sigma A T^4$ describes the total power output from an ideal blackbody of surface area $A$ at temperature $T$ (here, $\sigma$ is the Stefan-Boltzmann constant).
+                Derive this law by integrating $\pi$ times the Planck function over all wavelengths ($0$ to $\infty$).
+                Note that this factor of $\pi$ arises for geometric reasons outside the scope of this problem.
+                You may find the following integral useful: $\int_0^{\infty} x^3/(e^x-1)\,dx=\pi^4/15$.
+              </p>
+            </li>
           </ol>
         </div>
       </details>
@@ -80,18 +246,35 @@
       <details id="procedure">
         <summary>Procedure</summary>
         <div class="box">
-          <p>Goal.</p>
-          <ol class="list-decimal">
-            <li><strong>Step 1</strong> Text.</li>
-          </ol>
-          <p></p>
-          <p>Summary text.</p>
+          <p>
+            Fit the Planck function to <a href="data/lab10/solar_spectrum.csv" download class="text-blue-300 font-bold hover:underline">this solar spectrum data</a> to determine the surface temperature of the sun.
+          </p>
+        </div>
+      </details>
+
+      <details id="virtual-lab-simulation" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Virtual Lab Simulation
+        </summary>
+        <div class="mt-6 space-y-4 text-gray-100">
+          <p class="online-only-note">
+            <strong>This section is only relevant if you are doing this lab online instead of in-person.</strong>
+          </p>
+          <p>
+            Because this experiment is entirely virtual as-is, there is no special virtual lab simulation here.
+            Just follow the exact same steps from the procedure above as the in-person students would.
+          </p>
         </div>
       </details>
 
       <!-- Section: Footnotes -->
       <footer>
-        <!-- Optional footnotes here -->
+        <p id="stewart-1861">
+          [1] B. Stewart, "An Account of some Experiments on Radiant Heat..", Earth Environ. Sci. Trans. R. Soc. Edinb. 22(1), 1-20 (1861).
+        </p>
+        <p id="planck-1900">
+          [2] M. Planck, "On the Theory of the Energy Distribution Law...", Verhandl. Dtsch. phys. Ges. 2, 237-244 (1900).
+        </p>
       </footer>
 
     </main>
