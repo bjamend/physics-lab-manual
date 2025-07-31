@@ -49,7 +49,12 @@
       <details id="background" open>
         <summary>Historical Background</summary>
         <div>
-          <p>Text.</p>
+          <p>
+            As early as 1752, Thomas Melvill's flame tests hinted at a link between color and chemical identity when sea salt in alcohol burned with a yellow flame<sup><a href="#melvill-1756" class="text-blue-300 hover:underline">[1]</a></sup>, but it was not until the late 18th century invention of the diffraction grating that these macroscopic observations were resolved into the thin bands of discrete wavelengths known as atomic emission lines.
+            By passing light through a fine grating, one could see an element's unique series of colored lines even though the underlying physics remained mysterious.
+            In 1885 Johann Balmer showed that hydrogen's visible lines obey a simple mathematical formula<sup><a href="#balmer-1885" class="text-blue-300 hover:underline">[2]</a></sup>, which Johannes Rydberg extended in 1888 to cover all its spectral lines, though these expressions only applied to one-electron systems<sup><a href="#rydberg-1889" class="text-blue-300 hover:underline">[3]</a></sup>.
+            A few decades later, Niels Bohr's semi-classical atomic model provided the first physical explanation for the Rydberg formula (albeit only for hydrogenic atoms)<sup><a href="#bohr-1913" class="text-blue-300 hover:underline">[4]</a></sup>, but ultimately Erwin Schrödinger's fully quantum-mechanical wave model supplanted this picture in the 1920s<sup><a href="#schrodinger-1926" class="text-blue-300 hover:underline">[5]</a></sup>.
+          </p>
         </div>
       </details>
 
@@ -57,7 +62,94 @@
       <details id="theory">
         <summary>Theory</summary>
         <div>
-          <p>Text.</p>
+
+          <p>
+            To characterize the visible light emission lines of neutral Hydrogen, Johann Balmer developed the empirical formula
+          </p>
+
+          <div id="eq-balmer">
+            <p>
+              $$\begin{equation}
+                \lambda = B\left( \frac{n^2}{n^2-2^2} \right) \,.\label{eq:balmer}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Here, $\lambda$ is the wavelength, $n$ is an integer greater than $2$, and $B$ is the <strong>Balmer constant</strong>.
+            Johannes Rydberg then generalized this formula for all neutral Hydrogen emission lines,
+          </p>
+
+          <div id="eq-rydberg">
+            <p>
+              $$\begin{equation}
+                \boxed{\frac{1}{\lambda} = R_H\left( \frac{1}{n^2} - \frac{1}{m^2} \right)} \,.\label{eq:rydberg}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            In this equation, $R_H$ is the <strong>Rydberg constant</strong> for Hydrogen, and $n$ and $m$ are positive non-zero integers such that $m > n$.
+            For the visible light series of lines, referred to as the <strong>Balmer series</strong>, setting $n=2$ the Rydberg formula yields the Balmer formula.
+          </p>
+
+          <p>
+            Niels Bohr developed a model that could reproduce Rydberg's formula, additionally expressing the Rydberg constant in terms of fundamental constants of nature.
+            In the early 20th century, it was believed that electrons orbited atomic nuclei in a classical fashion.
+            However, physicists quickly realized that in such a scenario, the electron—which would be undergoing uniform circular motion, and would therefore be accelerating—would continually radiate energy as accelerated charges do.
+            This perpetual energy loss would cause the electron to fall inwards, resulting in an eventual collision with the nucleus.
+            The timescale associated with such an inspiral was found to be $\sim 10^{-11}\,\mathrm{s}$, which is clearly far too short for any stable state to form.
+          </p>
+
+          <p>
+            To resolve this issue, Bohr adopted a <em>semi</em>-classical approach, postulating that the electron existed in quantized energy levels.
+            The associated energies still corresponded to circular orbits (the classical part of this model), and as such, the energies of these orbits scaled as $1/r$.
+            Since the angular momentum $L$ of a particle in such an orbit scales as $r^{1/2}$, these energy levels are proportional to $1/L^2$.
+            This results in a quantized condition on the possible angular momentum values of the orbiting electron,
+          </p>
+
+          <div id="eq-bohr-relation">
+            <p>
+              $$\begin{equation}
+                L=n\hbar \,.\label{eq:bohr-relation}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Here, $L$ is the standard angular momentum from classical mechanics,
+          </p>
+
+          <div id="eq-angular-momentum">
+            <p>
+              $$\begin{equation}
+                L = |\vec{r}\times\vec{p}| \,.\label{eq:angular-momentum}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            Using this quantized angular momentum postulate and the principles of uniform circular motion under a central force, Bohr successfully derived the Rydberg formula by assuming that spectral lines were produced when the electron transitioned from one 'stationary state' to another (you will reproduce this calculation in one of your pre-lab questions).
+          </p>
+
+          <p>
+            In this lab, you will be using a diffraction grating to resolve the individual emission lines in the Hydrogen spectrum.
+            Recall that the relevant formula here is
+          </p>
+
+          <div id="eq-diffraction">
+            <p>
+              $$\begin{equation}
+                d\sin{\theta} = k\lambda \,, \hspace{0.5cm} k=1,2,3,...\,\label{eq:diffraction}
+              \end{equation}$$
+            </p>
+          </div>
+
+          <p>
+            where $d$ is the spacing between the fringes, $\theta$ is the angle projected onto the screen, $\lambda$ is the wavelength of the line, and $k$ is the fringe order.
+            Note that $k$ is being used here instead of $m$ or $n$ to avoid confusion with the electron energy level numbers from the Rydberg formula.
+          </p>
+
         </div>
       </details>
 
@@ -67,11 +159,38 @@
         <div class="box">
           <p>Submit your responses to the following questions by the start of the relevant lab meeting.</p>
           <ol class="list-decimal">
-            <li><p>Question 1</p></li>
-            <li><p>Question 2</p></li>
-            <li><p>Question 3</p></li>
-            <li><p>Question 4</p></li>
-            <li><p>Question 5</p></li>
+            <li>
+              <p>
+                An emission line is visible in the first group ($k=1$) of fringes relative to the center on a screen a distance $1.5\,,\mathrm{m}$ away.
+                The diffraction grating used to produce the image has a line spacing of $500\,\mathrm{lines/mm}$, and the line is $52.1\,\mathrm{cm}$ from the center.
+                What is the wavelength of the line?
+              </p>
+            </li>
+            <li>
+              <p>
+                Why are diffraction gratings needed to resolve individual spectral lines?
+                Why is it that we can't just observe each separate color with our eyes?
+              </p>
+            </li>
+            <li>
+              <p>
+                The lines in the Balmer series get closer and closer together for larger and larger values of $n$.
+                Using either the Rydberg or the Balmer formula, find the minimum possible wavelength in this series, referred to as the 'Balmer limit'.
+              </p>
+            </li>
+            <li>
+              <p>
+                One of the main reasons that the 'solar system' model of the atom was found to be inaccurate was that if the electron actually orbited the nucleus, it would radiate away its energy in the form of electromagnetic radiation (light), and would rapidly spiral inward.
+                Do planets orbiting stars also radiate away energy?
+                If not, why not?
+                If so, what form does this radiation take (is it electromagnetic, or some other form), and why is this not concerning to us?
+              </p>
+            </li>
+            <li>
+              <p>
+                Using Bohr's angular momentum postulate in the context of uniform circular motion and assuming the force binding the electron is the Coulomb force, derive the Rydberg formula.
+              </p>
+            </li>
           </ol>
         </div>
       </details>
@@ -80,18 +199,187 @@
       <details id="procedure">
         <summary>Procedure</summary>
         <div class="box">
-          <p>Goal.</p>
-          <ol class="list-decimal">
-            <li><strong>Step 1</strong> Text.</li>
-          </ol>
-          <p></p>
-          <p>Summary text.</p>
+          <p>
+            Measure the Rydberg or the Balmer constant from measurements of lines in the Balmer series.
+          </p>
         </div>
       </details>
 
+      <!-- Virtual Lab Simulation -->
+      <details id="virtual-lab-simulation" class="mb-8">
+        <summary class="text-xl font-bold cursor-pointer hover:text-blue-300">
+          Virtual Lab Simulation
+        </summary>
+        <div class="mt-6 space-y-4 text-gray-100">
+          <p class="online-only-note">
+            <strong>This section is only relevant if you are doing this lab online instead of in-person.</strong>
+          </p>
+          <canvas
+            id="diffractionCanvas"
+            width="640"
+            height="260"
+            class="border border-gray-700 block mx-auto"
+          ></canvas>
+
+          <div class="flex-row" style="margin-top:1.5rem; justify-content:center;">
+            <div class="slider-box mx-4">
+              <label for="spacingSlider">Grating Spacing d (µm):</label><br/>
+              <input type="range" id="spacingSlider" min="1" max="50" value="10"/>
+              <input type="number" id="spacingInput" min="1" max="50" value="10"/>
+            </div>
+            <div class="slider-box mx-4">
+              <label for="distanceSlider">Screen Distance L (m):</label><br/>
+              <input type="range" id="distanceSlider" min="0.2" max="2.0" step="0.01" value="1.00"/>
+              <input type="number" id="distanceInput" min="0.2" max="2.0" step="0.01" value="1.00"/>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+          document.body.style.background = '#000';
+          const canvasEl = document.getElementById('diffractionCanvas');
+          canvasEl.style.backgroundColor = '#000';
+          const ctx = canvasEl.getContext('2d');
+
+          const spacingSlider  = document.getElementById('spacingSlider');
+          const spacingInput   = document.getElementById('spacingInput');
+          const distanceSlider = document.getElementById('distanceSlider');
+          const distanceInput  = document.getElementById('distanceInput');
+
+          // Balmer lines + RGB
+          const lines = [
+            { λ: 656e-9, color: [255,   0,   0] },  // Hα
+            { λ: 486e-9, color: [  0, 255, 255] },  // Hβ
+            { λ: 434e-9, color: [255,   0, 255] },  // Hγ
+            { λ: 410e-9, color: [128,   0,   128] } // Hδ
+          ];
+          const orders       = [1,2,3, 4, 5];           // diffracted orders to show
+          const slitFrac     = 0.30;              // slit‐width is 30% of period
+          const patternHeight= 200;
+          const centerX      = canvasEl.width/2;
+          const halfPx       = centerX - 20;      // leave 20px margin
+          const maxDisp      = 0.15;              // ±0.15 m maps to the half‐width
+          const inset       = 20;    // px inside the 0-cm mark
+          const maxCm       = 15;    // ruler goes 0 → 15 cm to the right
+          const rulerHeight = 60;    // px tall
+
+          function syncInputs(range, number) {
+            range.addEventListener('input', () => {
+              number.value = range.value;
+              drawPattern();
+            });
+            number.addEventListener('input', () => {
+              let v = Math.max(+number.min, Math.min(+number.max, +number.value));
+              range.value = v;
+              drawPattern();
+            });
+          }
+
+          function drawPattern() {
+            const d = +spacingSlider.value * 1e-6;  // grating period [m]
+            const L = +distanceSlider.value;        // screen distance [m]
+            const a = slitFrac * d;                 // slit width [m]
+
+            ctx.clearRect(0, 0, canvasEl.width, canvasEl.height);
+
+            // central white blob
+            {
+              const spread0 = 4;
+              for (let k = -spread0; k <= spread0; k++) {
+                const alpha = Math.exp(-Math.pow(k/spread0, 2));
+                ctx.fillStyle = `rgba(255,255,255,${alpha})`;
+                ctx.fillRect(centerX + k, 0, 1, patternHeight);
+              }
+            }
+
+            // draw each line & order as a fuzzy blob with envelope
+            for (let {λ, color:[r,g,b]} of lines) {
+              for (let m of orders) {
+                const sinθ = m * λ / d;
+                if (Math.abs(sinθ) > 1) continue;
+
+                // position on screen
+                const xPhys = L * sinθ;
+                const dx    = (xPhys / maxDisp) * halfPx;
+
+                // single-slit envelope
+                const β   = Math.PI * a * sinθ / λ;
+                const env = β===0 ? 1 : Math.pow(Math.sin(β)/β, 2);
+
+                // fuzziness ∝ order
+                const fuzzPx     = 2.5 * m;
+                const spread     = Math.ceil(fuzzPx);
+                const centerPos  = centerX + dx;
+
+                // draw Gaussian smear
+                for (let k = -spread; k <= spread; k++) {
+                  const w = Math.exp(-Math.pow(k/spread, 2));
+                  const alpha = env * w;
+                  ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
+                  ctx.fillRect(centerPos + k, 0, 1, patternHeight);
+                  // negative order
+                  const negPos = centerX - dx;
+                  ctx.fillRect(negPos + k, 0, 1, patternHeight);
+                }
+              }
+            }
+
+            // draw ruler
+            const startX = centerX - inset;
+            ctx.fillStyle = '#333';
+            ctx.fillRect(startX, patternHeight, canvasEl.width - startX, rulerHeight);
+
+            // cm label fully inside
+            ctx.fillStyle   = '#ddd';
+            ctx.font        = '14px sans-serif';
+            ctx.textAlign   = 'left';
+            ctx.fillText('cm', startX + 10, patternHeight + rulerHeight - 10);
+
+            // ticks every 0.5 cm, majors at 1 cm
+            ctx.strokeStyle = '#ddd';
+            for (let t = 0; t <= maxCm * 10; t += 5) {
+              const cm      = t / 10;
+              const x       = centerX + (cm / maxCm) * halfPx;
+              const isMajor = (t % 10 === 0);
+              const h       = isMajor ? 12 : 8;
+              ctx.beginPath();
+              ctx.moveTo(x, patternHeight);
+              ctx.lineTo(x, patternHeight + h);
+              ctx.stroke();
+
+              if (isMajor) {
+                ctx.textAlign = 'center';
+                ctx.font      = '12px sans-serif';
+                ctx.fillText(`${cm}`, x, patternHeight + h + 14);
+              }
+            }
+          }
+
+          syncInputs(spacingSlider, spacingInput);
+          syncInputs(distanceSlider, distanceInput);
+          drawPattern();
+        });
+      </script>
+
       <!-- Section: Footnotes -->
       <footer>
-        <!-- Optional footnotes -->
+        <p id="melvill-1756">
+          [1] T. Melvill, “Observations on Light and Colours,” in Essays and Observations, Physical and Literary, Vol. 2 (Medical Society of Edinburgh, Edinburgh, 1756), pp. 12–90.
+        </p>
+        <p id="balmer-1885">
+          [2] J. J. Balmer, “Notiz über die Spektrallinien des Wasserstoffs,” Annalen der Physik (Leipzig) 261, 80–87 (1885).
+        </p>
+        <p id="rydberg-1889">
+          [3] Rydberg, J.R., "Recherches sur la constitution des spectres d'émission des éléments chimiques", Kongliga Svenska Vetenskaps-Akademiens Handlingar, 2nd series, 23, 1–177 (1889).
+        </p>
+        <p id="bohr-1913">
+          [4] N. Bohr, “On the constitution of atoms and molecules,” Philos. Mag. 26, 476–502 (1913).
+        </p>
+        <p id="schrodinger-1926">
+          [5] E. Schrödinger, “Quantisierung als Eigenwertproblem,” Ann. Phys. (Leipzig) 79, 361–376 (1926).
+        </p>
       </footer>
 
     </main>
